@@ -1,4 +1,5 @@
 import type { Recipe } from "@/domain/models/recipe/recipe";
+import type { RecipeSearchQuery } from "@/domain/models/recipe/recipe-search-query";
 import type { RecipeSummary } from "@/domain/models/recipe/recipe-summary";
 import { createAuthedClient } from "@/lib/supabase/server";
 
@@ -116,3 +117,59 @@ export const getRecipeById = async (id: string): Promise<Recipe> => {
     updatedAt: new Date(recipe.updated_at),
   };
 };
+
+/**
+ * レシピ検索
+ */
+export const getRecipeSummariesBySearchQuery = async (
+  query:RecipeSearchQuery
+): Promise<RecipeSummary[]> => {
+  // supabase接続
+  const { supabase } = await createAuthedClient();
+
+  // 定数
+  const keyword = query.keyword.trim();
+
+  // メインクエリ
+  let builder = supabase
+    .from("recipe_summaries")
+    .select("*")
+    .eq("is_draft",false);
+
+  // キーワード検索
+  if(keyword.length > 0) {
+    const pattern = `%${keyword}%`;
+    // 部分一致
+    builder = builder.or(
+      `title.ilike.${pattern},description.ilike.${pattern}`,
+    );
+  }
+
+  // 検索処理
+  const { data , error } = await builder.order("updated_at", {
+    ascending:false,
+  });
+
+  if(error) throw error;
+  if(!data) return [];
+
+  return data.map((row) => ({
+    id: row.id,
+    title: row.title,
+    description: row.description ?? "",
+    thumbnailPath: row.thumbnail_url ?? undefined,
+    servingCount: row.serving_count,
+    preparationTimeMinutes: row.preparation_time_minutes,
+    isDraft: row.is_draft,
+    authorId: row.author_id,
+    categories:
+      (row.categories as Array<{
+        id: string;
+        name: string;
+        slug: string;
+      }>) ?? [],
+    createdAt: new Date(row.created_at),
+    updatedAt: new Date(row.updated_at),
+  }));
+}
+
