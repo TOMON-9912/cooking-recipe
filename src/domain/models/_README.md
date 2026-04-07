@@ -38,6 +38,154 @@ DB を変更したときに全レイヤーの修正が必要になります。
 
 ---
 
+## ドメイン一覧
+
+文脈ごとのサブディレクトリ（Bounded Context）の対応です。
+
+| 英語名（ディレクトリ） | 日本語名 | 説明 |
+|------------------------|----------|------|
+| `recipe` | レシピ | レシピの登録・編集・一覧・検索に必要なデータの形（本体、材料、手順、分類、材料マスターなど）を定義する。 |
+| `family` | 家族 | レシピを共有する単位となる家族グループと、ユーザーとグループの所属を定義する。 |
+
+---
+
+## 各ファイルの型とプロパティ
+
+ソースの JSDoc と一致させています。インターフェースに JSDoc が無いプロパティは、名前から意図を補足しています。
+
+### `recipe/recipe.ts`
+
+#### `Recipe`
+
+| プロパティ | 型 | 説明 |
+|------------|-----|------|
+| `id` | `string` | レシピ ID |
+| `title` | `string` | タイトル |
+| `description` | `string` | 説明文 |
+| `thumbnailPath` | `string`（任意） | サムネイル画像のパス |
+| `servingCount` | `number` | 人数（何人前か） |
+| `preparationTimeMinutes` | `number` | 調理時間（分） |
+| `isDraft` | `boolean` | 下書きかどうか |
+| `ingredients` | `Ingredient[]` | 材料の一覧 |
+| `instructions` | `Instruction[]` | 手順の一覧 |
+| `categories` | `Category[]` | カテゴリの一覧 |
+| `authorId` | `string` | 作成者のユーザー ID |
+| `createdAt` | `Date` | 作成日時 |
+| `updatedAt` | `Date` | 更新日時 |
+
+### `recipe/recipe-summary.ts`
+
+#### `RecipeSummary`
+
+レシピ一覧画面向けのサマリー。材料・手順は含まない（一覧では不要なため）。
+
+| プロパティ | 型 | 説明 |
+|------------|-----|------|
+| `id` | `string` | レシピ ID |
+| `title` | `string` | タイトル |
+| `description` | `string` | 説明文 |
+| `thumbnailPath` | `string`（任意） | サムネイル画像のパス |
+| `servingCount` | `number` | 人数 |
+| `preparationTimeMinutes` | `number` | 調理時間（分） |
+| `isDraft` | `boolean` | 下書きかどうか |
+| `authorId` | `string` | 作成者のユーザー ID |
+| `categories` | `Category[]` | カテゴリの一覧 |
+| `createdAt` | `Date` | 作成日時 |
+| `updatedAt` | `Date` | 更新日時 |
+
+### `recipe/recipe-search-query.ts`
+
+#### `RecipeSearchQuery`
+
+1 回のレシピ検索の入力条件。URL の `searchParams` と 1:1 に対応しやすい形を想定する。
+
+| プロパティ | 型 | 説明 |
+|------------|-----|------|
+| `keyword` | `string` | 前後空白トリム後に使う。空ならキーワード条件なし |
+| `categorySlug` | `string`（任意） | 指定時のみカテゴリで絞る（`Category` の `slug` と一致）。未指定ならカテゴリ条件なし |
+
+### `recipe/ingredient.ts`
+
+#### `Ingredient`
+
+レシピに紐づく材料。
+
+| プロパティ | 型 | 説明 |
+|------------|-----|------|
+| `id` | `string` | 材料行の ID |
+| `ingredientId` | `string`（任意） | 材料マスター（`ingredients` テーブル）への参照。未紐付けの場合は `undefined` |
+| `name` | `string` | ユーザーが入力した表示用の材料名。例: `"人参（みじん切り）"` |
+| `quantityDisplay` | `string` | 表示用の量。`"適量"` や `"少々"` などの文字列も入る。例: `"1.5"`, `"適量"` |
+| `quantityValue` | `number`（任意） | 数値計算用の量。`"適量"` など数値化できない場合は `undefined` |
+| `unit` | `string` | 単位 |
+| `note` | `string`（任意） | 備考 |
+| `order` | `number` | 表示順 |
+
+### `recipe/ingredient-master.ts`
+
+#### `IngredientMaster`
+
+材料マスター。サジェスト検索・材料の表記ゆれ吸収・将来の横断検索に使用する。`recipe_ingredients.ingredientId` から任意で参照される。
+
+| プロパティ | 型 | 説明 |
+|------------|-----|------|
+| `id` | `string` | マスター ID |
+| `name` | `string` | 標準表示名。例: `"人参"` |
+| `normalizedName` | `string` | 検索・突合せ用の正規化名。小文字化・表記ゆれ統一後。例: `"にんじん"` |
+| `createdAt` | `Date` | 作成日時 |
+
+### `recipe/instruction.ts`
+
+#### `Instruction`
+
+レシピの調理手順。
+
+| プロパティ | 型 | 説明 |
+|------------|-----|------|
+| `id` | `string` | UPDATE / DELETE に必要なため id を持つ |
+| `stepNumber` | `number` | ステップ番号 |
+| `description` | `string` | 手順の説明 |
+| `imageUrl` | `string`（任意） | 手順用画像の URL |
+
+### `recipe/category.ts`
+
+#### `Category`
+
+料理カテゴリ（例: 時短、誕生日等）。
+
+| プロパティ | 型 | 説明 |
+|------------|-----|------|
+| `id` | `string` | カテゴリ ID |
+| `name` | `string` | 表示名 |
+| `slug` | `string` | URL 等で使う識別子 |
+
+### `family/family.ts`
+
+#### `Family`
+
+家族グループ。
+
+| プロパティ | 型 | 説明 |
+|------------|-----|------|
+| `id` | `string` | 家族グループ ID |
+| `name` | `string` | グループ名 |
+| `ownerId` | `string` | グループのオーナー。グループ名の変更などができる |
+| `createdAt` | `Date` | 作成日時 |
+
+### `family/family-member.ts`
+
+#### `FamilyMember`
+
+家族グループのメンバー。
+
+| プロパティ | 型 | 説明 |
+|------------|-----|------|
+| `familyId` | `string` | 所属する家族グループ ID |
+| `userId` | `string` | ユーザー ID |
+| `joinedAt` | `Date` | 参加日時 |
+
+---
+
 ## やること・やらないこと（早引き）
 
 | ✅ やってよいこと | ❌ やってはいけないこと |
