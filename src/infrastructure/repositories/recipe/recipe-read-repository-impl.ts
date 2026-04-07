@@ -130,6 +130,9 @@ export const getRecipeSummariesBySearchQuery = async (
   // 定数
   const keyword = query.keyword.trim();
 
+  // カテゴリ検索用ID
+  let recipeIds : string[] | null = null;
+
   // メインクエリ
   let builder = supabase
     .from("recipe_summaries")
@@ -143,6 +146,32 @@ export const getRecipeSummariesBySearchQuery = async (
     builder = builder.or(
       `title.ilike.${pattern},description.ilike.${pattern}`,
     );
+  }
+
+  // カテゴリ検索実施チェック
+  if(query.categorySlug) {
+    const { data : cat , error : catError } = await supabase
+      .from("categories")
+      .select("id")
+      .eq("slug" , query.categorySlug)
+      .maybeSingle();
+
+    if(catError) throw catError;
+    if(!cat) return [];
+
+    const { data : links, error : linkError } = await supabase  
+      .from("recipe_categories")
+      .select("recipe_id")
+      .eq("category_id" , cat.id );
+    
+    if(linkError) throw linkError;
+    recipeIds = [...new Set((links ?? []).map((r) => r.recipe_id))];
+    if(recipeIds.length === 0) return [];
+  }
+
+  // カテゴリ検索
+  if(recipeIds) {
+    builder = builder.in("id", recipeIds);
   }
 
   // 検索処理
