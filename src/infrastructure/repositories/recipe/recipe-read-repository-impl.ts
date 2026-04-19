@@ -119,68 +119,73 @@ export const getRecipeById = async (id: string): Promise<Recipe> => {
 };
 
 /**
- * レシピ検索
+ * レシピ検索（公開済みのみ）。
+ * キーワードは ILIKE ではなく DB の strpos 系 RPC で ID を求める（% / _ をメタ文字にしない）。
  */
 export const getRecipeSummariesBySearchQuery = async (
-  query:RecipeSearchQuery
+  query: RecipeSearchQuery,
 ): Promise<RecipeSummary[]> => {
-  // supabase接続
   const { supabase } = await createAuthedClient();
-
-  // 定数
   const keyword = query.keyword.trim();
 
-  // カテゴリ検索用ID
-  let recipeIds : string[] | null = null;
+  /** 付与すると最終 SELECT を id で絞る。未設定は「キーワードもカテゴリも無し」＝全件対象 */
+  let idFilter: string[] | null = null;
 
-  // メインクエリ
+  if (keyword.length > 0) {
+    const { data, error: rpcError } = await supabase.rpc(
+      "recipe_summaries_ids_matching_keyword",
+      { search_keyword: keyword },
+    );
+    if (rpcError) throw rpcError;
+    const keywordIds = (data ?? []) as string[];
+    if (keywordIds.length === 0) return [];
+    idFilter = keywordIds;
+  }
+
+  if (query.categorySlug) {
+    const { data: cat, error: catError } = await supabase
+      .from("categories")
+      .select("id")
+      .eq("slug", query.categorySlug)
+      .maybeSingle();
+
+    if (catError) throw catError;
+    if (!cat) return [];
+
+    const { data: links, error: linkError } = await supabase
+      .from("recipe_categories")
+      .select("recipe_id")
+      .eq("category_id", cat.id);
+
+    if (linkError) throw linkError;
+    const categoryIds = [...new Set((links ?? []).map((r) => r.recipe_id))];
+    if (categoryIds.length === 0) return [];
+
+    // キーワードと両方指定時は AND。カテゴリのみのときはその ID 列だけ使う
+    if (idFilter !== null) {
+      const categorySet = new Set(categoryIds);
+      idFilter = idFilter.filter((id) => categorySet.has(id));
+      if (idFilter.length === 0) return [];
+    } else {
+      idFilter = categoryIds;
+    }
+  }
+
   let builder = supabase
     .from("recipe_summaries")
     .select("*")
-    .eq("is_draft",false);
+    .eq("is_draft", false);
 
-  // キーワード検索
-  if(keyword.length > 0) {
-    const pattern = `%${keyword}%`;
-    // 部分一致
-    builder = builder.or(
-      `title.ilike.${pattern},description.ilike.${pattern}`,
-    );
+  if (idFilter !== null) {
+    builder = builder.in("id", idFilter);
   }
 
-  // カテゴリ検索実施チェック
-  if(query.categorySlug) {
-    const { data : cat , error : catError } = await supabase
-      .from("categories")
-      .select("id")
-      .eq("slug" , query.categorySlug)
-      .maybeSingle();
-
-    if(catError) throw catError;
-    if(!cat) return [];
-
-    const { data : links, error : linkError } = await supabase  
-      .from("recipe_categories")
-      .select("recipe_id")
-      .eq("category_id" , cat.id );
-    
-    if(linkError) throw linkError;
-    recipeIds = [...new Set((links ?? []).map((r) => r.recipe_id))];
-    if(recipeIds.length === 0) return [];
-  }
-
-  // カテゴリ検索
-  if(recipeIds) {
-    builder = builder.in("id", recipeIds);
-  }
-
-  // 検索処理
-  const { data , error } = await builder.order("updated_at", {
-    ascending:false,
+  const { data, error } = await builder.order("updated_at", {
+    ascending: false,
   });
 
-  if(error) throw error;
-  if(!data) return [];
+  if (error) throw error;
+  if (!data) return [];
 
   return data.map((row) => ({
     id: row.id,
