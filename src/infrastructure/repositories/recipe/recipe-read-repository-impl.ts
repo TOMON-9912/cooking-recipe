@@ -200,5 +200,24 @@ export const getRecipeSummariesBySearchQuery = async (
     createdAt: new Date(row.created_at),
     updatedAt: new Date(row.updated_at),
   }));
-}
+};
+
+/**
+ * 検索フォームのカテゴリ選択用。slug / 表示名のみ。
+ */
+export const getCategoriesForSearchFilter = async (): Promise<
+  { slug: string; name: string }[]
+> => {
+  const { supabase } = await createAuthedClient();
+
+  const { data, error } = await supabase
+    .from("categories")
+    .select("slug, name")
+    .order("name");
+
+  if (error) throw error;
+  if (!data) return [];
+
+  return data.map((row) => ({ slug: row.slug, name: row.name }));
+};
 
