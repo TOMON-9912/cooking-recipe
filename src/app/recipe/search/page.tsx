@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { RecipeSearchPage } from "@/presentation/components/recipe/RecipeSearchPage";
 import {
-  getRecipeSummariesBySearchQuery,
+  getRecipeSummariesWithFavoriteBySearchQuery,
   getCategoriesForSearchFilter,
 } from "@/infrastructure/repositories/recipe/recipe-read-repository-impl";
-import { getFavoriteRecipeIds } from "@/infrastructure/repositories/recipe/favorite-repository-impl";
 import { searchRecipeSummaries } from "@/usecase/recipe/search-recipe-summaries-usecase";
 import { getPresignedImageUrl } from "@/lib/get-presigned-image-url";
 import type { RecipeSearchQuery } from "@/domain/models/recipe/recipe-search-query";
@@ -76,8 +75,7 @@ export default async function RecipeSearchRoutePage({ searchParams }: Props) {
 
 async function fetchSearchResultsWithUrls(query: RecipeSearchQuery) {
   const deps = {
-    getRecipeSummariesBySearchQuery,
-    getFavoriteRecipeIds,
+    getRecipeSummariesWithFavoriteBySearchQuery,
   };
 
   const recipes = await searchRecipeSummaries(query, deps);
