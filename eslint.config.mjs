@@ -51,7 +51,10 @@ const FORBIDDEN = {
   presentation: [
     pathGroup("@/usecase", "presentation は usecase を直接 import できません。Server Action（app）を呼び、app 層で usecase を実行してください（クリーンアーキテクチャ）"),
     pathGroup("@/infrastructure", "presentation は infrastructure を直接 import できません。app 層を経由してください（クリーンアーキテクチャ）"),
-    pathGroup("@/lib", "presentation は lib（Supabase 等）を直接 import できません。app 層を経由してください（クリーンアーキテクチャ）"),
+    // lib は @/lib/utils（cn 等の純 UI ヘルパ）のみ可。Supabase 等は個別に禁止
+    pathGroup("@/lib/supabase", "presentation は Supabase（@/lib/supabase）を直接 import できません。app 層を経由してください（クリーンアーキテクチャ）"),
+    pathGroup("@/lib/get-presigned-image-url", "presentation は @/lib/get-presigned-image-url を import できません。app 層を経由してください（クリーンアーキテクチャ）"),
+    pathGroup("@/lib/di-container", "presentation は @/lib/di-container を import できません（クリーンアーキテクチャ）"),
   ],
 };
 
@@ -95,7 +98,7 @@ const eslintConfig = defineConfig([
       "no-restricted-imports": restrictedImportRule(FORBIDDEN.infrastructure, "warn"),
     },
   },
-  // ---------- presentation: app / domain（型） / types 可。usecase / infra / lib は app 経由
+  // ---------- presentation: app / domain（型） / types / @/lib/utils（cn）可。usecase / infra / 上記以外の lib は禁止
   {
     files: layer("src/presentation/**"),
     rules: {

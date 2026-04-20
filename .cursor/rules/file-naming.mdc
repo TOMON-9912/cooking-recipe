@@ -1,0 +1,36 @@
+---
+description: ファイル・関数・型の命名規則
+alwaysApply: true
+---
+
+# 命名規則
+
+## ファイル名
+
+| 層 | パターン | 例 |
+|---|---------|---|
+| domain/models | `{関心事}.ts` | `recipe.ts`, `ingredient.ts` |
+| domain/repositories | `{関心事}-repository.ts` | `recipe-repository.ts` |
+| infrastructure | `{関心事}-repository-impl.ts` | `recipe-repository-impl.ts` |
+| usecase | `{操作}-{関心事}-usecase.ts` | `create-recipe-usecase.ts` |
+| app (Action) | `action.ts` or `{操作}.action.ts` | `signup.action.ts` |
+
+## 関数・クラス名
+
+| 種類 | パターン | 例 |
+|-----|---------|---|
+| usecase（関数） | `{操作}{関心事}Usecase` | `createRecipeUsecase` |
+| usecase（クラス） | `{操作}UseCase` | `SignupUseCase` |
+| Action | `{操作}Action` | `createRecipeAction` |
+| リポジトリ実装 | `{関心事}RepositoryImpl` | `AuthRepositoryImpl` |
+
+## リポジトリメソッド名
+
+| 操作 | プレフィックス | 用途 |
+|-----|--------------|-----|
+| INSERT | `create〇〇` | 新規作成 |
+| SELECT（1件） | `get〇〇ById` | ID 指定取得 |
+| SELECT（複数） | `find〇〇By〇〇` | 条件検索 |
+| UPDATE | `update〇〇` | 更新 |
+| DELETE→INSERT | `save〇〇` | 全削除後に再挿入 |
+| DELETE | `delete〇〇` | 削除 |

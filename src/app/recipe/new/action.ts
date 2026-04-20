@@ -1,5 +1,10 @@
 "use server";
 
+/**
+ * レシピ本文・材料・手順の保存。サムネイルの S3 保存は別 Action（画像の流れは下記）。
+ * @see src/app/recipe/new/レシピ新規と画像.md
+ */
+
 import type { CreateRecipeResult, RecipeInput } from "@/domain/repositories/recipe/recipe-repository";
 import { createRecipe } from "@/infrastructure/repositories/recipe/recipe-repository-impl";
 import { saveIngredients } from "@/infrastructure/repositories/recipe/ingredient-repository-impl";

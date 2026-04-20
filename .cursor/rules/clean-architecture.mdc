@@ -1,0 +1,49 @@
+---
+description: クリーンアーキテクチャの依存ルールと層の責務
+alwaysApply: true
+---
+
+# クリーンアーキテクチャ
+
+## 依存の向き（絶対ルール）
+
+```
+外側 → 内側 のみ許可
+app → usecase → domain（repositories/models）
+infrastructure → domain
+```
+
+## 各層の責務
+
+| 層 | やること | やらないこと |
+|---|---------|------------|
+| `domain/models` | 型定義のみ | 他層の import |
+| `domain/repositories` | インターフェース定義 | 実装、lib の import |
+| `usecase` | オーケストレーション、バリデーション | infrastructure の import |
+| `infrastructure` | DB アクセス、snake_case 変換 | ビジネスロジック |
+| `app` | deps 組み立て、usecase 呼び出し | ビジネスロジック |
+
+## 依存ルール早見表
+
+```ts
+// ✅ usecase から OK
+import type { Recipe } from "@/domain/models/recipe/recipe";
+import type { RecipeInput } from "@/domain/repositories/recipe/recipe-repository";
+
+// ❌ usecase から NG
+import { createRecipe } from "@/infrastructure/repositories/...";  // 実装を直接 import しない
+```
+
+## deps パターン（usecase への DI）
+
+```ts
+// app 層で deps を組み立てて usecase に渡す
+const deps = { createRecipe, saveIngredients };
+const recipe = await createRecipeUsecase(input, deps);
+```
+
+## 新規ファイル作成時のチェック
+
+- [ ] 正しい層に配置したか
+- [ ] import が依存ルールに違反していないか
+- [ ] usecase は infrastructure を import していないか

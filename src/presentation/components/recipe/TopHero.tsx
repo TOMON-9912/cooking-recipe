@@ -83,10 +83,10 @@ export function QuickAccessSection() {
     <section className="w-full max-w-5xl mx-auto px-4 -mt-6 relative z-10">
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <QuickAccessCard
+          href="/recipe/search"
           icon={<Search className="w-5 h-5 text-emerald-600" />}
           title="レシピ検索"
-          description="食材やカテゴリからレシピを探せます"
-          badge="実装予定"
+          description="キーワードやカテゴリからレシピを探せます"
         />
         <QuickAccessCard
           icon={<Calendar className="w-5 h-5 text-amber-600" />}
@@ -106,34 +106,48 @@ export function QuickAccessSection() {
 }
 
 function QuickAccessCard({
+  href,
   icon,
   title,
   description,
   badge,
 }: {
+  href?: string;
   icon: React.ReactNode;
   title: string;
   description: string;
   badge?: string;
 }) {
-  return (
-    <div className="bg-white rounded-xl p-5 shadow-md hover:shadow-lg transition-shadow border border-gray-100 cursor-default">
-      <div className="flex items-start gap-3">
-        <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-gray-50 flex items-center justify-center">
-          {icon}
+  const inner = (
+    <div className="flex items-start gap-3">
+      <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-gray-50 flex items-center justify-center">
+        {icon}
+      </div>
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2">
+          <h3 className="font-semibold text-gray-900 text-sm">{title}</h3>
+          {badge && (
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-amber-100 text-amber-700">
+              {badge}
+            </span>
+          )}
         </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <h3 className="font-semibold text-gray-900 text-sm">{title}</h3>
-            {badge && (
-              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-amber-100 text-amber-700">
-                {badge}
-              </span>
-            )}
-          </div>
-          <p className="text-xs text-gray-500 mt-0.5">{description}</p>
-        </div>
+        <p className="text-xs text-gray-500 mt-0.5">{description}</p>
       </div>
     </div>
   );
+
+  const className =
+    "block bg-white rounded-xl p-5 shadow-md hover:shadow-lg transition-shadow border border-gray-100 " +
+    (href ? "cursor-pointer" : "cursor-default");
+
+  if (href) {
+    return (
+      <Link href={href} className={className}>
+        {inner}
+      </Link>
+    );
+  }
+
+  return <div className={className}>{inner}</div>;
 }

@@ -39,10 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-.cursor/*
-docs/QA/*
-docs/reviews/*
-docs/recipe_create/*
-docs/top/*
 
+docs/QA/*
 .obsidian/workspace.json
