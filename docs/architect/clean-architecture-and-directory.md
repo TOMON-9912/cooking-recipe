@@ -169,6 +169,7 @@ flowchart TB
 - **domain** … 他層やフレームワークに依存しない（`domain/repositories` → `domain/models` のみ可）。  
 - **usecase** … domain と types/utils/constants に依存。**infrastructure は import しない**（契約だけに依存し、実装は app から deps として渡す）。  
 - **infrastructure** … domain と lib に依存。  
+- **presentation** … app と types に加え、**`@/lib/utils`（`cn` など純 UI 用）** だけ `lib` を import してよい。Supabase 等の `@/lib` は app 経由。  
 - **app** … usecase / infrastructure / lib 等を組み合わせ、**「誰を誰に渡すか」を決める**層。
 
 ---
@@ -256,7 +257,7 @@ sequenceDiagram
 | 呼び出す側 | 呼んでもよいもの | 呼んではいけないもの |
 |------------|------------------|------------------------|
 | **app/** | usecase, infrastructure, lib, types, utils | （最外層のため制限は主に「ビジネスロジックを書かない」など） |
-| **presentation/** | app（Action 等）, types | usecase, infrastructure, domain |
+| **presentation/** | app（Action 等）, types, **`@/lib/utils`**（`cn` 等） | usecase, infrastructure、その他の **`@/lib`**、domain の**値 import**（**`import type` のみ可**） |
 | **usecase/** | domain/models, domain/repositories（インターフェースのみ）, types, utils, constants | infrastructure（実装）, app, presentation |
 | **infrastructure/** | domain/models, domain/repositories, lib | usecase, app, presentation |
 | **domain/repositories/** | domain/models, 同ディレクトリ内の型 | 上記以外のすべて（infra, usecase, app, lib 等） |

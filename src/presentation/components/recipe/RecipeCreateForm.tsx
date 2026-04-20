@@ -10,8 +10,7 @@ import { RecipeGeneralSection } from "./RecipeGeneralSection";
 import { RecipeIngredientsSection } from "./RecipeIngredientsSection";
 import { RecipeInstructionsSection } from "./RecipeInstructionsSection";
 import { createRecipeAction } from "@/app/recipe/new/action";
-import { uploadRecipeImage } from "@/infrastructure/storage/upload-recipe-image";
-import { getUploadUrlAction } from "@/app/recipe/new/get-upload-url-action";
+import { uploadRecipeThumbnailAction } from "@/app/recipe/new/upload-recipe-thumbnail-action";
 
 export function RecipeCreateForm() {
     const router = useRouter();
@@ -130,15 +129,16 @@ export function RecipeCreateForm() {
         startTransition(async () => {
             let thumbnailPath: string | undefined;
 
+            // サムネイルはサーバー Action → usecase → S3。流れは app/recipe/new/レシピ新規と画像.md
             if (imageFile) {
                 try {
-                    // サーバーからプレサインド URL とパスを取得
-                    const uploadUrlResult = await getUploadUrlAction(imageFile.name, imageFile.type);
-                    if (!uploadUrlResult.success) throw new Error(uploadUrlResult.error);
-
-                    // ブラウザから S3 に直接アップロード
-                    await uploadRecipeImage(imageFile, uploadUrlResult.presignedUrl);
-                    thumbnailPath = uploadUrlResult.path;
+                    const fd = new FormData();
+                    fd.append("file", imageFile);
+                    const uploadResult = await uploadRecipeThumbnailAction(fd);
+                    if (!uploadResult.success) {
+                        throw new Error(uploadResult.error);
+                    }
+                    thumbnailPath = uploadResult.path;
                 } catch (e) {
                     setError(e instanceof Error ? e.message : "画像のアップロードに失敗しました");
                     return;
