@@ -277,4 +277,3 @@ export const getCategoriesForSearchFilter = async (): Promise<
 
   return data.map((row) => ({ slug: row.slug, name: row.name }));
 };
-
