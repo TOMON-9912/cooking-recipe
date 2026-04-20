@@ -18,7 +18,7 @@
 | **domain** | `src/domain/**` | `@/app`, `@/presentation`, `@/usecase`, `@/infrastructure`, `@/lib`, **`@/types`, `@/utils`, `@/constants`** | **error** |
 | **usecase** | `src/usecase/**` | `@/app`, `@/presentation`, `@/infrastructure`, `@/lib` | **error** |
 | **infrastructure** | `src/infrastructure/**` | `@/app`, `@/presentation`, `@/usecase` | warn |
-| **presentation** | `src/presentation/**` | `@/usecase`, `@/infrastructure`, `@/lib` | warn |
+| **presentation** | `src/presentation/**` | `@/usecase`, `@/infrastructure`, `@/lib/supabase`, `@/lib/get-presigned-image-url`, `@/lib/di-container`（**`@/lib/utils` は可**：`cn` 等の UI ヘルパ） | warn |
 
 - **domain** は **types / utils / constants にも依存しません**。ドメインは「型・インターフェース・契約」のみで自己完結させ、フレームワークやアプリ固有のユーティリティに依存しない設計にしています。
 - **usecase** は domain と types / utils / constants のみ依存可。infrastructure は deps で受け取ります。
@@ -34,7 +34,7 @@
 | **types/** | アプリ全体で使う型（Result 型など） | usecase, app, presentation, infrastructure（必要に応じて） |
 | **utils/** | プレーンなユーティリティ（バリデーション等） | usecase, app, presentation |
 | **constants/** | 定数（エラーメッセージ等） | usecase, app, presentation |
-| **lib/** | 外部クライアントのラッパー（Supabase 等） | **app, infrastructure のみ**。usecase / presentation / domain は import 禁止 |
+| **lib/** | 外部クライアントのラッパー（Supabase 等）＋ **`utils.ts`（`cn`）** | **app, infrastructure** は lib 全体を利用可。**presentation** は **`@/lib/utils` のみ**（Supabase 等は ESLint で個別禁止）。**domain / usecase** は lib に依存しない |
 
 domain は上記のいずれにも依存しません。usecase は types / utils / constants のみ可で、lib は不可です。
 
