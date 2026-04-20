@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Noto_Serif_JP } from "next/font/google";
 import "./globals.css";
-import Header from "../presentation/components/Header";
+import { createClient } from "@/lib/supabase/server";
+import { Header } from "@/presentation/components/Header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,17 +26,22 @@ export const metadata: Metadata = {
     "閉じた空間で、家族だけのレシピと記憶を蓄え、次の世代へ。Family Recipe Archive",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   return (
     <html lang="jp">
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${notoSerifJP.variable} antialiased bg-gray-50 min-h-screen flex flex-col`}
       >
-        <Header />
+        <Header user={user} />
         <main className="flex-1 pt-16">{children}</main>
       </body>
     </html>
