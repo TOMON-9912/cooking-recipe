@@ -1,9 +1,9 @@
+// npm run test:run -- src/infrastructure/repositories/auth-repository-impl.test.ts
+// npm run test:coverage -- --coverage.include='src/infrastructure/repositories/auth-repository-impl.ts' src/infrastructure/repositories/auth-repository-impl.test.ts
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { AuthRepositoryImpl } from './auth-repository-impl';
 import { AuthError } from '@supabase/supabase-js';
 import { createClient } from '@/lib/supabase/server';
-
-//npm run test -- src/infrastructure/repositories/auth-repository-impl.test.ts
 
 // Supabaseクライアント全体をモック化
 vi.mock('@/lib/supabase/server', () => ({

@@ -1,3 +1,5 @@
+// npm run test:run -- src/app/(auth)/login/login.action.test.ts
+// npm run test:coverage -- --coverage.include='src/app/(auth)/login/login.action.ts' src/app/(auth)/login/login.action.test.ts
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { loginAction } from "./login.action";
 import { AuthRepository } from "@/domain/repositories/auth-repository";

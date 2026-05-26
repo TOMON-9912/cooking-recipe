@@ -43,5 +43,5 @@ try { ... } catch (e) { ... }
 
 ## JSDoc
 
-- 公開 API やライブラリ関数には JSDoc を書いてよい
-- 内部関数への過度な JSDoc は不要
+- 各関数には必ずJSDocを記載すること
+- @paramや@returnsなどは記載すること
