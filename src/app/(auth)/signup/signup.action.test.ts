@@ -84,6 +84,15 @@ describe('signupAction(サインアップ処理)', () => {
     });
   });
 
+  it('email/password が未送信なら空文字としてバリデーションする', async () => {
+    const formData = new FormData();
+
+    const result = await signupAction(null, formData);
+
+    expectErrorResult(result, 'メールアドレスの形式が正しくありません');
+    expect(mockRepository.signup).not.toHaveBeenCalled();
+  });
+
   it('メールアドレス形式が不正な場合にバリデーションエラー', async () => {
     const formData = new FormData();
     formData.append('email', 'invalid-email');
