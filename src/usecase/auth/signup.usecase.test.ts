@@ -1,3 +1,5 @@
+// npm run test:run -- src/usecase/auth/signup.usecase.test.ts
+// npm run test:coverage -- --coverage.include='src/usecase/auth/signup.usecase.ts' src/usecase/auth/signup.usecase.test.ts
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { SignupUseCase } from './signup.usecase';
 import type { AuthRepository } from '@/domain/repositories/auth-repository';

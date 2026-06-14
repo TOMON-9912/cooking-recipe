@@ -1,3 +1,5 @@
+// npm run test:run -- src/usecase/recipe/upload-recipe-thumbnail-usecase.test.ts
+// npm run test:coverage -- --coverage.include='src/usecase/recipe/upload-recipe-thumbnail-usecase.ts' src/usecase/recipe/upload-recipe-thumbnail-usecase.test.ts
 import { describe, expect, it, vi } from "vitest";
 import { RECIPE_THUMBNAIL_MAX_BYTES } from "@/constants/recipe-thumbnail-upload";
 import type { RecipeThumbnailStorage } from "@/domain/repositories/recipe/recipe-thumbnail-storage";
