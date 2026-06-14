@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { RecipeSearchPage } from "@/presentation/components/recipe/RecipeSearchPage";
+import { APP_NAME } from "@/constants/app";
 import {
   getRecipeSummariesWithFavoriteBySearchQuery,
   getCategoriesForSearchFilter,
@@ -9,7 +10,7 @@ import { getPresignedImageUrl } from "@/lib/get-presigned-image-url";
 import type { RecipeSearchQuery } from "@/domain/models/recipe/recipe-search-query";
 
 export const metadata: Metadata = {
-  title: "レシピを探す | ファミリー味帳",
+  title: `レシピを探す | ${APP_NAME}`,
   description: "キーワードやカテゴリで家族のレシピを検索できます。",
 };
 
