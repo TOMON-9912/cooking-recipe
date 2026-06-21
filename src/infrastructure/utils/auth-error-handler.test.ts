@@ -53,5 +53,25 @@ describe('getAuthMessage(認証エラーメッセージ変換',() => {
           const error = new Error('');
           expect(getAuthErrorMessage(error)).toBe('エラーが発生しました。もう一度お試しください。');
         });
+
+        it('メッセージから already registered を推測する', () => {
+          const error = new Error('User already registered');
+          expect(getAuthErrorMessage(error)).toBe('このメールアドレスは既に登録されています');
+        });
+
+        it('メッセージから invalid credentials を推測する', () => {
+          const error = new Error('Invalid login credentials');
+          expect(getAuthErrorMessage(error)).toBe('メールアドレスまたはパスワードが正しくありません');
+        });
+
+        it('メッセージから invalid login を推測する', () => {
+          const error = new Error('invalid login');
+          expect(getAuthErrorMessage(error)).toBe('メールアドレスまたはパスワードが正しくありません');
+        });
+
+        it('未知のエラーコードはデフォルトメッセージ', () => {
+          const error = new AuthError('Unknown', 400, 'unknown_code');
+          expect(getAuthErrorMessage(error)).toBe('エラーが発生しました。もう一度お試しください。');
+        });
     });
 })

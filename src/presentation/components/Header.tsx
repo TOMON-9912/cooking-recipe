@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { User } from "@supabase/supabase-js";
 import { HeaderActions } from "./HeaderActions";
+import { APP_NAME } from "@/constants/app";
 
 type Props = {
   user: User | null;
@@ -14,7 +15,7 @@ export function Header({ user }: Props) {
           href={user ? "/top" : "/"}
           className="font-serif font-bold text-xl tracking-tight shrink-0 text-gray-900 hover:text-emerald-700 transition-colors"
         >
-          ファミリー味帳
+          {APP_NAME}
         </Link>
         {user && (
           <nav className="hidden sm:flex items-center gap-1">

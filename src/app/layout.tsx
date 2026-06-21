@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Noto_Serif_JP } from "next/font/google";
 import "./globals.css";
 import { createClient } from "@/lib/supabase/server";
 import { Header } from "@/presentation/components/Header";
+import { APP_NAME, APP_TAGLINE } from "@/constants/app";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,9 +22,9 @@ const notoSerifJP = Noto_Serif_JP({
 });
 
 export const metadata: Metadata = {
-  title: "ファミリー味帳 - 家族の味と思い出を一緒に残す",
+  title: `${APP_NAME} - ${APP_TAGLINE}`,
   description:
-    "閉じた空間で、家族だけのレシピと記憶を蓄え、次の世代へ。Family Recipe Archive",
+    "紙のメモや写真に散らばったレシピを、家族みんなで使える形にまとめる、家族専用のレシピ帳です",
 };
 
 export default async function RootLayout({

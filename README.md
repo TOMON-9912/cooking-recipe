@@ -1,4 +1,6 @@
-# 家族の味と思い出を一緒に残す『ファミリー味帳』
+# 食卓手帖
+
+家族の味を、ここに残そう。
 
 <!-- デモ URL が確定したらここに記載してください -->
 <!-- 🔗 [デモを見る](https://your-app.vercel.app) -->
@@ -10,8 +12,8 @@ Next.js 16 &nbsp;|&nbsp; React 19 &nbsp;|&nbsp; TypeScript &nbsp;|&nbsp; Supabas
 
 ## Overview
 
-Family Recipe Archive は、  
-「家族の味と記憶を保存・継承するためのクローズドなレシピアプリ」です。
+食卓手帖は、  
+家族のレシピと思い出を、家族だけの場所に残すためのアプリです。
 
 単なるレシピ管理ツールではなく、
 
