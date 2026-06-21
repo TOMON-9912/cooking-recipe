@@ -7,7 +7,8 @@ import type {
 const allowedExt = new Set(["jpg", "jpeg", "png", "webp", "gif"]);
 
 function extensionFromFilename(filename: string): string {
-  const raw = filename.split(".").pop()?.toLowerCase() ?? "";
+  const parts = filename.split(".");
+  const raw = parts[parts.length - 1].toLowerCase();
   if (allowedExt.has(raw)) return raw === "jpeg" ? "jpg" : raw;
   return "jpg";
 }

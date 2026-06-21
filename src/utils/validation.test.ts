@@ -1,6 +1,7 @@
+// npm run test:run -- src/utils/validation.test.ts
+// npm run test:coverage -- --coverage.include='src/utils/validation.ts' src/utils/validation.test.ts
 import { describe, it, expect } from 'vitest';
 import { isPasswordNotEmpty, isValidEmail, isValidPasswordLength } from './validation';
-//npm run test -- src/utils/validation.test.ts
 describe('isValidEmail',() => {
     it('有効なメールアドレスならtrue',() => {
         expect(isValidEmail('user@email.com')).toBe(true);

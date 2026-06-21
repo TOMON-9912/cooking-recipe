@@ -1,7 +1,8 @@
+// npm run test:run -- src/infrastructure/utils/auth-error-handler.test.ts
+// npm run test:coverage -- --coverage.include='src/infrastructure/utils/auth-error-handler.ts' src/infrastructure/utils/auth-error-handler.test.ts
 import { AuthError } from "@supabase/supabase-js";
 import { describe, expect, it } from "vitest";
 import { getAuthErrorMessage } from "./auth-error-handler";
-//npm run test -- src/infrastructure/utils/auth-error-handler.test.ts
 describe('getAuthMessage(認証エラーメッセージ変換',() => {
     describe('エラーコードから直接変換',() => {
         it('エラーコードから直接変換',() => {
@@ -50,6 +51,26 @@ describe('getAuthMessage(認証エラーメッセージ変換',() => {
     
         it('メッセージが空文字列の場合', () => {
           const error = new Error('');
+          expect(getAuthErrorMessage(error)).toBe('エラーが発生しました。もう一度お試しください。');
+        });
+
+        it('メッセージから already registered を推測する', () => {
+          const error = new Error('User already registered');
+          expect(getAuthErrorMessage(error)).toBe('このメールアドレスは既に登録されています');
+        });
+
+        it('メッセージから invalid credentials を推測する', () => {
+          const error = new Error('Invalid login credentials');
+          expect(getAuthErrorMessage(error)).toBe('メールアドレスまたはパスワードが正しくありません');
+        });
+
+        it('メッセージから invalid login を推測する', () => {
+          const error = new Error('invalid login');
+          expect(getAuthErrorMessage(error)).toBe('メールアドレスまたはパスワードが正しくありません');
+        });
+
+        it('未知のエラーコードはデフォルトメッセージ', () => {
+          const error = new AuthError('Unknown', 400, 'unknown_code');
           expect(getAuthErrorMessage(error)).toBe('エラーが発生しました。もう一度お試しください。');
         });
     });

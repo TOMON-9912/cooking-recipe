@@ -1,3 +1,5 @@
+// npm run test:run -- src/app/(auth)/signup/signup.action.test.ts
+// npm run test:coverage -- --coverage.include='src/app/(auth)/signup/signup.action.ts' src/app/(auth)/signup/signup.action.test.ts
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { signupAction } from './signup.action';
 import { AuthRepository } from '@/domain/repositories/auth-repository';
@@ -80,6 +82,15 @@ describe('signupAction(サインアップ処理)', () => {
       email: 'newuser@example.com',
       password: 'password123',
     });
+  });
+
+  it('email/password が未送信なら空文字としてバリデーションする', async () => {
+    const formData = new FormData();
+
+    const result = await signupAction(null, formData);
+
+    expectErrorResult(result, 'メールアドレスの形式が正しくありません');
+    expect(mockRepository.signup).not.toHaveBeenCalled();
   });
 
   it('メールアドレス形式が不正な場合にバリデーションエラー', async () => {

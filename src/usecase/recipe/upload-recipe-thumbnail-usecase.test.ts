@@ -1,3 +1,5 @@
+// npm run test:run -- src/usecase/recipe/upload-recipe-thumbnail-usecase.test.ts
+// npm run test:coverage -- --coverage.include='src/usecase/recipe/upload-recipe-thumbnail-usecase.ts' src/usecase/recipe/upload-recipe-thumbnail-usecase.test.ts
 import { describe, expect, it, vi } from "vitest";
 import { RECIPE_THUMBNAIL_MAX_BYTES } from "@/constants/recipe-thumbnail-upload";
 import type { RecipeThumbnailStorage } from "@/domain/repositories/recipe/recipe-thumbnail-storage";
@@ -72,5 +74,41 @@ describe("uploadRecipeThumbnailUsecase", () => {
       contentType: "image/png",
       originalFilename: "x.png",
     });
+  });
+
+  it("storage.put が失敗したらエラーメッセージを返す", async () => {
+    const failingStorage: RecipeThumbnailStorage = {
+      put: vi.fn().mockRejectedValue(new Error("S3 error")),
+    };
+
+    const r = await uploadRecipeThumbnailUsecase(
+      {
+        authorId: "u1",
+        body: new Uint8Array([1, 2, 3]),
+        contentType: "image/jpeg",
+        originalFilename: "a.jpg",
+      },
+      { storage: failingStorage },
+    );
+
+    expect(r).toEqual({ success: false, error: "S3 error" });
+  });
+
+  it("storage.put が Error 以外を throw したら汎用メッセージを返す", async () => {
+    const failingStorage: RecipeThumbnailStorage = {
+      put: vi.fn().mockRejectedValue("unexpected"),
+    };
+
+    const r = await uploadRecipeThumbnailUsecase(
+      {
+        authorId: "u1",
+        body: new Uint8Array([1, 2, 3]),
+        contentType: "image/jpeg",
+        originalFilename: "a.jpg",
+      },
+      { storage: failingStorage },
+    );
+
+    expect(r).toEqual({ success: false, error: "画像の保存に失敗しました" });
   });
 });
