@@ -29,4 +29,9 @@ export const ERROR_MESSAGES = {
     // 汎用エラー
     UNKNOWN_ERROR: 'エラーが発生しました。もう一度お試しください。',
     UNEXPECTED_ERROR: '予期しないエラーが発生しました。しばらく時間をおいてから再度お試しください',
+
+    // 家族
+    FAMILY_NAME_REQUIRED: '家族名を入力してください',
+    ALREADY_IN_FAMILY: '既に家族グループに所属しています',
+    FAMILY_CREATE_FAILED: '家族グループの作成に失敗しました',
 } as const;
