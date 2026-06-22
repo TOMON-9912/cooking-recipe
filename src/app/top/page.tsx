@@ -7,6 +7,7 @@ import {
   QuickAccessSection,
 } from "@/presentation/components/recipe/TopHero";
 import { getPresignedImageUrl } from "@/lib/get-presigned-image-url";
+import { ToastFromSearchParams } from "@/presentation/components/ToastFromSearchParams";
 
 async function fetchRecipesWithUrls() {
   const deps = {
@@ -47,6 +48,7 @@ export default async function TopPage() {
 
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-gray-50">
+      <ToastFromSearchParams />
       <TopHero recipeCount={recipesWithUrls.length} />
       <QuickAccessSection />
 

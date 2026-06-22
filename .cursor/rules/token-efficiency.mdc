@@ -7,25 +7,25 @@ alwaysApply: true
 
 ## 基本方針
 
-- **段階的に実装**: 一度にすべてを生成せず、層ごと・ファイルごとに進める
-- **確認してから次へ**: 各ステップで動作確認を促し、問題があれば早期に修正
+- **機能単位で実装**: 登録・取得・更新など 1 操作を end-to-end でまとめる（1 PR = 1 機能）
+- **層内では下位から上位へ**: 1 機能の中では domain → infrastructure → usecase → app → presentation の順
 - **既存コードを活用**: 類似の実装があれば参照し、パターンを踏襲
 
 ## 新機能実装の順序
 
-1. **domain/models** … 型定義（最小限）
-2. **domain/repositories** … インターフェース定義
-3. **infrastructure** … DB アクセス実装
-4. **usecase** … オーケストレーション
-5. **app** … Server Action
-6. **presentation** … UI コンポーネント
+1 機能（操作）ごとに、必要な層だけを下から順に実装する。
 
-各ステップ完了後、次へ進む前に確認を取る。
+```
+登録機能の例:
+  domain/models → domain/repositories → infrastructure → usecase → app → presentation
+```
+
+別操作（取得・更新など）は**別 PR / 別ブランチ**で進める。
 
 ## コード生成のルール
 
-- 1 ファイルずつ生成し、関連ファイルを一度にすべて出力しない
-- 長いファイルは「まず骨格 → 詳細を追加」の 2 段階で生成
+- 1 機能内でも、まず usecase + infrastructure の骨格 → app + presentation の順で進めてよい
+- 長いファイルは「骨格 → 詳細」の 2 段階で生成
 - 既存の類似コードがあれば「〇〇を参考に」と明示
 
 ## 調査時のルール

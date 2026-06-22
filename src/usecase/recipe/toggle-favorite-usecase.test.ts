@@ -1,12 +1,15 @@
 // npm run test:run -- src/usecase/recipe/toggle-favorite-usecase.test.ts
 // npm run test:coverage -- --coverage.include='src/usecase/recipe/toggle-favorite-usecase.ts' src/usecase/recipe/toggle-favorite-usecase.test.ts
-import { beforeEach, describe, expect, it, vi } from "vitest";
-import { toggleFavoriteUsecase } from "./toggle-favorite-usecase";
+import { beforeEach, describe, expect, it, vi, type Mock } from "vitest";
+import {
+  toggleFavoriteUsecase,
+  type ToggleFavoriteDeps,
+} from "./toggle-favorite-usecase";
 
 describe("toggleFavoriteUsecase", () => {
-  let getFavoriteRecipeIds: ReturnType<typeof vi.fn>;
-  let addFavorite: ReturnType<typeof vi.fn>;
-  let removeFavorite: ReturnType<typeof vi.fn>;
+  let getFavoriteRecipeIds: Mock<ToggleFavoriteDeps["getFavoriteRecipeIds"]>;
+  let addFavorite: Mock<ToggleFavoriteDeps["addFavorite"]>;
+  let removeFavorite: Mock<ToggleFavoriteDeps["removeFavorite"]>;
 
   beforeEach(() => {
     getFavoriteRecipeIds = vi.fn().mockResolvedValue([]);
