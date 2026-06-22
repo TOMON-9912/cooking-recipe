@@ -4,6 +4,7 @@ import "./globals.css";
 import { createClient } from "@/lib/supabase/server";
 import { Header } from "@/presentation/components/Header";
 import { APP_NAME, APP_TAGLINE } from "@/constants/app";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,6 +45,7 @@ export default async function RootLayout({
       >
         <Header user={user} />
         <main className="flex-1 pt-16">{children}</main>
+        <Toaster />
       </body>
     </html>
   );
