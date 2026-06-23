@@ -48,6 +48,7 @@ next-env.d.ts
 
 docs/QA/*
 docs/reviews/*
+docs/work/*
 docs/recipe_create/*
 docs/top/*
 .obsidian/workspace.json
