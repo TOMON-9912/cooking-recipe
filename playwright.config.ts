@@ -1,4 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
+import { loadEnvLocal } from "./e2e/helpers/load-env-local";
+
+loadEnvLocal();
 
 /**
  * E2E テストの設定。

@@ -106,12 +106,28 @@ test("ログイン画面が表示される", async ({ page }) => {
 
 ---
 
-## 今後の拡張（認証後フロー）
+## 認証後フロー（ヘッダー導線など）
 
-レシピ登録など「ログインが必要な操作」を E2E で検証するには、別途以下の準備が必要です（現状は未対応）。
+ログインが必要な E2E（`e2e/header-navigation.spec.ts` など）では、`.env.local` にテストユーザーを設定します。
 
-- テスト用の Supabase プロジェクト or ローカル Supabase（[supabase-local-dev-with-docker.md](./supabase-local-dev-with-docker.md)）
-- テストユーザーの用意とログイン状態の作成（`storageState` でセッションを再利用する方式が定番）
+```env
+E2E_TEST_EMAIL=your-test-user@example.com
+E2E_TEST_PASSWORD=your-password
+```
+
+- ローカル Supabase で手動登録したユーザーを使う
+- 未設定の場合、ログイン後のテストは **skip** され、未ログインのテストのみ実行される
+- `playwright.config.ts` 起動時に `.env.local` を読み込む
+
+### 実行例
+
+```bash
+npm run test:e2e -- e2e/header-navigation.spec.ts
+```
+
+### 今後の拡張
+
+- `storageState` でセッションを再利用し、各テストのログイン時間を短縮
 - テストデータの投入・後始末（各テストの独立性を担保）
 
 導入する際は本ドキュメントと ADR を更新してください。

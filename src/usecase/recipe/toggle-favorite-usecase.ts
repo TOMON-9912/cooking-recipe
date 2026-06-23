@@ -1,4 +1,4 @@
-type ToggleFavoriteDeps = {
+export type ToggleFavoriteDeps = {
   getFavoriteRecipeIds: () => Promise<string[]>;
   addFavorite: (recipeId: string) => Promise<void>;
   removeFavorite: (recipeId: string) => Promise<void>;

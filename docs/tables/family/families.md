@@ -37,7 +37,7 @@
 
 | 操作 | 条件 | 説明 |
 |---|---|---|
-| SELECT | 自分が `family_members` に所属している `family_id` のみ | 自分の家族グループのみ参照できる |
+| SELECT | 自分が `family_members` に所属している `family_id`、または `owner_id = auth.uid()` | メンバーとして、または作成直後のオーナーとして参照できる |
 | INSERT | `auth.uid() is not null`（認証済みユーザー） | 家族グループの新規作成 |
 | UPDATE | `owner_id = auth.uid()` | グループのオーナーのみ更新できる |
 | DELETE | 不可（将来的に管理者ロールで対応を検討） | - |

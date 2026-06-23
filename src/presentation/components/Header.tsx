@@ -31,6 +31,12 @@ export function Header({ user }: Props) {
             >
               レシピ登録
             </Link>
+            <Link
+              href="/family"
+              className="px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-emerald-700 hover:bg-emerald-50 rounded-md transition-colors"
+            >
+              家族管理
+            </Link>
           </nav>
         )}
       </div>
