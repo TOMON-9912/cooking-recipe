@@ -187,13 +187,13 @@ npm install
 
 # 3. 環境変数を設定
 cp .env.example .env.local
-# .env.local に以下を記入してください:
-#   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-#   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+# .env.local に Supabase / AWS の値を記入（詳細は .env.example 参照）
 
 # 4. 開発サーバーを起動
 npm run dev
 ```
+
+本番・検証環境へのデプロイ手順は [`docs/guides/deploy-vercel-supabase.md`](./docs/guides/deploy-vercel-supabase.md) を参照してください。
 
 ### テストの実行
 
