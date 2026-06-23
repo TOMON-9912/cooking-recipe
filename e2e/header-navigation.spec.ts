@@ -9,7 +9,7 @@ test.describe("ヘッダー導線（未ログイン）", () => {
 
         await expect(page.locator("header nav")).toHaveCount(0);
         await expect(
-            page.locator("header").getByRole("link", { name: "家族を作る" }),
+            page.locator("header").getByRole("link", { name: "家族管理" }),
         ).toHaveCount(0);
     });
 });
@@ -23,15 +23,15 @@ test.describe("ヘッダー導線（ログイン後）", () => {
         await loginAsTestUser(page);
     });
 
-    test("「家族を作る」から家族作成画面へ遷移する", async ({ page }) => {
+    test("「家族管理」から家族画面へ遷移する", async ({ page }) => {
         await page
             .locator("header nav")
-            .getByRole("link", { name: "家族を作る" })
+            .getByRole("link", { name: "家族管理" })
             .click();
 
-        await expect(page).toHaveURL(/\/family\/new$/);
+        await expect(page).toHaveURL(/\/family$/);
         await expect(
-            page.getByRole("heading", { name: "家族グループを作る" }),
+            page.getByRole("heading", { name: /家族グループ/ }),
         ).toBeVisible();
     });
 
