@@ -34,4 +34,11 @@ export const ERROR_MESSAGES = {
     FAMILY_NAME_REQUIRED: '家族名を入力してください',
     ALREADY_IN_FAMILY: '既に家族グループに所属しています',
     FAMILY_CREATE_FAILED: '家族グループの作成に失敗しました',
+
+    // プロフィール
+    DISPLAY_NAME_REQUIRED: '表示名を入力してください',
+    DISPLAY_NAME_TOO_LONG: '表示名は30文字以内で入力してください',
+    INVALID_AVATAR_ICON: 'アイコンを選択してください',
+    PROFILE_ALREADY_EXISTS: 'プロフィールは既に作成されています',
+    PROFILE_CREATE_FAILED: 'プロフィールの作成に失敗しました',
 } as const;
