@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { RecipeListPage } from "@/presentation/components/recipe/RecipeListPage";
 import { getRecipeSummaries } from "@/infrastructure/repositories/recipe/recipe-read-repository-impl";
 import { getFavoriteRecipeIds } from "@/infrastructure/repositories/recipe/favorite-repository-impl";
@@ -8,6 +9,8 @@ import {
 } from "@/presentation/components/recipe/TopHero";
 import { getPresignedImageUrl } from "@/lib/get-presigned-image-url";
 import { ToastFromSearchParams } from "@/presentation/components/ToastFromSearchParams";
+import { createAuthedClient } from "@/lib/supabase/server";
+import { findProfileByUserId } from "@/infrastructure/repositories/profile/profile-repository-impl";
 
 async function fetchRecipesWithUrls() {
   const deps = {
@@ -28,6 +31,13 @@ async function fetchRecipesWithUrls() {
 }
 
 export default async function TopPage() {
+  const { user } = await createAuthedClient();
+  const profile = await findProfileByUserId(user.id);
+
+  if (profile === null) {
+    redirect("/profile/new");
+  }
+
   let recipesWithUrls: Awaited<ReturnType<typeof fetchRecipesWithUrls>>;
 
   try {
