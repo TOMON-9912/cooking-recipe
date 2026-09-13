@@ -13,7 +13,7 @@ S3 との違いは、署名 URL の発行に **呼び出し元セッションの
 ## 採用する設計：非公開バケット + 署名 URL
 
 ```
-DB に保存するもの: {userId}/{uuid}.webp   ← パス
+DB に保存するもの: {userId}/{uuid}.{ext}   ← パス
 表示時に生成:       createSignedUrl(path, 3600)   ← 1 時間有効
 ```
 
@@ -26,7 +26,7 @@ DB に保存するもの: {userId}/{uuid}.webp   ← パス
 
 ## RLS
 
-パスの先頭フォルダが作者の `auth.uid()` になる（`{authorId}/{uuid}.webp`）。
+パスの先頭フォルダが作者の `auth.uid()` になる（`{authorId}/{uuid}.{ext}`）。
 
 | 操作 | 誰ができるか |
 |------|----------------|
@@ -37,17 +37,9 @@ DB に保存するもの: {userId}/{uuid}.webp   ← パス
 
 ---
 
-## 保存前リサイズ
+## 保存形式
 
-容量を抑えるため、保存前にサーバー側で変換する。
-
-| 項目 | 値 |
-|------|-----|
-| 長辺 | 1200px（小さい画像は拡大しない） |
-| 形式 | WebP（quality 80） |
-| 向き | EXIF に従って回転 |
-
-配信時の Image Transformation は元ファイルを残すため、容量削減には使わない。
+圧縮や形式変換はしない。JPEG / PNG / WebP / GIF を 15MB まで、選んだファイルのまま保存する。
 
 ---
 
@@ -55,9 +47,7 @@ DB に保存するもの: {userId}/{uuid}.webp   ← パス
 
 | 役割 | ファイル |
 |------|-----------|
-| 変換契約 | `src/domain/repositories/recipe/recipe-thumbnail-image-processor.ts` |
 | 保存契約 | `src/domain/repositories/recipe/recipe-thumbnail-storage.ts` |
-| sharp 実装 | `src/infrastructure/image/recipe-thumbnail-image-processor-impl.ts` |
 | Storage 実装 | `src/infrastructure/storage/recipe-thumbnail-storage-impl.ts` |
 | 署名 URL | `src/lib/get-signed-image-url.ts` |
 | ルール | `src/usecase/recipe/upload-recipe-thumbnail-usecase.ts` |
