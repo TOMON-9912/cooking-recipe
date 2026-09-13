@@ -22,7 +22,7 @@ describe("createRecipeUsecase", () => {
       },
     ],
     instructions: [{ stepNumber: 1, description: "切る" }],
-    categories: [{ id: "cat-1", name: "主菜", slug: "main" }],
+    categories: [{ id: "cat-1" }],
     authorId: "user-1",
     createdAt: new Date("2024-01-01T00:00:00Z"),
     updatedAt: new Date("2024-01-02T00:00:00Z"),
@@ -47,6 +47,23 @@ describe("createRecipeUsecase", () => {
       input.categories,
     );
     expect(result.id).toBe("recipe-1");
+  });
+
+  it("料理名は前後の空白を落として保存する", async () => {
+    const deps = createRecipeDepsForTest();
+
+    await createRecipeUsecase({ ...input, title: "  肉じゃが  " }, deps);
+
+    expect(vi.mocked(deps.createRecipe).mock.calls[0][0].title).toBe("肉じゃが");
+  });
+
+  it("調理時間が 0 なら RECIPE_PREPARATION_TIME_INVALID", async () => {
+    const deps = createRecipeDepsForTest();
+
+    await expect(
+      createRecipeUsecase({ ...input, preparationTimeMinutes: 0 }, deps),
+    ).rejects.toThrow("RECIPE_PREPARATION_TIME_INVALID");
+    expect(deps.createRecipe).not.toHaveBeenCalled();
   });
 
   it("createRecipe が失敗したら例外をそのまま throw する", async () => {

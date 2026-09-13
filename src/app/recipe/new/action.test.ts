@@ -1,9 +1,14 @@
 // npm run test:run -- src/app/recipe/new/action.test.ts
 // npm run test:coverage -- --coverage.include='src/app/recipe/new/action.ts' src/app/recipe/new/action.test.ts
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { revalidatePath } from "next/cache";
 import { createRecipeAction } from "./action";
 import { createAuthedClient } from "@/lib/supabase/server";
 import { createRecipeUsecase } from "@/usecase/recipe/create-recipe-usecase";
+
+vi.mock("next/cache", () => ({
+  revalidatePath: vi.fn(),
+}));
 
 vi.mock("@/lib/supabase/server", () => ({
   createAuthedClient: vi.fn(),
@@ -33,7 +38,7 @@ describe("createRecipeAction", () => {
     title: "カレー",
     description: "美味しい",
     servingCount: 2,
-    preparationTimeMinutes: 0,
+    preparationTimeMinutes: 30,
     isDraft: false,
     categoryIds: ["cat-1"],
     ingredients: [
@@ -76,7 +81,7 @@ describe("createRecipeAction", () => {
     expect(createRecipeUsecase).toHaveBeenCalledOnce();
   });
 
-  it("preparationTimeMinutes が 0 のとき 1 に補正する", async () => {
+  it("調理時間は補正せずそのまま渡す", async () => {
     vi.mocked(createRecipeUsecase).mockImplementation(async (input) => ({
       id: input.id,
       title: input.title,
@@ -92,10 +97,10 @@ describe("createRecipeAction", () => {
       updatedAt: input.updatedAt,
     }));
 
-    await createRecipeAction(formData);
+    await createRecipeAction({ ...formData, preparationTimeMinutes: 0 });
 
     const input = vi.mocked(createRecipeUsecase).mock.calls[0][0];
-    expect(input.preparationTimeMinutes).toBe(1);
+    expect(input.preparationTimeMinutes).toBe(0);
     expect(input.ingredients[0].quantityValue).toBeUndefined();
     expect(input.ingredients[1].quantityValue).toBe(2);
   });
@@ -135,15 +140,55 @@ describe("createRecipeAction", () => {
     expect(input.ingredients[0].order).toBe(0);
   });
 
-  it("失敗時はエラーメッセージを返す", async () => {
+  it("成功時は一覧のキャッシュを更新する", async () => {
+    vi.mocked(createRecipeUsecase).mockResolvedValue({
+      id: "recipe-1",
+      title: "カレー",
+      description: "美味しい",
+      servingCount: 2,
+      preparationTimeMinutes: 30,
+      isDraft: false,
+      ingredients: [],
+      instructions: [],
+      categories: [],
+      authorId: "user-1",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+
+    await createRecipeAction(formData);
+
+    expect(revalidatePath).toHaveBeenCalledWith("/top");
+  });
+
+  it("料理名必須エラーは表示用メッセージにする", async () => {
+    vi.mocked(createRecipeUsecase).mockRejectedValue(
+      new Error("RECIPE_TITLE_REQUIRED"),
+    );
+
+    const result = await createRecipeAction(formData);
+
+    expect(result).toEqual({
+      success: false,
+      error: "料理名を入力してください",
+    });
+  });
+
+  it("未知のエラーは DB のメッセージを出さない", async () => {
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
     vi.mocked(createRecipeUsecase).mockRejectedValue(new Error("save failed"));
 
     const result = await createRecipeAction(formData);
 
-    expect(result).toEqual({ success: false, error: "save failed" });
+    expect(result).toEqual({
+      success: false,
+      error: "レシピの登録に失敗しました",
+    });
+    consoleError.mockRestore();
   });
 
   it("Error 以外の throw は汎用メッセージ", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
     vi.mocked(createRecipeUsecase).mockRejectedValue("unexpected");
 
     const result = await createRecipeAction(formData);

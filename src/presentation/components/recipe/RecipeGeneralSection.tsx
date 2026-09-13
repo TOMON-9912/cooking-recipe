@@ -84,7 +84,9 @@ export function RecipeGeneralSection({
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                         <div className="space-y-2">
-                            <Label htmlFor="minutes">調理時間（分）</Label>
+                            <Label htmlFor="minutes">
+                                調理時間（分） <span className="text-destructive">*</span>
+                            </Label>
                             <Input
                                 id="minutes"
                                 type="number"
@@ -92,6 +94,7 @@ export function RecipeGeneralSection({
                                 value={minutes}
                                 onChange={(e) => setMinutes(e.target.value === "" ? "" : Number(e.target.value))}
                                 min={1}
+                                required
                                 placeholder="例: 30"
                             />
                         </div>

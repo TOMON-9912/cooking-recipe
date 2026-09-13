@@ -19,9 +19,7 @@ describe("category-repository-impl", () => {
       user: { id: "user-1" } as never,
     });
 
-    await saveCategories("recipe-1", [
-      { id: "cat-1", name: "主菜", slug: "main" },
-    ]);
+    await saveCategories("recipe-1", [{ id: "cat-1" }]);
 
     expect(builder.delete).toHaveBeenCalled();
     expect(builder.insert).toHaveBeenCalledWith([
