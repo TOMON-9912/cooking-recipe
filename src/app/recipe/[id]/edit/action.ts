@@ -1,14 +1,21 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import type { UpdateRecipeResult } from "@/domain/repositories/recipe/recipe-repository";
 import { ERROR_MESSAGES } from "@/constants/error-messages";
-import { updateRecipe } from "@/infrastructure/repositories/recipe/recipe-repository-impl";
-import { saveIngredients } from "@/infrastructure/repositories/recipe/ingredient-repository-impl";
-import { saveInstructions } from "@/infrastructure/repositories/recipe/instruction-repository-impl";
-import { saveCategories } from "@/infrastructure/repositories/recipe/category-repository-impl";
+import { updateRecipeWithRelations } from "@/infrastructure/repositories/recipe/recipe-repository-impl";
 import { getRecipeById } from "@/infrastructure/repositories/recipe/recipe-read-repository-impl";
+import { removeRecipeThumbnail } from "@/infrastructure/storage/recipe-thumbnail-storage-impl";
 import { updateRecipeUsecase } from "@/usecase/recipe/update-recipe-usecase";
 import { createAuthedClient } from "@/lib/supabase/server";
+import { toRecipeErrorMessage } from "@/app/recipe/recipe-action-error";
+import {
+  toCategoryInputs,
+  toIngredientInputs,
+  toInstructionInputs,
+  type IngredientFormData,
+  type InstructionFormData,
+} from "@/app/recipe/recipe-form-mapping";
 
 /** 編集フォームから送るデータ */
 export type UpdateRecipeFormData = {
@@ -21,42 +28,9 @@ export type UpdateRecipeFormData = {
   /** 新しいパス、既存パス、または削除時は null */
   thumbnailPath?: string | null;
   categoryIds: string[];
-  ingredients: Array<{
-    name: string;
-    quantity: string;
-    unit: string;
-    note?: string;
-    order: number;
-  }>;
-  instructions: Array<{
-    stepNumber: number;
-    description: string;
-  }>;
+  ingredients: IngredientFormData[];
+  instructions: InstructionFormData[];
 };
-
-/**
- * レシピ更新のエラーを表示用メッセージにする。
- *
- * @param error 捕捉したエラー
- * @returns 表示用メッセージ
- */
-function mapUpdateRecipeError(error: unknown): string {
-  if (error instanceof Error) {
-    switch (error.message) {
-      case "RECIPE_TITLE_REQUIRED":
-        return ERROR_MESSAGES.RECIPE_TITLE_REQUIRED;
-      case "RECIPE_UPDATE_FORBIDDEN":
-        return ERROR_MESSAGES.RECIPE_UPDATE_FORBIDDEN;
-      case "RECIPE_NOT_FOUND":
-        return ERROR_MESSAGES.RECIPE_NOT_FOUND;
-      case "UNAUTHORIZED":
-        return ERROR_MESSAGES.SESSION_NOT_FOUND;
-      default:
-        return error.message;
-    }
-  }
-  return ERROR_MESSAGES.RECIPE_UPDATE_FAILED;
-}
 
 /**
  * レシピを更新する。
@@ -78,39 +52,27 @@ export async function updateRecipeAction(
         description: formData.description,
         thumbnailPath: formData.thumbnailPath,
         servingCount: formData.servingCount,
-        preparationTimeMinutes: formData.preparationTimeMinutes || 1,
+        preparationTimeMinutes: formData.preparationTimeMinutes,
         isDraft: formData.isDraft,
-        categories: formData.categoryIds.map((id) => ({
-          id,
-          name: "",
-          slug: "",
-        })),
-        ingredients: formData.ingredients.map((ing, idx) => ({
-          name: ing.name,
-          quantityDisplay: ing.quantity,
-          quantityValue: isNaN(Number(ing.quantity))
-            ? undefined
-            : Number(ing.quantity) || undefined,
-          unit: ing.unit,
-          note: ing.note,
-          order: ing.order ?? idx,
-        })),
-        instructions: formData.instructions.map((inst) => ({
-          stepNumber: inst.stepNumber,
-          description: inst.description,
-        })),
+        categories: toCategoryInputs(formData.categoryIds),
+        ingredients: toIngredientInputs(formData.ingredients),
+        instructions: toInstructionInputs(formData.instructions),
       },
       {
         getRecipeById,
-        updateRecipe,
-        saveIngredients,
-        saveInstructions,
-        saveCategories,
+        updateRecipeWithRelations,
+        removeThumbnail: removeRecipeThumbnail,
       },
     );
 
+    revalidatePath("/top");
+    revalidatePath(`/recipe/${recipe.id}`);
+
     return { success: true, recipe };
   } catch (error) {
-    return { success: false, error: mapUpdateRecipeError(error) };
+    return {
+      success: false,
+      error: toRecipeErrorMessage(error, ERROR_MESSAGES.RECIPE_UPDATE_FAILED),
+    };
   }
 }

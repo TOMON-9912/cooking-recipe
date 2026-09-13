@@ -16,4 +16,9 @@ export type RecipeThumbnailStorage = {
    * @returns バケット内のオブジェクトパス
    */
   put: (payload: PutRecipeThumbnailPayload) => Promise<{ path: string }>;
+  /**
+   * サムネイルを削除する
+   * @param path バケット内のオブジェクトパス
+   */
+  remove: (path: string) => Promise<void>;
 };

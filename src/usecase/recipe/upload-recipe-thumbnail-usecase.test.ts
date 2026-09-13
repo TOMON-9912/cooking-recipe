@@ -8,6 +8,7 @@ import { uploadRecipeThumbnailUsecase } from "./upload-recipe-thumbnail-usecase"
 describe("uploadRecipeThumbnailUsecase", () => {
   const storage: RecipeThumbnailStorage = {
     put: vi.fn().mockResolvedValue({ path: "user-1/abc.jpg" }),
+    remove: vi.fn().mockResolvedValue(undefined),
   };
 
   const deps = { storage };
@@ -100,6 +101,7 @@ describe("uploadRecipeThumbnailUsecase", () => {
   it("storage.put が失敗したらエラーメッセージを返す", async () => {
     const failingStorage: RecipeThumbnailStorage = {
       put: vi.fn().mockRejectedValue(new Error("upload failed")),
+      remove: vi.fn().mockResolvedValue(undefined),
     };
 
     const r = await uploadRecipeThumbnailUsecase(
@@ -117,6 +119,7 @@ describe("uploadRecipeThumbnailUsecase", () => {
   it("Error 以外を throw したら汎用メッセージを返す", async () => {
     const failingStorage: RecipeThumbnailStorage = {
       put: vi.fn().mockRejectedValue("unexpected"),
+      remove: vi.fn().mockResolvedValue(undefined),
     };
 
     const r = await uploadRecipeThumbnailUsecase(

@@ -1,17 +1,11 @@
 import type { Recipe } from "@/domain/models/recipe/recipe";
 import type {
     RecipeInput,
-    UpdateRecipePayload,
+    UpdateRecipeInput,
 } from "@/domain/repositories/recipe/recipe-repository";
 import { createAuthedClient } from "@/lib/supabase/server";
 
-/**
- * recipes 行をドメインの Recipe に変換する。
- *
- * @param data Supabase から返った行
- * @returns 関連データを空にした Recipe
- */
-const toRecipe = (data: {
+type RecipeRow = {
     id: string;
     title: string;
     description: string | null;
@@ -22,7 +16,15 @@ const toRecipe = (data: {
     author_id: string;
     created_at: string;
     updated_at: string;
-}): Recipe => ({
+};
+
+/**
+ * recipes 行をドメインの Recipe に変換する。
+ *
+ * @param data Supabase から返った行
+ * @returns 関連データを空にした Recipe
+ */
+const toRecipe = (data: RecipeRow): Recipe => ({
     id: data.id,
     title: data.title,
     description: data.description ?? "",
@@ -63,30 +65,43 @@ export const createRecipe = async (input: RecipeInput): Promise<Recipe> => {
 };
 
 /**
- * レシピ本体を更新する。材料・手順・カテゴリは含めない。
+ * レシピ本体と関連データを 1 トランザクションで更新する。
+ * 関連データは全削除してから入れ直すため、途中で失敗しても更新前の状態へ戻るよう RPC 経由にする。
  *
- * @param input 更新するレシピ行
+ * @param input 更新内容
  * @returns 更新後のレシピ（関連データは空）
  */
-export const updateRecipe = async (input: UpdateRecipePayload): Promise<Recipe> => {
+export const updateRecipeWithRelations = async (
+    input: UpdateRecipeInput,
+): Promise<Recipe> => {
     const { supabase } = await createAuthedClient();
 
-    const { data, error } = await supabase
-        .from("recipes")
-        .update({
-            title: input.title,
-            description: input.description,
-            thumbnail_url: input.thumbnailPath ?? null,
-            serving_count: input.servingCount,
-            preparation_time_minutes: input.preparationTimeMinutes,
-            is_draft: input.isDraft,
-        })
-        .eq("id", input.id)
-        .select()
-        .single();
+    const { data, error } = await supabase.rpc("update_recipe_with_relations", {
+        p_recipe_id: input.id,
+        p_title: input.title,
+        p_description: input.description,
+        p_thumbnail_url: input.thumbnailPath ?? null,
+        p_serving_count: input.servingCount,
+        p_preparation_time_minutes: input.preparationTimeMinutes,
+        p_is_draft: input.isDraft,
+        p_ingredients: input.ingredients.map((item) => ({
+            name: item.name,
+            quantity_display: item.quantityDisplay,
+            quantity_value: item.quantityValue ?? null,
+            unit: item.unit,
+            note: item.note ?? null,
+            order_position: item.order + 1,
+        })),
+        p_instructions: input.instructions.map((item) => ({
+            step_number: item.stepNumber,
+            description: item.description,
+            image_url: item.imageUrl ?? null,
+        })),
+        p_category_ids: input.categories.map((category) => category.id),
+    });
 
     if (error) throw error;
     if (!data) throw new Error("UPDATE_FAILED");
 
-    return toRecipe(data);
+    return toRecipe(data as RecipeRow);
 };

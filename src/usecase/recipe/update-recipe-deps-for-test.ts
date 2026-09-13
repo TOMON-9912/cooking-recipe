@@ -16,7 +16,7 @@ export function createUpdateRecipeDepsForTest(
     title: "test",
     description: "",
     servingCount: 1,
-    preparationTimeMinutes: 0,
+    preparationTimeMinutes: 1,
     isDraft: false,
     ingredients: [],
     instructions: [],
@@ -28,10 +28,8 @@ export function createUpdateRecipeDepsForTest(
 
   return {
     getRecipeById: vi.fn().mockResolvedValue(mockRecipe),
-    updateRecipe: vi.fn().mockResolvedValue(mockRecipe),
-    saveIngredients: vi.fn().mockResolvedValue(undefined),
-    saveInstructions: vi.fn().mockResolvedValue(undefined),
-    saveCategories: vi.fn().mockResolvedValue(undefined),
+    updateRecipeWithRelations: vi.fn().mockResolvedValue(mockRecipe),
+    removeThumbnail: vi.fn().mockResolvedValue(undefined),
     ...overrides,
   };
 }

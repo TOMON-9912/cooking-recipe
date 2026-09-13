@@ -31,8 +31,11 @@ export type CreateRecipeResult =
     | { success: true; recipe: Recipe }
     | { success: false; error: string };
 
-/** レシピ行の更新内容。材料・手順・カテゴリは save 側で置き換える */
-export type UpdateRecipePayload = {
+/**
+ * レシピ本体と関連データの更新内容。
+ * 材料・手順・カテゴリは差分ではなく渡した内容で置き換える。
+ */
+export type UpdateRecipeInput = {
     id: string;
     title: string;
     description: string;
@@ -41,6 +44,9 @@ export type UpdateRecipePayload = {
     servingCount: number;
     preparationTimeMinutes: number;
     isDraft: boolean;
+    ingredients: IngredientInput[];
+    instructions: InstructionInput[];
+    categories: CategoryInput[];
 };
 
 /** レシピ更新の結果 */
