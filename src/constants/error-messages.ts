@@ -45,4 +45,10 @@ export const ERROR_MESSAGES = {
     INVALID_AVATAR_ICON: 'アイコンを選択してください',
     PROFILE_ALREADY_EXISTS: 'プロフィールは既に作成されています',
     PROFILE_CREATE_FAILED: 'プロフィールの作成に失敗しました',
+
+    // レシピ
+    RECIPE_TITLE_REQUIRED: '料理名を入力してください',
+    RECIPE_UPDATE_FORBIDDEN: 'このレシピを編集する権限がありません',
+    RECIPE_UPDATE_FAILED: 'レシピの更新に失敗しました',
+    RECIPE_NOT_FOUND: 'レシピが見つかりません',
 } as const;
