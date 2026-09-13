@@ -1,5 +1,5 @@
 /** レシピサムネイル 1 ファイルあたりの上限（バイト） */
-export const RECIPE_THUMBNAIL_MAX_BYTES = 5 * 1024 * 1024;
+export const RECIPE_THUMBNAIL_MAX_BYTES = 15 * 1024 * 1024;
 
 /** 許可する Content-Type（サーバー側で再検証する） */
 export const RECIPE_THUMBNAIL_ALLOWED_CONTENT_TYPES = [
@@ -12,12 +12,41 @@ export const RECIPE_THUMBNAIL_ALLOWED_CONTENT_TYPES = [
 export type RecipeThumbnailAllowedContentType =
   (typeof RECIPE_THUMBNAIL_ALLOWED_CONTENT_TYPES)[number];
 
+/** file input の accept 属性 */
+export const RECIPE_THUMBNAIL_FILE_ACCEPT =
+  RECIPE_THUMBNAIL_ALLOWED_CONTENT_TYPES.join(",");
+
+const RECIPE_THUMBNAIL_EXTENSION_BY_CONTENT_TYPE = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+  "image/gif": "gif",
+} as const;
+
+/**
+ * 許可された Content-Type かどうか。
+ *
+ * @param contentType 検証する Content-Type
+ * @returns 許可されているとき true
+ */
 export function isAllowedRecipeThumbnailContentType(
   contentType: string,
 ): contentType is RecipeThumbnailAllowedContentType {
   return (RECIPE_THUMBNAIL_ALLOWED_CONTENT_TYPES as readonly string[]).includes(
     contentType,
   );
+}
+
+/**
+ * Content-Type から保存時の拡張子を返す。
+ *
+ * @param contentType 許可済みの Content-Type
+ * @returns 拡張子（ドットなし）
+ */
+export function getRecipeThumbnailExtension(
+  contentType: RecipeThumbnailAllowedContentType,
+): string {
+  return RECIPE_THUMBNAIL_EXTENSION_BY_CONTENT_TYPE[contentType];
 }
 
 /** 同一ユーザーあたり、ウィンドウ内で許可するアップロード試行回数 */
@@ -28,15 +57,3 @@ export const RECIPE_THUMBNAIL_UPLOAD_WINDOW_MS = 15 * 60 * 1000;
 
 /** Supabase Storage のレシピ画像バケット名 */
 export const RECIPE_THUMBNAIL_BUCKET = "recipe-images";
-
-/** 保存時に収める長辺の上限（px）。これより大きい辺だけ縮小する */
-export const RECIPE_THUMBNAIL_MAX_EDGE_PX = 1200;
-
-/** WebP 変換の品質（0–100） */
-export const RECIPE_THUMBNAIL_WEBP_QUALITY = 80;
-
-/** 保存後の Content-Type。入力形式に関わらず WebP に揃える */
-export const RECIPE_THUMBNAIL_STORED_CONTENT_TYPE = "image/webp";
-
-/** 保存後の拡張子 */
-export const RECIPE_THUMBNAIL_STORED_EXTENSION = "webp";

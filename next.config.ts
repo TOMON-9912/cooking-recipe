@@ -1,11 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  serverExternalPackages: ["sharp"],
   experimental: {
     serverActions: {
-      /** サムネイルを Server Action の FormData で受け取るため */
-      bodySizeLimit: "6mb",
+      /** 入力上限 15MB + FormData 余白 */
+      bodySizeLimit: "16mb",
     },
   },
 };

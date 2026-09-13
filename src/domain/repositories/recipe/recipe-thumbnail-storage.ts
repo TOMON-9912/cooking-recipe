@@ -11,7 +11,7 @@ export type PutRecipeThumbnailPayload = {
 
 export type RecipeThumbnailStorage = {
   /**
-   * 変換済みのサムネイルを保存する
+   * サムネイルを保存する
    * @param payload 作者 ID と保存用のバイト列
    * @returns バケット内のオブジェクトパス
    */

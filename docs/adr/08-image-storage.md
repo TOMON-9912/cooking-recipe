@@ -1,5 +1,7 @@
 # ADR 008: レシピ画像の保存先
 
+> **更新（2026-09-13）:** 保存前のリサイズ / WebP 変換は廃止した。上限は 15MB。選んだファイルを原寸のまま保存する。保存先は Supabase Storage（非公開 + 署名 URL）のまま。
+
 ## 背景
 
 レシピのサムネイルは当初 **AWS S3（非公開バケット + プレサイン URL）** に保存していた。
@@ -128,8 +130,8 @@ Pro プランの Image Transformation は**配信時**にサイズを変える�
 |------|------|
 | **保存先** | Supabase Storage バケット `recipe-images`（非公開） |
 | **AWS** | S3 実装・SDK・環境変数を削除する。既存オブジェクトは移行しない |
-| **パス** | `{authorId}/{uuid}.webp`（INSERT RLS の `{userId}/` プレフィックスと一致させる） |
-| **変換** | サーバー側 sharp。EXIF 回転、長辺 1200px、WebP quality 80 |
+| **パス** | `{authorId}/{uuid}.{ext}`（INSERT RLS の `{userId}/` プレフィックスと一致させる） |
+| **変換** | しない。15MB までの原寸をそのまま保存する |
 | **表示** | `createSignedUrl`（1 時間）。失敗時は `undefined`（ページ全体は落とさない） |
 | **閲覧 RLS** | 本人、または `is_same_family(フォルダ名の uuid)` |
 | **既存データ** | `recipes.thumbnail_url` を NULL 化する |
@@ -154,6 +156,6 @@ Pro プランの Image Transformation は**配信時**にサイズを変える�
 
 | 項目 | 値 |
 |------|-----|
-| **状態** | **案 A 採用・実装中** |
+| **状態** | **案 A 採用。変換処理は後に廃止** |
 | **ブランチ** | `feature/supabase-storage-thumbnail` |
 | **次のアクション** | マイグレーション適用、AWS コンソール上の旧バケット削除（手動） |

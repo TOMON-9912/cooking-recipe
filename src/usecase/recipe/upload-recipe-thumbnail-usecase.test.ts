@@ -2,31 +2,19 @@
 // npm run test:coverage -- --coverage.include='src/usecase/recipe/upload-recipe-thumbnail-usecase.ts' src/usecase/recipe/upload-recipe-thumbnail-usecase.test.ts
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { RECIPE_THUMBNAIL_MAX_BYTES } from "@/constants/recipe-thumbnail-upload";
-import type { RecipeThumbnailImageProcessor } from "@/domain/repositories/recipe/recipe-thumbnail-image-processor";
 import type { RecipeThumbnailStorage } from "@/domain/repositories/recipe/recipe-thumbnail-storage";
 import { uploadRecipeThumbnailUsecase } from "./upload-recipe-thumbnail-usecase";
 
 describe("uploadRecipeThumbnailUsecase", () => {
-  const processed = {
-    body: new Uint8Array([9, 8, 7]),
-    contentType: "image/webp",
-    extension: "webp",
-  };
-
   const storage: RecipeThumbnailStorage = {
-    put: vi.fn().mockResolvedValue({ path: "user-1/abc.webp" }),
+    put: vi.fn().mockResolvedValue({ path: "user-1/abc.jpg" }),
   };
 
-  const imageProcessor: RecipeThumbnailImageProcessor = {
-    toStorable: vi.fn().mockResolvedValue(processed),
-  };
-
-  const deps = { storage, imageProcessor };
+  const deps = { storage };
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(storage.put).mockResolvedValue({ path: "user-1/abc.webp" });
-    vi.mocked(imageProcessor.toStorable).mockResolvedValue(processed);
+    vi.mocked(storage.put).mockResolvedValue({ path: "user-1/abc.jpg" });
   });
 
   it("空ボディは拒否する", async () => {
@@ -39,7 +27,6 @@ describe("uploadRecipeThumbnailUsecase", () => {
       deps,
     );
     expect(r).toEqual({ success: false, error: "画像ファイルが空です" });
-    expect(imageProcessor.toStorable).not.toHaveBeenCalled();
     expect(storage.put).not.toHaveBeenCalled();
   });
 
@@ -54,7 +41,6 @@ describe("uploadRecipeThumbnailUsecase", () => {
     );
     expect(r.success).toBe(false);
     expect(r.success === false && r.error).toContain("MB");
-    expect(imageProcessor.toStorable).not.toHaveBeenCalled();
     expect(storage.put).not.toHaveBeenCalled();
   });
 
@@ -71,11 +57,10 @@ describe("uploadRecipeThumbnailUsecase", () => {
       success: false,
       error: "対応していない画像形式です（JPEG / PNG / WebP / GIF のみ）",
     });
-    expect(imageProcessor.toStorable).not.toHaveBeenCalled();
     expect(storage.put).not.toHaveBeenCalled();
   });
 
-  it("検証を通すと変換してから storage.put が呼ばれる", async () => {
+  it("検証を通すと元のバイト列を storage.put に渡す", async () => {
     const body = new Uint8Array([1, 2, 3]);
     const r = await uploadRecipeThumbnailUsecase(
       {
@@ -85,32 +70,31 @@ describe("uploadRecipeThumbnailUsecase", () => {
       },
       deps,
     );
-    expect(r).toEqual({ success: true, path: "user-1/abc.webp" });
-    expect(imageProcessor.toStorable).toHaveBeenCalledWith(body);
+    expect(r).toEqual({ success: true, path: "user-1/abc.jpg" });
     expect(storage.put).toHaveBeenCalledWith({
       authorId: "u1",
-      body: processed.body,
-      contentType: "image/webp",
-      extension: "webp",
+      body,
+      contentType: "image/png",
+      extension: "png",
     });
   });
 
-  it("imageProcessor が失敗したらエラーメッセージを返す", async () => {
-    const failingProcessor: RecipeThumbnailImageProcessor = {
-      toStorable: vi.fn().mockRejectedValue(new Error("decode failed")),
-    };
-
-    const r = await uploadRecipeThumbnailUsecase(
+  it("JPEG は拡張子 jpg で保存する", async () => {
+    const body = new Uint8Array([1, 2, 3]);
+    await uploadRecipeThumbnailUsecase(
       {
         authorId: "u1",
-        body: new Uint8Array([1, 2, 3]),
+        body,
         contentType: "image/jpeg",
       },
-      { storage, imageProcessor: failingProcessor },
+      deps,
     );
-
-    expect(r).toEqual({ success: false, error: "decode failed" });
-    expect(storage.put).not.toHaveBeenCalled();
+    expect(storage.put).toHaveBeenCalledWith({
+      authorId: "u1",
+      body,
+      contentType: "image/jpeg",
+      extension: "jpg",
+    });
   });
 
   it("storage.put が失敗したらエラーメッセージを返す", async () => {
@@ -124,7 +108,7 @@ describe("uploadRecipeThumbnailUsecase", () => {
         body: new Uint8Array([1, 2, 3]),
         contentType: "image/jpeg",
       },
-      { storage: failingStorage, imageProcessor },
+      { storage: failingStorage },
     );
 
     expect(r).toEqual({ success: false, error: "upload failed" });
@@ -141,7 +125,7 @@ describe("uploadRecipeThumbnailUsecase", () => {
         body: new Uint8Array([1, 2, 3]),
         contentType: "image/jpeg",
       },
-      { storage: failingStorage, imageProcessor },
+      { storage: failingStorage },
     );
 
     expect(r).toEqual({ success: false, error: "画像の保存に失敗しました" });

@@ -5,6 +5,6 @@
 | ファイル | 内容 |
 |----------|------|
 | [clean-architecture-and-directory.md](./clean-architecture-and-directory.md) | クリーンアーキテクチャの考え方、ディレクトリ構成、**何をどこで呼ぶか**の図と表。**CRUD サンプルケース**（参照・作成・更新・削除の呼び出しフロー）も掲載。 |
-| [supabase-storage-image-security.md](./supabase-storage-image-security.md) | レシピ画像のセキュリティ設計。非公開バケット + 署名 URL + Storage RLS（本人 / 同じ家族）と、保存前リサイズの方針。 |
+| [supabase-storage-image-security.md](./supabase-storage-image-security.md) | レシピ画像のセキュリティ設計。非公開バケット + 署名 URL + Storage RLS（本人 / 同じ家族）。 |
 
 新しいメンバーや自分が久しぶりに触るときは、上記から読むと「どの層が何に依存してよいか」「処理の流れ」を把握しやすい。
