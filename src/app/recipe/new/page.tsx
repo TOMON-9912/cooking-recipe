@@ -1,4 +1,4 @@
-import { RecipeCreateForm } from "@/presentation/components/recipe/RecipeCreateForm";
+import { RecipeForm } from "@/presentation/components/recipe/RecipeForm";
 
 export default function Page() {
     return (
@@ -8,7 +8,7 @@ export default function Page() {
                 <p className="text-sm text-gray-600">家族で共有・継承できるレシピを作成します</p>
             </div>
             <div className="w-full max-w-3xl mx-auto px-4 pb-12">
-                <RecipeCreateForm />
+                <RecipeForm />
             </div>
         </div>
     );

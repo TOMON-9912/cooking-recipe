@@ -27,8 +27,19 @@ type Props = {
  * @param recipe 編集時の初期値。無いときは新規作成
  * @param thumbnailUrl 編集時の既存画像 URL
  */
-export function RecipeCreateForm({ recipe, thumbnailUrl }: Props) {
+export function RecipeForm({ recipe, thumbnailUrl }: Props) {
     const isEdit = recipe != null;
+    // 編集では「保存 = 公開」になるため、下書きかどうかで文言を変える
+    const submitLabel = !isEdit
+        ? "レシピを登録"
+        : recipe.isDraft
+          ? "公開して保存"
+          : "変更を保存";
+    const draftLabel = !isEdit
+        ? "下書き保存"
+        : recipe.isDraft
+          ? "下書きのまま保存"
+          : "下書きに戻す";
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
     const [error, setError] = useState<string | null>(null);
@@ -165,8 +176,8 @@ export function RecipeCreateForm({ recipe, thumbnailUrl }: Props) {
         title,
         description: comment,
         thumbnailPath,
-        servingCount: Number(servingCount) || 1,
-        preparationTimeMinutes: Number(minutes) || 0,
+        servingCount: Number(servingCount),
+        preparationTimeMinutes: Number(minutes),
         isDraft,
         categoryIds: selectedCategories,
         ingredients: ingredients.map((ing, idx) => ({
@@ -282,7 +293,7 @@ export function RecipeCreateForm({ recipe, thumbnailUrl }: Props) {
                         disabled={isPending}
                         onClick={() => handleSubmit(true)}
                     >
-                        {isPending ? "保存中..." : "下書き保存"}
+                        {isPending ? "保存中..." : draftLabel}
                     </Button>
                     <Button
                         type="submit"
@@ -293,9 +304,7 @@ export function RecipeCreateForm({ recipe, thumbnailUrl }: Props) {
                             ? isEdit
                                 ? "保存中..."
                                 : "登録中..."
-                            : isEdit
-                              ? "変更を保存"
-                              : "レシピを登録"}
+                            : submitLabel}
                     </Button>
                 </section>
                 </CardContent>

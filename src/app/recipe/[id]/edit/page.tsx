@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { RecipeCreateForm } from "@/presentation/components/recipe/RecipeCreateForm";
+import { RecipeForm } from "@/presentation/components/recipe/RecipeForm";
 import { getRecipeById } from "@/infrastructure/repositories/recipe/recipe-read-repository-impl";
 import { getRecipeDetailUsecase } from "@/usecase/recipe/get-recipe-detail-usecase";
 import { getSignedImageUrl } from "@/lib/get-signed-image-url";
@@ -38,7 +38,7 @@ export default async function RecipeEditPage({ params }: Props) {
         <p className="text-sm text-gray-600">内容を直して、家族のレシピ帳に残します</p>
       </div>
       <div className="w-full max-w-3xl mx-auto px-4 pb-12">
-        <RecipeCreateForm recipe={recipe} thumbnailUrl={thumbnailUrl} />
+        <RecipeForm recipe={recipe} thumbnailUrl={thumbnailUrl} />
       </div>
     </div>
   );
