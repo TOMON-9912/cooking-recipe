@@ -20,7 +20,7 @@ export type CreateRecipeFormData = {
   servingCount: number;
   preparationTimeMinutes: number;
   isDraft: boolean;
-  /** Storage にアップロード済みの画像パス（例: user-id/uuid.webp）。未選択の場合は undefined */
+  /** Storage にアップロード済みの画像パス（例: user-id/uuid.jpg）。未選択の場合は undefined */
   thumbnailPath?: string;
   categoryIds: string[];
   ingredients: Array<{

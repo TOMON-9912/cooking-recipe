@@ -4,7 +4,7 @@
  * サムネイル保存の入口。全体の読み方:
  * @see src/app/recipe/new/レシピ新規と画像.md
  *
- * 処理の流れ: 認証・レート制限・監査 → usecase（ルール・リサイズ）→ infrastructure（Storage Put）
+ * 処理の流れ: 認証・レート制限・監査 → usecase（ルール）→ infrastructure（Storage Put）
  */
 
 import { createAuthedClient } from "@/lib/supabase/server";
@@ -12,7 +12,6 @@ import {
   assertRecipeThumbnailUploadRateLimit,
   logRecipeThumbnailUploadAudit,
 } from "@/lib/recipe-thumbnail-upload-controls";
-import { recipeThumbnailImageProcessorImpl } from "@/infrastructure/image/recipe-thumbnail-image-processor-impl";
 import { recipeThumbnailStorageImpl } from "@/infrastructure/storage/recipe-thumbnail-storage-impl";
 import { uploadRecipeThumbnailUsecase } from "@/usecase/recipe/upload-recipe-thumbnail-usecase";
 
@@ -97,7 +96,6 @@ export async function uploadRecipeThumbnailAction(
     },
     {
       storage: recipeThumbnailStorageImpl,
-      imageProcessor: recipeThumbnailImageProcessorImpl,
     },
   );
 

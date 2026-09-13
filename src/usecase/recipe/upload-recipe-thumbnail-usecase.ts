@@ -1,8 +1,8 @@
 import {
+  getRecipeThumbnailExtension,
   isAllowedRecipeThumbnailContentType,
   RECIPE_THUMBNAIL_MAX_BYTES,
 } from "@/constants/recipe-thumbnail-upload";
-import type { RecipeThumbnailImageProcessor } from "@/domain/repositories/recipe/recipe-thumbnail-image-processor";
 import type { RecipeThumbnailStorage } from "@/domain/repositories/recipe/recipe-thumbnail-storage";
 
 export type UploadRecipeThumbnailInput = {
@@ -13,7 +13,6 @@ export type UploadRecipeThumbnailInput = {
 
 export type UploadRecipeThumbnailDeps = {
   storage: RecipeThumbnailStorage;
-  imageProcessor: RecipeThumbnailImageProcessor;
 };
 
 export type UploadRecipeThumbnailResult =
@@ -21,10 +20,11 @@ export type UploadRecipeThumbnailResult =
   | { success: false; error: string };
 
 /**
- * レシピサムネイルのアップロード（バリデーション → リサイズ → ストレージへ委譲）。
+ * レシピサムネイルのアップロード（バリデーション → ストレージへ委譲）。
+ * 圧縮や形式変換はせず、検証を通ったバイト列をそのまま保存する。
  *
  * @param input 作者 ID と画像バイト列
- * @param deps 変換と保存の実装
+ * @param deps 保存の実装
  * @returns 成功時は保存パス、失敗時はエラーメッセージ
  */
 export const uploadRecipeThumbnailUsecase = async (
@@ -50,12 +50,11 @@ export const uploadRecipeThumbnailUsecase = async (
   }
 
   try {
-    const processed = await deps.imageProcessor.toStorable(input.body);
     const { path } = await deps.storage.put({
       authorId: input.authorId,
-      body: processed.body,
-      contentType: processed.contentType,
-      extension: processed.extension,
+      body: input.body,
+      contentType: input.contentType,
+      extension: getRecipeThumbnailExtension(input.contentType),
     });
     return { success: true, path };
   } catch (e) {

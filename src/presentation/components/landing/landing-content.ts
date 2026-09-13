@@ -58,7 +58,7 @@ export const LANDING_RECIPE_FIELDS = [
   "材料を「名前・分量・単位」の行単位で",
   "手順を番号つきで、必要なだけ",
   "カテゴリを複数選択",
-  "サムネイル写真1枚（JPEG/PNG/WebP・5MBまで）",
+  "サムネイル写真1枚（JPEG/PNG/WebP・15MBまで）",
 ];
 
 /** 探すための機能 */

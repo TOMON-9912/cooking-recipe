@@ -6,9 +6,9 @@ import { RECIPE_THUMBNAIL_BUCKET } from "@/constants/recipe-thumbnail-upload";
 import { createAuthedClient } from "@/lib/supabase/server";
 
 /**
- * 変換済みサムネイルを Supabase Storage に保存する
+ * サムネイルを Supabase Storage に原寸のまま保存する
  * @param payload 作者 ID と保存用のバイト列
- * @returns バケット内のオブジェクトパス（{authorId}/{uuid}.webp）
+ * @returns バケット内のオブジェクトパス（{authorId}/{uuid}.{ext}）
  */
 export const putRecipeThumbnail = async (
   payload: PutRecipeThumbnailPayload,

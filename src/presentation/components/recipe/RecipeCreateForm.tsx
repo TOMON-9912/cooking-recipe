@@ -11,6 +11,7 @@ import { RecipeIngredientsSection } from "./RecipeIngredientsSection";
 import { RecipeInstructionsSection } from "./RecipeInstructionsSection";
 import { createRecipeAction } from "@/app/recipe/new/action";
 import { uploadRecipeThumbnailAction } from "@/app/recipe/new/upload-recipe-thumbnail-action";
+import { RECIPE_THUMBNAIL_MAX_BYTES } from "@/constants/recipe-thumbnail-upload";
 
 export function RecipeCreateForm() {
     const router = useRouter();
@@ -37,16 +38,34 @@ export function RecipeCreateForm() {
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
+        e.target.value = "";
         if (!file) return;
+
+        setError(null);
+        if (file.size > RECIPE_THUMBNAIL_MAX_BYTES) {
+            setError(
+                `画像は ${Math.floor(RECIPE_THUMBNAIL_MAX_BYTES / (1024 * 1024))}MB 以下にしてください`,
+            );
+            return;
+        }
+
+        setImagePreview((prev) => {
+            if (prev) {
+                URL.revokeObjectURL(prev);
+            }
+            return URL.createObjectURL(file);
+        });
         setImageFile(file);
-        const reader = new FileReader();
-        reader.onloadend = () => setImagePreview(reader.result as string);
-        reader.readAsDataURL(file);
     };
 
     const handleImageClear = () => {
+        setImagePreview((prev) => {
+            if (prev) {
+                URL.revokeObjectURL(prev);
+            }
+            return null;
+        });
         setImageFile(null);
-        setImagePreview(null);
     };
 
     const addIngredient = () => {
@@ -129,7 +148,7 @@ export function RecipeCreateForm() {
         startTransition(async () => {
             let thumbnailPath: string | undefined;
 
-            // サムネイルはサーバー Action → usecase → S3。流れは app/recipe/new/レシピ新規と画像.md
+            // サムネイルは原寸のまま送る。流れは app/recipe/new/レシピ新規と画像.md
             if (imageFile) {
                 try {
                     const fd = new FormData();
