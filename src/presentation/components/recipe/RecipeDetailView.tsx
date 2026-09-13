@@ -1,4 +1,6 @@
 import Image from "next/image";
+import Link from "next/link";
+import { Clock, Pencil, Users } from "lucide-react";
 import type { Recipe } from "@/types/recipe";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -6,16 +8,41 @@ import { Badge } from "@/components/ui/badge";
 type Props = {
   recipe: Recipe;
   thumbnailUrl?: string;
+  canEdit?: boolean;
 };
 
-export function RecipeDetailView({ recipe, thumbnailUrl }: Props) {
+/**
+ * レシピ詳細の表示。
+ *
+ * @param recipe 表示するレシピ
+ * @param thumbnailUrl 署名付き画像 URL
+ * @param canEdit 作者本人のとき編集導線を出す
+ */
+export function RecipeDetailView({ recipe, thumbnailUrl, canEdit }: Props) {
   return (
     <div className="space-y-6">
       <div className="space-y-3">
-        <h1 className="text-2xl font-bold text-gray-900">{recipe.title}</h1>
+        <div className="flex items-start justify-between gap-4">
+          <h1 className="text-2xl font-bold text-gray-900">{recipe.title}</h1>
+          {canEdit && (
+            <Link
+              href={`/recipe/${recipe.id}/edit`}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 transition-colors shrink-0"
+            >
+              <Pencil className="w-4 h-4" />
+              レシピを編集
+            </Link>
+          )}
+        </div>
         <div className="flex items-center gap-3 text-sm text-gray-500">
-          <span>🕐 {recipe.preparationTimeMinutes}分</span>
-          <span>👤 {recipe.servingCount}人前</span>
+          <span className="inline-flex items-center gap-1">
+            <Clock className="w-4 h-4" />
+            {recipe.preparationTimeMinutes}分
+          </span>
+          <span className="inline-flex items-center gap-1">
+            <Users className="w-4 h-4" />
+            {recipe.servingCount}人前
+          </span>
         </div>
         {recipe.categories.length > 0 && (
           <div className="flex flex-wrap gap-1.5">
