@@ -30,3 +30,20 @@ export type CreateRecipeInput = Omit<
 export type CreateRecipeResult =
     | { success: true; recipe: Recipe }
     | { success: false; error: string };
+
+/** レシピ行の更新内容。材料・手順・カテゴリは save 側で置き換える */
+export type UpdateRecipePayload = {
+    id: string;
+    title: string;
+    description: string;
+    /** null のときサムネイルを外す */
+    thumbnailPath?: string | null;
+    servingCount: number;
+    preparationTimeMinutes: number;
+    isDraft: boolean;
+};
+
+/** レシピ更新の結果 */
+export type UpdateRecipeResult =
+    | { success: true; recipe: Recipe }
+    | { success: false; error: string };

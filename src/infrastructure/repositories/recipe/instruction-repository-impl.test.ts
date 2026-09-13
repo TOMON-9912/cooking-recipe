@@ -12,7 +12,7 @@ vi.mock("@/lib/supabase/server", () => ({
 describe("instruction-repository-impl", () => {
   beforeEach(() => vi.clearAllMocks());
 
-  it("saveInstructions は insert を呼ぶ", async () => {
+  it("saveInstructions は削除してから insert する", async () => {
     const builder = createQueryBuilder({ data: null, error: null });
     vi.mocked(createAuthedClient).mockResolvedValue({
       supabase: { from: vi.fn().mockReturnValue(builder) } as never,
@@ -23,6 +23,7 @@ describe("instruction-repository-impl", () => {
       { stepNumber: 1, description: "切る", imageUrl: "http://img" },
     ]);
 
+    expect(builder.delete).toHaveBeenCalled();
     expect(builder.insert).toHaveBeenCalledWith([
       {
         recipe_id: "recipe-1",
