@@ -12,6 +12,7 @@ import { RecipeInstructionsSection } from "./RecipeInstructionsSection";
 import { createRecipeAction } from "@/app/recipe/new/action";
 import { updateRecipeAction } from "@/app/recipe/[id]/edit/action";
 import { uploadRecipeThumbnailAction } from "@/app/recipe/new/upload-recipe-thumbnail-action";
+import { resolveThumbnailPath } from "./recipe-thumbnail-path";
 import { RECIPE_THUMBNAIL_MAX_BYTES } from "@/constants/recipe-thumbnail-upload";
 import type { Recipe } from "@/types/recipe";
 
@@ -184,7 +185,7 @@ export function RecipeCreateForm({ recipe, thumbnailUrl }: Props) {
     const handleSubmit = (isDraft: boolean) => {
         setError(null);
         startTransition(async () => {
-            let thumbnailPath: string | null | undefined;
+            let uploadedPath: string | undefined;
 
             // サムネイルは原寸のまま送る。流れは app/recipe/new/レシピ新規と画像.md
             if (imageFile) {
@@ -195,16 +196,19 @@ export function RecipeCreateForm({ recipe, thumbnailUrl }: Props) {
                     if (!uploadResult.success) {
                         throw new Error(uploadResult.error);
                     }
-                    thumbnailPath = uploadResult.path;
+                    uploadedPath = uploadResult.path;
                 } catch (e) {
                     setError(e instanceof Error ? e.message : "画像のアップロードに失敗しました");
                     return;
                 }
-            } else if (isEdit && !imagePreview) {
-                thumbnailPath = null;
-            } else if (isEdit) {
-                thumbnailPath = recipe.thumbnailPath ?? null;
             }
+
+            const thumbnailPath = resolveThumbnailPath({
+                isEdit,
+                uploadedPath,
+                hasPreview: imagePreview != null,
+                currentPath: recipe?.thumbnailPath,
+            });
 
             const payload = buildFormData(isDraft, thumbnailPath ?? undefined);
             const result = isEdit
