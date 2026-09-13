@@ -48,7 +48,10 @@ export const ERROR_MESSAGES = {
 
     // レシピ
     RECIPE_TITLE_REQUIRED: '料理名を入力してください',
+    RECIPE_SERVING_COUNT_INVALID: '何人前かを1以上で入力してください',
+    RECIPE_PREPARATION_TIME_INVALID: '調理時間を1分以上で入力してください',
     RECIPE_UPDATE_FORBIDDEN: 'このレシピを編集する権限がありません',
     RECIPE_UPDATE_FAILED: 'レシピの更新に失敗しました',
+    RECIPE_CREATE_FAILED: 'レシピの登録に失敗しました',
     RECIPE_NOT_FOUND: 'レシピが見つかりません',
 } as const;
