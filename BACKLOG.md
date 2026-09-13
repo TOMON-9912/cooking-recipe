@@ -11,6 +11,10 @@
 - [x] ゲスト削除バッチ（pg_cron + SQL、6 時間おき）
 - [ ] 家族への招待・参加 UI（ADR 005 では DB のみ、UI は後続）
 - [ ] ゲスト向け RLS 関門（`is_permanent_user()` 等）— 家族参加実装時
+- [ ] レシピ削除
+- [ ] 手順画像の Storage 保存（作成・更新とも `image_url` は未保存のまま）
+- [ ] 家族メンバーによるレシピ編集（解禁するならアプリの認可と RLS を同時に戻す）
+  - 現状: [docs/implementation/recipe/update-recipe.md](docs/implementation/recipe/update-recipe.md)
 
 ## Bugs
 
