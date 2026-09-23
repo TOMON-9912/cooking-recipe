@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 720">
+  <defs>
+    <style type="text/css"><![CDATA[
+      text { font-family: system-ui, sans-serif; }
+      .bg { fill: #f9fafb; }
+      .zone { fill: #ffffff; stroke: #e5e7eb; stroke-width: 1.5; }
+      .zone-title { fill: #374151; font-size: 12px; font-weight: 700; }
+      .node { fill: #ecfdf5; stroke: #059669; stroke-width: 1.5; }
+      .node-pub { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+      .node-hub { fill: #059669; stroke: #047857; stroke-width: 1.5; }
+      .node-text { fill: #064e3b; font-size: 12px; font-weight: 600; }
+      .node-text-light { fill: #ffffff; font-size: 12px; font-weight: 600; }
+      .node-sub { fill: #6b7280; font-size: 10px; }
+      .arrow { stroke: #6b7280; stroke-width: 1.25; fill: none; marker-end: url(#arr); }
+      .arrow-em { stroke: #059669; stroke-width: 1.5; fill: none; marker-end: url(#arr-em); }
+      .label { fill: #6b7280; font-size: 10px; }
+      .title { fill: #111827; font-size: 17px; font-weight: 700; }
+      .subtitle { fill: #6b7280; font-size: 11px; }
+    ]]></style>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#6b7280"/>
+    </marker>
+    <marker id="arr-em" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#059669"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1100" height="720"/>
+  <text x="550" y="32" text-anchor="middle" class="title">Screen flow (from implementation)</text>
+  <text x="550" y="50" text-anchor="middle" class="subtitle">Hub after login: /top | Unauthenticated: proxy.ts -&gt; /login?redirectTo=...</text>
+
+  <rect class="zone" x="24" y="68" width="340" height="200" rx="8"/>
+  <text x="40" y="88" class="zone-title">Public (no auth)</text>
+  <rect class="node-pub" x="48" y="104" width="88" height="40" rx="6"/>
+  <text x="92" y="128" text-anchor="middle" class="node-text">/</text>
+  <rect class="node-pub" x="152" y="104" width="88" height="40" rx="6"/>
+  <text x="196" y="128" text-anchor="middle" class="node-text">/login</text>
+  <rect class="node-pub" x="256" y="104" width="88" height="40" rx="6"/>
+  <text x="300" y="128" text-anchor="middle" class="node-text">/signup</text>
+  <rect class="node-pub" x="104" y="160" width="120" height="40" rx="6"/>
+  <text x="164" y="178" text-anchor="middle" class="node-text">/signup/verify-email</text>
+  <rect class="node-pub" x="240" y="160" width="108" height="40" rx="6"/>
+  <text x="294" y="178" text-anchor="middle" class="node-text">/auth/callback</text>
+
+  <rect class="zone" x="388" y="68" width="320" height="200" rx="8"/>
+  <text x="404" y="88" class="zone-title">Post-auth gates</text>
+  <rect class="node" x="412" y="120" width="120" height="48" rx="6"/>
+  <text x="472" y="142" text-anchor="middle" class="node-text">/profile/new</text>
+  <rect class="node" x="560" y="120" width="120" height="48" rx="6"/>
+  <text x="620" y="142" text-anchor="middle" class="node-text">/family</text>
+  <text x="404" y="196" class="node-sub">/top redirects to /profile/new if no profile</text>
+  <text x="404" y="212" class="node-sub">/family/new redirects to /family</text>
+
+  <rect class="zone" x="24" y="292" width="684" height="200" rx="8"/>
+  <text x="40" y="312" class="zone-title">Authenticated hub</text>
+  <rect class="node-hub" x="280" y="328" width="120" height="52" rx="8"/>
+  <text x="340" y="352" text-anchor="middle" class="node-text-light">/top</text>
+  <rect class="node" x="48" y="400" width="130" height="44" rx="6"/>
+  <text x="113" y="426" text-anchor="middle" class="node-text">/recipe/search</text>
+  <rect class="node" x="196" y="400" width="120" height="44" rx="6"/>
+  <text x="256" y="426" text-anchor="middle" class="node-text">/recipe/new</text>
+  <rect class="node" x="334" y="400" width="130" height="44" rx="6"/>
+  <text x="399" y="426" text-anchor="middle" class="node-text">/recipe/:id</text>
+  <rect class="node" x="482" y="400" width="130" height="44" rx="6"/>
+  <text x="547" y="426" text-anchor="middle" class="node-text">/recipe/:id/edit</text>
+  <rect class="node" x="630" y="400" width="60" height="44" rx="6"/>
+  <text x="660" y="426" text-anchor="middle" class="node-text">/family</text>
+
+  <rect class="zone" x="728" y="68" width="348" height="424" rx="8"/>
+  <text x="744" y="88" class="zone-title">Global chrome (logged in)</text>
+  <text x="744" y="112" class="node-sub">Logo -&gt; /top</text>
+  <text x="744" y="128" class="node-sub">Nav: list | new recipe | family</text>
+  <text x="744" y="144" class="node-sub">Logout -&gt; /login</text>
+  <text x="744" y="176" class="zone-title">/top primary actions</text>
+  <text x="744" y="196" class="node-sub">CTA new recipe -&gt; /recipe/new</text>
+  <text x="744" y="212" class="node-sub">Scroll list on same page (#recipe-list)</text>
+  <text x="744" y="228" class="node-sub">Quick access search -&gt; /recipe/search</text>
+
+  <path class="arrow-em" d="M196 144 L472 120"/>
+  <path class="arrow-em" d="M472 168 L340 328"/>
+  <path class="arrow-em" d="M340 380 L340 328"/>
+  <path class="arrow" d="M113 400 L280 360"/>
+  <path class="arrow" d="M256 400 L320 380"/>
+
+  <text x="550" y="700" text-anchor="middle" class="subtitle">Dev-only: /lp, /top-preview</text>
+</svg>

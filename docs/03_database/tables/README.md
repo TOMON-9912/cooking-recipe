@@ -2,6 +2,8 @@
 
 マイグレーション（`supabase/migrations/`）を正とし、各ファイルでカラム・制約・RLS を記載する。RLS の執筆・更新ポリシーは **`20260913000003_recipe_write_policies_author_only.sql` 適用後**を前提とする。
 
+テーブル間の関係は [ER 図](../er-diagram.md)（[cooking-recipe.dbml](../cooking-recipe.dbml) から自動生成）を参照。
+
 ## フォーマット
 
 各ファイルは次の章立てで統一する。

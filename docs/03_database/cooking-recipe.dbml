@@ -1,0 +1,179 @@
+// 食卓手帖 — ER 定義（public スキーマ + auth.users）
+// 正: supabase/migrations。スキーマ変更時はこのファイルも更新する。
+// VitePress の ER 図（docs/03_database/er-diagram.md）はこのファイルから自動描画される。
+// dbdiagram.io に貼り付ければそのまま編集・レイアウト確認もできる。
+
+Project cooking_recipe {
+  database_type: 'PostgreSQL'
+  Note: 'ビュー（accessible_recipe_ids / recipe_summaries / recipe_summaries_with_favorite）は含めない'
+}
+
+Table auth.users as auth_users {
+  id uuid [pk]
+
+  Note: 'Supabase Auth 管理のユーザー（public 外・参照のみ）'
+}
+
+Table profiles {
+  id uuid [pk]
+  display_name text [not null]
+  avatar_icon text [not null]
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+
+  Note: '表示名・アイコン（auth.users と 1:1）'
+}
+
+Table families {
+  id uuid [pk, default: `gen_random_uuid()`]
+  name text [not null]
+  owner_id uuid [not null]
+  created_at timestamptz [not null, default: `now()`]
+
+  Note: '家族グループ'
+}
+
+Table family_members {
+  family_id uuid [not null]
+  user_id uuid [not null]
+  joined_at timestamptz [not null, default: `now()`]
+
+  indexes {
+    (family_id, user_id) [pk]
+    user_id
+  }
+
+  Note: 'ユーザーの家族所属'
+}
+
+Table recipes {
+  id uuid [pk, default: `gen_random_uuid()`]
+  title text [not null]
+  description text
+  thumbnail_url text
+  serving_count integer [not null]
+  preparation_time_minutes integer [not null]
+  is_draft boolean [not null, default: true]
+  author_id uuid [not null]
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+
+  indexes {
+    (author_id, is_draft)
+  }
+
+  Note: 'レシピ本体'
+}
+
+Table categories {
+  id uuid [pk, default: `gen_random_uuid()`]
+  name text [not null]
+  slug text [not null, unique]
+  created_at timestamptz [not null, default: `now()`]
+
+  Note: 'カテゴリマスター（書き込みはマイグレーションのみ）'
+}
+
+Table ingredients {
+  id uuid [pk, default: `gen_random_uuid()`]
+  name text [not null]
+  normalized_name text [not null, unique]
+  created_at timestamptz [not null, default: `now()`]
+
+  Note: '材料マスター（書き込みはサーバー側のみ）'
+}
+
+Table recipe_categories {
+  recipe_id uuid [not null]
+  category_id uuid [not null]
+  created_at timestamptz [not null, default: `now()`]
+
+  indexes {
+    (recipe_id, category_id) [pk]
+    category_id
+  }
+
+  Note: 'レシピ × カテゴリ'
+}
+
+Table recipe_ingredients {
+  id uuid [pk, default: `gen_random_uuid()`]
+  recipe_id uuid [not null]
+  ingredient_id uuid
+  name text [not null]
+  quantity_display text [not null]
+  quantity_value numeric
+  unit text [not null]
+  note text
+  order_position integer [not null]
+  created_at timestamptz [not null, default: `now()`]
+
+  indexes {
+    (recipe_id, order_position)
+    ingredient_id
+  }
+
+  Note: 'レシピの材料行'
+}
+
+Table recipe_instructions {
+  id uuid [pk, default: `gen_random_uuid()`]
+  recipe_id uuid [not null]
+  step_number integer [not null]
+  description text [not null]
+  image_url text
+  created_at timestamptz [not null, default: `now()`]
+
+  indexes {
+    (recipe_id, step_number) [unique]
+  }
+
+  Note: 'レシピの調理手順'
+}
+
+Table recipe_favorites {
+  user_id uuid [not null]
+  recipe_id uuid [not null]
+  created_at timestamptz [not null, default: `now()`]
+
+  indexes {
+    (user_id, recipe_id) [pk]
+    recipe_id
+  }
+
+  Note: 'ユーザーごとのお気に入り'
+}
+
+// 左が子（FK を持つ側）、右が親
+Ref: profiles.id - auth_users.id [delete: cascade]
+Ref: families.owner_id > auth_users.id [delete: cascade]
+Ref: family_members.family_id > families.id [delete: cascade]
+Ref: family_members.user_id > auth_users.id [delete: cascade]
+Ref: recipes.author_id > auth_users.id [delete: cascade]
+Ref: recipe_categories.recipe_id > recipes.id [delete: cascade]
+Ref: recipe_categories.category_id > categories.id [delete: cascade]
+Ref: recipe_ingredients.recipe_id > recipes.id [delete: cascade]
+Ref: recipe_ingredients.ingredient_id > ingredients.id [delete: set null]
+Ref: recipe_instructions.recipe_id > recipes.id [delete: cascade]
+Ref: recipe_favorites.user_id > auth_users.id [delete: cascade]
+Ref: recipe_favorites.recipe_id > recipes.id [delete: cascade]
+
+TableGroup user_family {
+  auth_users
+  profiles
+  families
+  family_members
+}
+
+TableGroup recipe {
+  recipes
+  recipe_categories
+  recipe_ingredients
+  recipe_instructions
+  recipe_favorites
+}
+
+TableGroup recipe_masters {
+  categories
+  ingredients
+}
