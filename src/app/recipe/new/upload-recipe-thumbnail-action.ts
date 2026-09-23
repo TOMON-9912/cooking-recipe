@@ -4,7 +4,7 @@
  * サムネイル保存の入口。全体の読み方:
  * @see src/app/recipe/new/レシピ新規と画像.md
  *
- * 処理の流れ: 認証・レート制限・監査 → usecase（ルール）→ infrastructure（S3 Put）
+ * 処理の流れ: 認証・レート制限・監査 → usecase（ルール）→ infrastructure（Storage Put）
  */
 
 import { createAuthedClient } from "@/lib/supabase/server";
@@ -22,7 +22,10 @@ export type UploadRecipeThumbnailActionResult =
   | { success: false; error: string };
 
 /**
- * レシピサムネイルをサーバー経由で S3 に保存する。
+ * レシピサムネイルをサーバー経由で Supabase Storage に保存する。
+ *
+ * @param formData `file` フィールドに画像を含むフォーム
+ * @returns 成功時は保存パス、失敗時はエラーメッセージ
  */
 export async function uploadRecipeThumbnailAction(
   formData: FormData,
@@ -90,9 +93,10 @@ export async function uploadRecipeThumbnailAction(
       authorId: userId,
       body,
       contentType: raw.type || "application/octet-stream",
-      originalFilename: raw.name,
     },
-    { storage: recipeThumbnailStorageImpl },
+    {
+      storage: recipeThumbnailStorageImpl,
+    },
   );
 
   if (!result.success) {

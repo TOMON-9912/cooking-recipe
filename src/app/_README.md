@@ -17,7 +17,7 @@ app 層が「Next.js の世界」と「ビジネスロジックの世界（useca
 具体的には、次のことをこの層でやります：
 
 1. **FormData のパース** … `formData.get('email')` などを行い、usecase に渡せる形に変換する
-2. **deps の組み立て** … どのリポジトリ実装（`AuthRepositoryImpl` や `createRecipe` 関数）を使うかを決めて、usecase に渡す
+2. **deps の組み立て** … どのリポジトリ実装（`signup` や `createRecipe` 関数）を使うかを決めて、usecase に渡す
 3. **リダイレクト** … usecase の結果に応じて `redirect('/top')` などを呼ぶ
 4. **エラーの整形** … usecase や infrastructure から返ったエラーを画面用のメッセージに変換する
 
@@ -127,9 +127,11 @@ export async function createRecipeAction(
     const recipe = await createRecipeUsecase(recipeInput, deps);
     return { success: true, recipe };
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : "レシピの登録に失敗しました";
-    return { success: false, error: message };
+    // 内部メッセージをそのまま返さない。既知のコードだけ表示用に訳す
+    return {
+      success: false,
+      error: toRecipeErrorMessage(error, ERROR_MESSAGES.RECIPE_CREATE_FAILED),
+    };
   }
 }
 ```
@@ -138,7 +140,7 @@ export async function createRecipeAction(
 
 ```tsx
 // recipe/new/page.tsx
-import { RecipeCreateForm } from "@/presentation/components/recipe/RecipeCreateForm";
+import { RecipeForm } from "@/presentation/components/recipe/RecipeForm";
 
 export default function Page() {
   return (
@@ -148,7 +150,7 @@ export default function Page() {
         <p className="text-sm text-gray-600">家族で共有・継承できるレシピを作成します</p>
       </div>
       <div className="w-full max-w-3xl mx-auto px-4 pb-12">
-        <RecipeCreateForm />
+        <RecipeForm />
       </div>
     </div>
   );

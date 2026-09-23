@@ -30,3 +30,26 @@ export type CreateRecipeInput = Omit<
 export type CreateRecipeResult =
     | { success: true; recipe: Recipe }
     | { success: false; error: string };
+
+/**
+ * レシピ本体と関連データの更新内容。
+ * 材料・手順・カテゴリは差分ではなく渡した内容で置き換える。
+ */
+export type UpdateRecipeInput = {
+    id: string;
+    title: string;
+    description: string;
+    /** null のときサムネイルを外す */
+    thumbnailPath?: string | null;
+    servingCount: number;
+    preparationTimeMinutes: number;
+    isDraft: boolean;
+    ingredients: IngredientInput[];
+    instructions: InstructionInput[];
+    categories: CategoryInput[];
+};
+
+/** レシピ更新の結果 */
+export type UpdateRecipeResult =
+    | { success: true; recipe: Recipe }
+    | { success: false; error: string };

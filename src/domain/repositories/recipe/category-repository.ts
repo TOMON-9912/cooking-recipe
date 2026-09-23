@@ -1,5 +1,4 @@
+/** レシピに紐付けるカテゴリ。保存時は ID しか使わない */
 export type CategoryInput = {
     id: string;
-    name: string;
-    slug: string; // URL等で使う識別子
 }

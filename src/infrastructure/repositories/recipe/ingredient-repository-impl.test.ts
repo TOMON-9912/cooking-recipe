@@ -12,7 +12,7 @@ vi.mock("@/lib/supabase/server", () => ({
 describe("ingredient-repository-impl", () => {
   beforeEach(() => vi.clearAllMocks());
 
-  it("saveIngredients は insert を呼ぶ", async () => {
+  it("saveIngredients は削除してから insert する", async () => {
     const builder = createQueryBuilder({ data: null, error: null });
     vi.mocked(createAuthedClient).mockResolvedValue({
       supabase: { from: vi.fn().mockReturnValue(builder) } as never,
@@ -28,6 +28,8 @@ describe("ingredient-repository-impl", () => {
       },
     ]);
 
+    expect(builder.delete).toHaveBeenCalled();
+    expect(builder.eq).toHaveBeenCalledWith("recipe_id", "recipe-1");
     expect(builder.insert).toHaveBeenCalledWith([
       {
         recipe_id: "recipe-1",
@@ -53,5 +55,18 @@ describe("ingredient-repository-impl", () => {
     });
 
     await expect(saveIngredients("recipe-1", [])).rejects.toThrow("db error");
+  });
+
+  it("材料が空なら delete だけで終わる", async () => {
+    const builder = createQueryBuilder({ data: null, error: null });
+    vi.mocked(createAuthedClient).mockResolvedValue({
+      supabase: { from: vi.fn().mockReturnValue(builder) } as never,
+      user: { id: "user-1" } as never,
+    });
+
+    await saveIngredients("recipe-1", []);
+
+    expect(builder.delete).toHaveBeenCalled();
+    expect(builder.insert).not.toHaveBeenCalled();
   });
 });

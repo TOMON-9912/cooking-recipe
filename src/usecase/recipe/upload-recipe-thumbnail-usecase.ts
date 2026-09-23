@@ -1,4 +1,5 @@
 import {
+  getRecipeThumbnailExtension,
   isAllowedRecipeThumbnailContentType,
   RECIPE_THUMBNAIL_MAX_BYTES,
 } from "@/constants/recipe-thumbnail-upload";
@@ -8,7 +9,6 @@ export type UploadRecipeThumbnailInput = {
   authorId: string;
   body: Uint8Array;
   contentType: string;
-  originalFilename: string;
 };
 
 export type UploadRecipeThumbnailDeps = {
@@ -20,7 +20,12 @@ export type UploadRecipeThumbnailResult =
   | { success: false; error: string };
 
 /**
- * レシピサムネイルのアップロード（バリデーション後にストレージへ委譲）。
+ * レシピサムネイルのアップロード（バリデーション → ストレージへ委譲）。
+ * 圧縮や形式変換はせず、検証を通ったバイト列をそのまま保存する。
+ *
+ * @param input 作者 ID と画像バイト列
+ * @param deps 保存の実装
+ * @returns 成功時は保存パス、失敗時はエラーメッセージ
  */
 export const uploadRecipeThumbnailUsecase = async (
   input: UploadRecipeThumbnailInput,
@@ -49,7 +54,7 @@ export const uploadRecipeThumbnailUsecase = async (
       authorId: input.authorId,
       body: input.body,
       contentType: input.contentType,
-      originalFilename: input.originalFilename,
+      extension: getRecipeThumbnailExtension(input.contentType),
     });
     return { success: true, path };
   } catch (e) {

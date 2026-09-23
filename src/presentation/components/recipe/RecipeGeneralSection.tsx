@@ -6,6 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import {
+    RECIPE_THUMBNAIL_FILE_ACCEPT,
+    RECIPE_THUMBNAIL_MAX_BYTES,
+} from "@/constants/recipe-thumbnail-upload";
 
 type Props = {
     title: string;
@@ -69,13 +73,20 @@ export function RecipeGeneralSection({
                             <Label className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-input rounded-md cursor-pointer hover:bg-accent/50 transition-colors">
                                 <ImageIcon className="size-10 text-muted-foreground mb-2" />
                                 <span className="text-sm text-muted-foreground">画像をアップロード</span>
-                                <input type="file" accept="image/*" className="hidden" onChange={onImageChange} />
+                                <span className="text-xs text-gray-400 mt-1">
+                                    JPEG / PNG / WebP / GIF・
+                                    {Math.floor(RECIPE_THUMBNAIL_MAX_BYTES / (1024 * 1024))}
+                                    MBまで
+                                </span>
+                                <input type="file" accept={RECIPE_THUMBNAIL_FILE_ACCEPT} className="hidden" onChange={onImageChange} />
                             </Label>
                         )}
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                         <div className="space-y-2">
-                            <Label htmlFor="minutes">調理時間（分）</Label>
+                            <Label htmlFor="minutes">
+                                調理時間（分） <span className="text-destructive">*</span>
+                            </Label>
                             <Input
                                 id="minutes"
                                 type="number"
@@ -83,6 +94,7 @@ export function RecipeGeneralSection({
                                 value={minutes}
                                 onChange={(e) => setMinutes(e.target.value === "" ? "" : Number(e.target.value))}
                                 min={1}
+                                required
                                 placeholder="例: 30"
                             />
                         </div>

@@ -12,17 +12,16 @@ vi.mock("@/lib/supabase/server", () => ({
 describe("category-repository-impl", () => {
   beforeEach(() => vi.clearAllMocks());
 
-  it("saveCategories は insert を呼ぶ", async () => {
+  it("saveCategories は削除してから insert する", async () => {
     const builder = createQueryBuilder({ data: null, error: null });
     vi.mocked(createAuthedClient).mockResolvedValue({
       supabase: { from: vi.fn().mockReturnValue(builder) } as never,
       user: { id: "user-1" } as never,
     });
 
-    await saveCategories("recipe-1", [
-      { id: "cat-1", name: "主菜", slug: "main" },
-    ]);
+    await saveCategories("recipe-1", [{ id: "cat-1" }]);
 
+    expect(builder.delete).toHaveBeenCalled();
     expect(builder.insert).toHaveBeenCalledWith([
       { recipe_id: "recipe-1", category_id: "cat-1" },
     ]);

@@ -32,7 +32,7 @@ describe("uploadRecipeThumbnailAction", () => {
     } as never);
     vi.mocked(uploadRecipeThumbnailUsecase).mockResolvedValue({
       success: true,
-      path: "recipes/user-1/abc.jpg",
+      path: "user-1/abc.jpg",
     });
   });
 
@@ -82,7 +82,7 @@ describe("uploadRecipeThumbnailAction", () => {
 
     expect(result).toEqual({
       success: true,
-      path: "recipes/user-1/abc.jpg",
+      path: "user-1/abc.jpg",
     });
   });
 
