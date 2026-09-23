@@ -1,49 +1,52 @@
-# テーブル名: families
+# families テーブル
 
 ## 概要
 
-家族グループを管理するテーブル。
-1つの家族グループに複数のユーザーが所属し、グループ内でレシピを共有する。
-ユーザーとの関係は `family_members`（中間テーブル）で管理する。
-
-## ドメインモデルとの対応
-
-対応するドメインモデルは未作成。
-`src/domain/models/family/family.ts` として追加予定。
-
-| ドメインモデルのフィールド（予定） | テーブルのカラム | 変換内容 |
-|---|---|---|
-| `id` | `id` | そのまま |
-| `name` | `name` | そのまま |
-| `ownerId` | `owner_id` | camelCase → snake_case |
-| `createdAt` | `created_at` | camelCase → snake_case / `Date` ↔ `timestamptz` |
+家族グループ。レシピ共有の単位（同一家族の公開レシピを相互閲覧）。
 
 ## カラム定義
 
 | カラム名 | 型 | NULL | デフォルト | 説明 |
-|---|---|---|---|---|
-| `id` | `uuid` | NOT NULL | `gen_random_uuid()` | 主キー |
-| `name` | `text` | NOT NULL | - | 家族グループ名（例: 田中家） |
-| `owner_id` | `uuid` | NOT NULL | - | グループのオーナー（`auth.users.id` を参照）。グループ名の変更などができる |
-| `created_at` | `timestamptz` | NOT NULL | `now()` | 作成日時 |
+| --- | --- | --- | --- | --- |
+| id | uuid | NO | gen_random_uuid() | 家族 ID |
+| name | text | NO | - | 家族名 |
+| owner_id | uuid | NO | - | オーナー（auth.users.id） |
+| created_at | timestamptz | NO | now() | 作成日時 |
 
-## 制約・インデックス
+## 主キー
 
-- `id` — PRIMARY KEY
-- `owner_id` — FOREIGN KEY → `auth.users(id)`（ユーザー削除時の挙動は要検討。現時点は制約のみ）
-- インデックス: `owner_id`（UPDATE ポリシー `owner_id = auth.uid()` の評価で使用）
+- `id`
 
-## RLS ポリシー
+## 外部キー
 
-| 操作 | 条件 | 説明 |
-|---|---|---|
-| SELECT | 自分が `family_members` に所属している `family_id`、または `owner_id = auth.uid()` | メンバーとして、または作成直後のオーナーとして参照できる |
-| INSERT | `auth.uid() is not null`（認証済みユーザー） | 家族グループの新規作成 |
-| UPDATE | `owner_id = auth.uid()` | グループのオーナーのみ更新できる |
-| DELETE | 不可（将来的に管理者ロールで対応を検討） | - |
+- `owner_id` → `auth.users(id)` ON DELETE CASCADE（`20260726000001`）
 
-## 備考
+## インデックス
 
-- `owner_id` はグループを作成したユーザーを指す。アプリ層で `INSERT families` と同時に `INSERT family_members` を行い、作成者を最初のメンバーとして登録する
-- UPDATE ポリシーはメンバー全員ではなく `owner_id` のみに絞ることで、意図しないグループ名変更を防ぐ（レビュー指摘 I-4 対応）
-- 1ユーザーが複数の家族グループに所属することも将来的には可能な設計とする（現時点では想定しない）
+- `owner_id`
+
+## 制約
+
+- なし（名称の長さ等はアプリ側バリデーション）
+
+## RLS
+
+### SELECT
+
+- **members can select own families** — `id ∈ get_my_family_ids()` または `owner_id = auth.uid()`（作成直後メンバー未登録時の閲覧用、`20260622000001`）
+
+### INSERT
+
+- **authenticated users can insert families** — ログイン済み（オーナー設定はアプリ側）
+
+### UPDATE
+
+- **owner can update family** — `owner_id = auth.uid()`
+
+### DELETE
+
+- ポリシーなし（オーナー削除時 CASCADE 等は Auth / バッチ側）
+
+## 設計上の補足
+
+メンバー所属は `family_members`。RLS ヘルパー `get_my_family_ids()` / `is_same_family()` は [008-rls-helper-functions.md](../../09_decisions/008-rls-helper-functions.md) を参照。

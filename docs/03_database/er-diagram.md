@@ -1,20 +1,28 @@
-# ER / データモデル概要
+# ER 図
 
-テーブル定義の一覧は [tables/README.md](./tables/README.md) です。RLS とビューは [decisions/008-rls-helper-functions.md](../09_decisions/008-rls-helper-functions.md) を参照してください。
+## 図（SVG）
 
-## 主要エンティティ（概念）
+![ER 図](./images/er-diagram.svg)
+
+## Mermaid（編集用）
 
 ```mermaid
 erDiagram
-  profiles ||--o{ recipes : authors
+  auth_users ||--o| profiles : "1:1"
+  auth_users ||--o{ recipes : authors
+  auth_users ||--o{ family_members : belongs
+  auth_users ||--o{ recipe_favorites : favorites
   families ||--o{ family_members : has
-  profiles ||--o| family_members : belongs
   recipes ||--o{ recipe_ingredients : has
   recipes ||--o{ recipe_instructions : has
   recipes ||--o{ recipe_categories : tagged
   categories ||--o{ recipe_categories : used
+  ingredients ||--o{ recipe_ingredients : optional
+  recipes ||--o{ recipe_favorites : favorited
 ```
 
-## 画像
+`auth.users` は Supabase Auth 管理のため図では `auth_users` と表記。
 
-レシピサムネイルは DB に **Storage パス** を保存し、表示時に署名 URL を発行します。詳細は [storage-security.md](./storage-security.md) と [database/images/](./images/)（図置き場）。
+## テーブル定義
+
+[tables/README.md](./tables/README.md) に一覧。RLS の背景は [09_decisions/008-rls-helper-functions.md](../09_decisions/008-rls-helper-functions.md)。

@@ -1,56 +1,52 @@
-# テーブル名: categories
+# categories テーブル
 
 ## 概要
 
-料理のカテゴリ・タグを管理するマスターテーブル。
-「時短」「誕生日」「お弁当」など、レシピの分類に使う。
-レシピとの関係は `recipe_categories`（中間テーブル）で管理する。
-
-## ドメインモデルとの対応
-
-`src/domain/models/recipe/category.ts` の `Category` インターフェース
-
-| ドメインモデルのフィールド | テーブルのカラム | 変換内容 |
-|---|---|---|
-| `id` | `id` | そのまま |
-| `name` | `name` | そのまま |
-| `slug` | `slug` | そのまま |
+レシピ分類用のマスターデータ（和食・洋食など）。シードで投入し、クライアントからの直接 INSERT/UPDATE/DELETE は禁止。
 
 ## カラム定義
 
 | カラム名 | 型 | NULL | デフォルト | 説明 |
-|---|---|---|---|---|
-| `id` | `uuid` | NOT NULL | `gen_random_uuid()` | 主キー |
-| `name` | `text` | NOT NULL | - | カテゴリ表示名（例: 時短、誕生日） |
-| `slug` | `text` | NOT NULL | - | URL やコード内で使う識別子（例: `short-time`, `birthday`） |
-| `created_at` | `timestamptz` | NOT NULL | `now()` | 作成日時 |
+| --- | --- | --- | --- | --- |
+| id | uuid | NO | gen_random_uuid() | カテゴリ ID |
+| name | text | NO | - | 表示名 |
+| slug | text | NO | - | URL 用スラッグ（kebab-case） |
+| created_at | timestamptz | NO | now() | 作成日時 |
 
-## 制約・インデックス
+## 主キー
 
-- `id` — PRIMARY KEY
-- `slug` — UNIQUE（重複不可）
-- `slug` — CHECK: `slug ~ '^[a-z0-9]+(-[a-z0-9]+)*$'`（小文字ケバブケースのみ許可）
-- インデックス: `slug` に UNIQUE インデックスが自動作成される
+- `id`
 
-## RLS ポリシー
+## 外部キー
 
-カテゴリはマスターデータのため、読み取りは認証済みユーザー全員に許可する。
-作成・更新・削除はアプリ管理者のみとする（初期はサービスロールキーで操作）。
+- なし
 
-| 操作 | ポリシー | 実装 |
-|---|---|---|
-| SELECT | 認証済みユーザーは全カテゴリを読み取れる | `auth.uid() is not null` |
-| INSERT | 不可（サービスロールキーで直接操作） | `with check (false)` を明示 |
-| UPDATE | 不可（サービスロールキーで直接操作） | `using (false)` を明示 |
-| DELETE | 不可（サービスロールキーで直接操作） | `using (false)` を明示 |
+## インデックス
 
-> **なぜ `false` を明示するか**
-> RLS を有効化した状態でポリシーを設定しないと、デフォルトで全操作が拒否されます。
-> 暗黙の拒否に頼るのではなく、`false` を明示することで「意図的に禁止している」ことをコードで表現します。
-> 将来 admin ロールを追加する際も、`false` のポリシーを修正するだけでよいため変更箇所が明確になります。
+- `slug` UNIQUE
 
-## 備考
+## 制約
 
-- `slug` はケバブケース（小文字・ハイフン区切り）のみ許可。DB レベルで CHECK 制約により強制する（例: `short-time`, `birthday`）
-- カテゴリの初期データは `supabase/seed.sql` で投入する
-- ユーザーが自由にカテゴリを作成する機能を追加する場合は `false` ポリシーを修正する
+- `slug` は `^[a-z0-9]+(-[a-z0-9]+)*$` に一致
+
+## RLS
+
+### SELECT
+
+- **authenticated users can select categories** — ログイン済みユーザー
+
+### INSERT
+
+- **no direct insert on categories** — 常に拒否（サービスロール・マイグレーションのみ）
+
+### UPDATE
+
+- **no direct update on categories** — 常に拒否
+
+### DELETE
+
+- **no direct delete on categories** — 常に拒否
+
+## 設計上の補足
+
+レシピとの多対多は `recipe_categories` で表現する。

@@ -8,6 +8,6 @@
 
 ## 関連
 
-- DB: [database/tables/users.md](../03_database/tables/users.md)（profiles）
+- DB: [profiles テーブル](../03_database/tables/profiles.md)
 - 画面: [ui/screens/guest-login.md](../06_ui/screens/guest-login.md)
 - ADR: [decisions/001-authentication.md](../09_decisions/001-authentication.md)
