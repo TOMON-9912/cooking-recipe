@@ -12,6 +12,8 @@ const PUBLIC_PATHS = [
     AUTH_CALLBACK_PATH,
     // LP デザイン案の検証用。採用案の反映後に削除する
     "/lp",
+    // keep-alive / 監視用（Supabase Free の pause 対策）
+    "/api/health",
 ];
 
 export async function proxy(request: NextRequest) {
