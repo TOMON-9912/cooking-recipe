@@ -190,10 +190,24 @@ feature/* → develop（Preview デプロイ）→ main（Production デプロ�
 
 | タイミング | Git | Vercel | Supabase |
 |-----------|-----|--------|----------|
-| 機能開発 | `feature/*` PR → `develop` | Preview URL で確認 | 検証プロジェクトに `db push` |
-| 本番リリース | `develop` → `main` PR マージ | Production 再デプロイ | 本番プロジェクトに `db push`（スキーマ変更時） |
+| 機能開発 | `feature/*` PR → `develop` | Preview URL で確認 | 検証プロジェクトに `db push`（手動） |
+| 本番リリース | `develop` → `main` PR マージ | Production 再デプロイ | GitHub Actions が自動適用（承認制） |
 
-**DB スキーマ変更時**は、Vercel デプロイ**前に**対象 Supabase プロジェクトへ `npx supabase db push` を実行してください。
+### 本番マイグレーションの自動適用
+
+`main` への push で `supabase/migrations/` に変更があると、`.github/workflows/supabase-migrate.yml` が `supabase db push` を実行します。
+
+`production` 環境に Required reviewers を設定しているため、承認するまでジョブは待機します。Vercel の Production デプロイは承認を待たずに進むので、**スキーマ変更を含むリリースではマージ直後に承認してください**。承認が遅れると、新しいアプリが古い DB を参照する時間が生まれます。
+
+必要な Secrets（Settings → Environments → production）:
+
+| 名前 | 取得元 |
+|---|---|
+| `SUPABASE_ACCESS_TOKEN` | [Account → Access Tokens](https://supabase.com/dashboard/account/tokens) |
+| `SUPABASE_DB_PASSWORD` | プロジェクト作成時に設定した DB パスワード |
+| `SUPABASE_PROJECT_ID` | Dashboard → Settings → General の Project ID |
+
+検証環境は Supabase プロジェクトを分けている場合のみ手動で `npx supabase db push` を実行します。
 
 ---
 
