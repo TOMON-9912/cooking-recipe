@@ -19,6 +19,8 @@ Next.js 16 &nbsp;|&nbsp; React 19 &nbsp;|&nbsp; TypeScript &nbsp;|&nbsp; Supabas
 
 デプロイ手順・環境構成は [`docs/guides/deploy-vercel-supabase.md`](./docs/guides/deploy-vercel-supabase.md) を参照してください。
 
+設計・ADR・テーブル定義などは **`npm run docs:dev`** で VitePress サイトとして閲覧できます（`docs/` 配下）。
+
 ---
 
 ## Overview

@@ -211,7 +211,7 @@ Supabase の Redirect URLs と照合されます。照合はワイルドカー�
 `https://<本番ドメイン>/auth/callback` と明示することもできます。
 ワイルドカードを使わない場合は**パスまで含めて一致**している必要があります。
 
-### 6-4. `src/app/auth/callback/route.ts`
+### 6-4. src/app/auth/callback/route.ts
 
 やっていることは 3 つです。
 
@@ -225,7 +225,7 @@ const { error } = await supabase.auth.exchangeCodeForSession(code);
 
 **(2) `token_hash` 形式にも対応する**
 
-Supabase のメールテンプレートを `{{ .TokenHash }}` を使う形に変えると、
+Supabase のメールテンプレートを `&#123;&#123; .TokenHash &#125;&#125;` を使う形に変えると、
 `code` ではなく `token_hash` と `type` が付いて戻ってきます。
 その場合は `verifyOtp()` で検証します。テンプレート変更で壊れないよう両対応にしています。
 

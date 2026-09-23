@@ -23,6 +23,10 @@
 /.next/
 /out/
 
+# vitepress
+docs/.vitepress/dist
+docs/.vitepress/cache
+
 # production
 /build
 
