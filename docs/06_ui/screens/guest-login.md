@@ -11,7 +11,7 @@
 関連ドキュメント:
 
 - 設計判断の詳細 … [ADR 007: ゲストユーザーログイン](../adr/07-guest-login.md)
-- 実装スコープ … [docs/implementation/guest/guest-login.md](../implementation/guest/guest-login.md)
+- 実装スコープ … [application/guest/guest-login.md](../../04_application/guest/guest-login.md)
 
 ---
 

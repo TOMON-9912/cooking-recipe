@@ -186,7 +186,7 @@ create policy "users can select accessible recipe ingredients"
 
 > **注意**: ビューのデフォルトは `SECURITY DEFINER`（作成者権限）であり、このままだと `recipes` の RLS がスキップされ全レシピ ID が見える。**`security_invoker = true` は必須**。
 
-関連: [`docs/tables/view/accessible_recipe_ids.md`](../../tables/view/accessible_recipe_ids.md)
+関連: [`docs/03_database/tables/accessible_recipe_ids.md`](../03_database/tables/accessible_recipe_ids.md)
 
 ---
 

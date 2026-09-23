@@ -17,7 +17,7 @@ Next.js 16 &nbsp;|&nbsp; React 19 &nbsp;|&nbsp; TypeScript &nbsp;|&nbsp; Supabas
 
 未ログインではランディングページ（`/`）が表示されます。レシピの登録・家族機能などはアカウント作成後に利用できます。
 
-デプロイ手順・環境構成は [`docs/guides/deploy-vercel-supabase.md`](./docs/guides/deploy-vercel-supabase.md) を参照してください。
+デプロイ手順・環境構成は [`docs/08_development/deploy-vercel-supabase.md`](./docs/08_development/deploy-vercel-supabase.md) を参照してください。
 
 設計・ADR・テーブル定義などは **`npm run docs:dev`** で VitePress サイトとして閲覧できます（`docs/` 配下）。
 
@@ -117,7 +117,7 @@ Next.js 16 &nbsp;|&nbsp; React 19 &nbsp;|&nbsp; TypeScript &nbsp;|&nbsp; Supabas
 | ホスティング   | Vercel                                  | Next.js との親和性、エッジデプロイ          |
 | テスト         | Vitest                                  | 高速なユニットテスト、TypeScript ネイティブ |
 
-各技術の選定詳細は [`docs/adr/`](./docs/adr/) を参照してください。
+各技術の選定詳細は [`docs/09_decisions/`](./docs/09_decisions/) を参照してください。
 
 ---
 
@@ -157,7 +157,7 @@ src/
 将来的な技術変更に耐えられる構造を採用しています。
 
 > アーキテクチャの全体図・依存関係・CRUD フローの詳細:  
-> → [`docs/architect/clean-architecture-and-directory.md`](./docs/architect/clean-architecture-and-directory.md)
+> → [`docs/01_architecture/data-flow.md`](./docs/01_architecture/data-flow.md)
 
 ---
 
@@ -206,7 +206,7 @@ cp .env.example .env.local
 npm run dev
 ```
 
-本番・検証環境へのデプロイ手順は [`docs/guides/deploy-vercel-supabase.md`](./docs/guides/deploy-vercel-supabase.md) を参照してください。
+本番・検証環境へのデプロイ手順は [`docs/08_development/deploy-vercel-supabase.md`](./docs/08_development/deploy-vercel-supabase.md) を参照してください。
 
 ### テストの実行
 

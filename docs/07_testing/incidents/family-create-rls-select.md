@@ -80,7 +80,7 @@ using (
 
 ### 3. ドキュメント更新
 
-`docs/tables/family/families.md` の SELECT ポリシー説明を修正後の条件に合わせて更新した。
+`docs/03_database/tables/families.md` の SELECT ポリシー説明を修正後の条件に合わせて更新した。
 
 ---
 
@@ -104,8 +104,8 @@ using (
 | リポジトリ（INSERT + SELECT） | `src/infrastructure/repositories/family/family-repository-impl.ts` |
 | ユースケース（作成順序） | `src/usecase/family/create-family-usecase.ts` |
 | Server Action | `src/app/family/new/create-family.action.ts` |
-| テーブル定義ドキュメント | `docs/tables/family/families.md` |
-| ADR | `docs/adr/05-family-feature.md` |
+| テーブル定義ドキュメント | `docs/03_database/tables/families.md` |
+| ADR | `docs/09_decisions/007-family-feature.md` |
 
 ---
 

@@ -38,7 +38,7 @@
 - 「同じ家族かどうか」の判定根拠を 1 か所に集約できる
 - レシピテーブルに `family_id` を持たせず、作成者経由で間接的に共有範囲を決める設計と両立する
 
-関連: [`docs/tables/family/families.md`](../../tables/family/families.md)、[`docs/tables/family/family_members.md`](../../tables/family/family_members.md)
+関連: [`docs/03_database/tables/families.md`](../03_database/tables/families.md)、[`docs/03_database/tables/family_members.md`](../03_database/tables/family_members.md)
 
 ---
 

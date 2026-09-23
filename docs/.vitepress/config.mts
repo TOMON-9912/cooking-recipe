@@ -3,8 +3,7 @@ import { defineConfig } from "vitepress";
 const repo = "https://github.com/TOMON-9912/cooking-recipe";
 
 /**
- * VitePress のサイト設定。
- * 既存の docs/ ツリーをそのままソースにし、セクションごとにサイドバーを分ける。
+ * VitePress 設定。docs/ の新ディレクトリ構成に合わせたナビ・サイドバー。
  */
 export default defineConfig({
   title: "食卓手帖 Docs",
@@ -12,7 +11,10 @@ export default defineConfig({
   lang: "ja-JP",
   lastUpdated: true,
   cleanUrls: true,
-  srcExclude: ["**/index/_template.md"],
+  srcExclude: [
+    "**/04_application/source-index/_template.md",
+    "**/90_workspace/**",
+  ],
   ignoreDeadLinks: true,
   markdown: {
     lineNumbers: true,
@@ -20,168 +22,133 @@ export default defineConfig({
   themeConfig: {
     logo: { text: "食卓手帖" },
     nav: [
-      { text: "ガイド", link: "/guides/README" },
-      { text: "設計", link: "/design/README" },
-      { text: "実装", link: "/implementation/recipe/update-recipe" },
-      { text: "ADR", link: "/adr/01-Next.js" },
-      {
-        text: "リポジトリ",
-        link: repo,
-      },
+      { text: "Architecture", link: "/01_architecture/overview" },
+      { text: "Domain", link: "/02_domain/overview" },
+      { text: "Development", link: "/08_development/setup" },
+      { text: "Decisions", link: "/09_decisions/001-authentication" },
+      { text: "リポジトリ", link: repo },
     ],
     sidebar: {
-      "/guides/": [
+      "/01_architecture/": [
         {
-          text: "手順書",
+          text: "Architecture",
           items: [
-            { text: "一覧", link: "/guides/README" },
-            { text: "VitePress（このサイト）", link: "/guides/vitepress" },
-            { text: "Git ブランチ運用", link: "/guides/git-branch-workflow" },
-            {
-              text: "Supabase ローカル開発",
-              link: "/guides/supabase-local-dev-with-docker",
-            },
-            { text: "GitHub Actions (CI)", link: "/guides/github-actions-workflow" },
-            { text: "ESLint / クリーンアーキ", link: "/guides/eslint-clean-architecture" },
-            { text: "E2E (Playwright)", link: "/guides/e2e-testing-with-playwright" },
-            { text: "Vercel + Supabase デプロイ", link: "/guides/deploy-vercel-supabase" },
-            {
-              text: "ゲスト削除バッチ運用",
-              link: "/guides/guest-cleanup-batch-operations",
-            },
+            { text: "Overview", link: "/01_architecture/overview" },
+            { text: "Data flow", link: "/01_architecture/data-flow" },
+            { text: "System context", link: "/01_architecture/system-context" },
           ],
         },
       ],
-      "/adr/": [
+      "/02_domain/": [
         {
-          text: "Architecture Decision Records",
+          text: "Domain",
           items: [
-            { text: "01 Next.js", link: "/adr/01-Next.js" },
-            { text: "02 Supabase", link: "/adr/02-Supabase" },
-            { text: "03 Vercel", link: "/adr/03-Vercel" },
-            { text: "04 Playwright", link: "/adr/04-Playwright" },
-            { text: "05 家族機能", link: "/adr/05-family-feature" },
-            { text: "06 RLS ヘルパー", link: "/adr/06-rls-helper-functions" },
-            { text: "07 ゲストログイン", link: "/adr/07-guest-login" },
-            { text: "08 画像 Storage", link: "/adr/08-image-storage" },
+            { text: "Overview", link: "/02_domain/overview" },
+            { text: "Recipe", link: "/02_domain/recipe" },
+            { text: "User", link: "/02_domain/user" },
           ],
         },
       ],
-      "/architect/": [
+      "/03_database/": [
         {
-          text: "アーキテクチャ",
+          text: "Database",
           items: [
-            { text: "一覧", link: "/architect/README" },
-            {
-              text: "クリーンアーキテクチャ",
-              link: "/architect/clean-architecture-and-directory",
-            },
-            {
-              text: "Storage 画像セキュリティ",
-              link: "/architect/supabase-storage-image-security",
-            },
+            { text: "ER 概要", link: "/03_database/er-diagram" },
+            { text: "Storage セキュリティ", link: "/03_database/storage-security" },
+            { text: "PostgreSQL 型", link: "/03_database/postgresql-types-and-settings" },
+            { text: "Tables 一覧", link: "/03_database/tables/README" },
+            { text: "recipes", link: "/03_database/tables/recipes" },
+            { text: "users (profiles)", link: "/03_database/tables/users" },
+            { text: "families", link: "/03_database/tables/families" },
+            { text: "family_members", link: "/03_database/tables/family_members" },
+            { text: "accessible_recipe_ids", link: "/03_database/tables/accessible_recipe_ids" },
+            { text: "recipe_summaries", link: "/03_database/tables/recipe_summaries" },
           ],
         },
       ],
-      "/design/": [
+      "/04_application/": [
         {
-          text: "設計書",
+          text: "Application",
           items: [
-            { text: "一覧", link: "/design/README" },
-            { text: "ゲストログイン", link: "/design/ゲストログイン-設計書" },
-            { text: "レシピ検索画面", link: "/design/レシピ検索画面-設計書" },
-            {
-              text: "レシピ検索キーワード",
-              link: "/design/レシピ検索-キーワードマッチング設計",
-            },
+            { text: "Use cases", link: "/04_application/use-cases" },
+            { text: "レシピ更新", link: "/04_application/recipes/update-recipe" },
+            { text: "Auth callback", link: "/04_application/auth/email-confirmation-callback" },
+            { text: "ゲストログイン", link: "/04_application/guest/guest-login" },
+            { text: "ゲスト削除", link: "/04_application/guest/guest-cleanup-batch" },
+            { text: "プロフィール作成", link: "/04_application/profile/create-profile" },
+            { text: "家族作成", link: "/04_application/family/create-family" },
+            { text: "家族概要", link: "/04_application/family/get-family-overview" },
+            { text: "ソース index", link: "/04_application/source-index/README" },
           ],
         },
       ],
-      "/implementation/": [
+      "/05_api/": [
         {
-          text: "実装メモ",
+          text: "API",
           items: [
-            { text: "Auth callback", link: "/implementation/auth/email-confirmation-callback" },
-            { text: "プロフィール作成", link: "/implementation/profile/create-profile" },
-            { text: "家族作成", link: "/implementation/family/create-family" },
-            { text: "家族概要取得", link: "/implementation/family/get-family-overview" },
-            { text: "ゲストログイン", link: "/implementation/guest/guest-login" },
-            { text: "ゲスト削除バッチ", link: "/implementation/guest/guest-cleanup-batch" },
-            { text: "レシピ更新", link: "/implementation/recipe/update-recipe" },
+            { text: "Overview", link: "/05_api/overview" },
+            { text: "Recipes", link: "/05_api/recipes" },
           ],
         },
       ],
-      "/tables/": [
+      "/06_ui/": [
         {
-          text: "テーブル定義",
+          text: "UI",
           items: [
-            { text: "一覧", link: "/tables/README" },
-            { text: "PostgreSQL 型・設定", link: "/tables/postgresql-types-and-settings" },
-            {
-              text: "recipes",
-              link: "/tables/recipe/recipes",
-            },
-            { text: "ingredients", link: "/tables/recipe/ingredients" },
-            { text: "categories", link: "/tables/recipe/categories" },
-            { text: "recipe_ingredients", link: "/tables/recipe/recipe_ingredients" },
-            { text: "recipe_instructions", link: "/tables/recipe/recipe_instructions" },
-            { text: "recipe_categories", link: "/tables/recipe/recipe_categories" },
-            { text: "profiles", link: "/tables/profile/profiles" },
-            { text: "families", link: "/tables/family/families" },
-            { text: "family_members", link: "/tables/family/family_members" },
-            { text: "accessible_recipe_ids", link: "/tables/view/accessible_recipe_ids" },
-            { text: "recipe_summaries", link: "/tables/view/recipe_summaries" },
+            { text: "Screen flow", link: "/06_ui/screen-flow" },
+            { text: "ゲストログイン", link: "/06_ui/screens/guest-login" },
+            { text: "レシピ検索", link: "/06_ui/screens/recipe-search" },
+            { text: "キーワード検索", link: "/06_ui/screens/recipe-search-keyword" },
           ],
         },
       ],
-      "/tips/": [
+      "/07_testing/": [
         {
-          text: "Tips",
+          text: "Testing",
           items: [
-            {
-              text: "確認メールと Auth callback",
-              link: "/tips/email-confirmation-and-auth-callback",
-            },
-            {
-              text: "Supabase Storage 画像",
-              link: "/tips/image-upload-with-supabase-storage",
-            },
+            { text: "Strategy", link: "/07_testing/strategy" },
+            { text: "Test scope", link: "/07_testing/test-scope" },
+            { text: "E2E Playwright", link: "/07_testing/e2e-playwright" },
+            { text: "Incident: 家族 RLS", link: "/07_testing/incidents/family-create-rls-select" },
           ],
         },
       ],
-      "/index/": [
+      "/08_development/": [
         {
-          text: "ソースコード index",
+          text: "Development",
           items: [
-            { text: "一覧", link: "/index/README" },
-            { text: "レシピ検索", link: "/index/features/recipe-search" },
+            { text: "Setup", link: "/08_development/setup" },
+            { text: "Conventions", link: "/08_development/conventions" },
+            { text: "Git workflow", link: "/08_development/git-branch-workflow" },
+            { text: "Deploy", link: "/08_development/deploy-vercel-supabase" },
+            { text: "GitHub Actions", link: "/08_development/github-actions-workflow" },
+            { text: "ESLint", link: "/08_development/eslint-clean-architecture" },
+            { text: "VitePress", link: "/08_development/vitepress" },
+            { text: "ゲスト削除運用", link: "/08_development/guest-cleanup-batch-operations" },
+            { text: "Tip: Auth callback", link: "/08_development/tips/email-confirmation-and-auth-callback" },
+            { text: "Tip: Storage 画像", link: "/08_development/tips/image-upload-with-supabase-storage" },
           ],
         },
       ],
-      "/bugs/": [
+      "/09_decisions/": [
         {
-          text: "障害・不具合メモ",
+          text: "Decisions (ADR)",
           items: [
-            {
-              text: "家族作成 RLS",
-              link: "/bugs/家族グループ作成失敗-RLS-SELECTポリシー",
-            },
-          ],
-        },
-      ],
-      "/FeedBack/": [
-        {
-          text: "フィードバック",
-          items: [
-            { text: "テックリードレビュー", link: "/FeedBack/2026-08-12-tech-lead-review" },
-            { text: "面接想定 Q&A", link: "/FeedBack/2026-08-12-interview-questions" },
+            { text: "001 Authentication", link: "/09_decisions/001-authentication" },
+            { text: "002 Image storage", link: "/09_decisions/002-image-storage" },
+            { text: "003 Architecture", link: "/09_decisions/003-architecture" },
+            { text: "004 Supabase", link: "/09_decisions/004-supabase" },
+            { text: "005 Vercel", link: "/09_decisions/005-vercel" },
+            { text: "006 Playwright", link: "/09_decisions/006-playwright" },
+            { text: "007 Family", link: "/09_decisions/007-family-feature" },
+            { text: "008 RLS helpers", link: "/09_decisions/008-rls-helper-functions" },
           ],
         },
       ],
     },
     socialLinks: [{ icon: "github", link: repo }],
     footer: {
-      message: "食卓手帖 — ポートフォリオ用ドキュメント",
+      message: "食卓手帖 — ドキュメント",
       copyright: "MIT",
     },
     search: {

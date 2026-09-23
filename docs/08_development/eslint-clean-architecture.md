@@ -173,7 +173,7 @@ ESLint の pattern では `*` が「1 文字以上」にマッチするため、
 ## 設定の場所
 
 - **ESLint の設定:** `eslint.config.mjs`。禁止パスは `FORBIDDEN` オブジェクトで一元定義し、層ごとに `restrictedImportRule()` で適用しています（重複削減・保守性向上）。
-- **依存関係の図・詳細:** `docs/architect/clean-architecture-and-directory.md` の「2.2 依存関係の図」
+- **依存関係の図・詳細:** `docs/01_architecture/data-flow.md` の「2.2 依存関係の図」
 
 ---
 

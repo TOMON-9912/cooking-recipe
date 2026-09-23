@@ -4,7 +4,7 @@ import nextTs from "eslint-config-next/typescript";
 
 // =============================================================================
 // クリーンアーキテクチャ import 制限（保守性のため定義を一元化）
-// 詳細: docs/guides/eslint-clean-architecture.md
+// 詳細: docs/08_development/eslint-clean-architecture.md
 // =============================================================================
 
 const LAYER_FILES = [

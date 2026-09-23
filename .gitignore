@@ -51,9 +51,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-docs/QA/*
-docs/reviews/*
-docs/work/*
+docs/90_workspace/QA/*
+docs/90_workspace/reviews/*
+docs/90_workspace/work/*
 docs/recipe_create/*
 docs/top/*
 .obsidian/workspace.json

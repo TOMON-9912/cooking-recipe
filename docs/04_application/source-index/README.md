@@ -8,7 +8,7 @@
 - feature ブランチでのスコープ（触ってよいファイル）の特定
 - テスト追加・影響範囲の確認
 
-処理の流れや仕様の詳細は [設計書（design）](../design/README.md) を参照してください。index は**ファイルと機能の対応表**に特化します。
+処理の流れや仕様の詳細は [UI 画面設計](../../06_ui/screen-flow.md) を参照してください。source-index は**ファイルと機能の対応表**に特化します。
 
 ## 機能一覧
 
@@ -25,7 +25,7 @@
 ## ディレクトリ構成
 
 ```
-docs/index/
+docs/04_application/source-index/
 ├── README.md                 … 目次・書き方（このファイル）
 ├── _template.md              … 機能ドキュメントの雛形
 └── features/
@@ -42,7 +42,7 @@ docs/index/
 | 日本語タイトル | ファイル先頭の `#` 見出しに書く | `# レシピ検索` |
 
 - 1 機能 = 1 ファイル。複数機能にまたがるファイルは **関与 = 共用** とし、他機能ドキュメントへのリンクを概要に書く。
-- 設計書（`docs/design/`）は仕様、index は**ファイルの地図**として役割を分ける。
+- 画面設計（`docs/06_ui/`）は仕様、source-index は**ファイルの地図**として役割を分ける。
 
 ## 各機能ドキュメントの構成
 
@@ -65,5 +65,5 @@ docs/index/
 
 ## 関連ドキュメント
 
-- [設計書（design）](../design/README.md)
-- [クリーンアーキテクチャとディレクトリ構成](../architect/clean-architecture-and-directory.md)
+- [UI 画面フロー](../../06_ui/screen-flow.md)
+- [クリーンアーキテクチャ（data-flow）](../../01_architecture/data-flow.md)
