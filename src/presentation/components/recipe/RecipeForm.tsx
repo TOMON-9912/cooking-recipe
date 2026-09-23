@@ -10,31 +10,81 @@ import { RecipeGeneralSection } from "./RecipeGeneralSection";
 import { RecipeIngredientsSection } from "./RecipeIngredientsSection";
 import { RecipeInstructionsSection } from "./RecipeInstructionsSection";
 import { createRecipeAction } from "@/app/recipe/new/action";
+import { updateRecipeAction } from "@/app/recipe/[id]/edit/action";
 import { uploadRecipeThumbnailAction } from "@/app/recipe/new/upload-recipe-thumbnail-action";
+import { resolveThumbnailPath } from "./recipe-thumbnail-path";
 import { RECIPE_THUMBNAIL_MAX_BYTES } from "@/constants/recipe-thumbnail-upload";
+import type { Recipe } from "@/types/recipe";
 
-export function RecipeCreateForm() {
+type Props = {
+    recipe?: Recipe;
+    thumbnailUrl?: string;
+};
+
+/**
+ * レシピの作成・編集フォーム。
+ *
+ * @param recipe 編集時の初期値。無いときは新規作成
+ * @param thumbnailUrl 編集時の既存画像 URL
+ */
+export function RecipeForm({ recipe, thumbnailUrl }: Props) {
+    const isEdit = recipe != null;
+    // 編集では「保存 = 公開」になるため、下書きかどうかで文言を変える
+    const submitLabel = !isEdit
+        ? "レシピを登録"
+        : recipe.isDraft
+          ? "公開して保存"
+          : "変更を保存";
+    const draftLabel = !isEdit
+        ? "下書き保存"
+        : recipe.isDraft
+          ? "下書きのまま保存"
+          : "下書きに戻す";
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
     const [error, setError] = useState<string | null>(null);
 
-    const [title, setTitle] = useState("");
-    const [minutes, setMinutes] = useState<number | "">("");
-    const [servingCount, setServingCount] = useState<number | "">("");
-    const [comment, setComment] = useState("");
+    const [title, setTitle] = useState(recipe?.title ?? "");
+    const [minutes, setMinutes] = useState<number | "">(
+        recipe?.preparationTimeMinutes ?? "",
+    );
+    const [servingCount, setServingCount] = useState<number | "">(
+        recipe?.servingCount ?? "",
+    );
+    const [comment, setComment] = useState(recipe?.description ?? "");
 
     const [imageFile, setImageFile] = useState<File | null>(null);
-    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [imagePreview, setImagePreview] = useState<string | null>(
+        thumbnailUrl ?? null,
+    );
 
-    const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+    const [selectedCategories, setSelectedCategories] = useState<string[]>(
+        recipe?.categories.map((cat) => cat.id) ?? [],
+    );
 
-    const [ingredients, setIngredients] = useState<IngredientUI[]>([
-        { id: crypto.randomUUID(), name: "", quantity: "", unit: "", order: 0 },
-    ]);
+    const [ingredients, setIngredients] = useState<IngredientUI[]>(
+        recipe && recipe.ingredients.length > 0
+            ? recipe.ingredients.map((ing, idx) => ({
+                id: ing.id,
+                name: ing.name,
+                quantity: ing.quantityDisplay,
+                unit: ing.unit,
+                note: ing.note,
+                order: idx,
+            }))
+            : [{ id: crypto.randomUUID(), name: "", quantity: "", unit: "", order: 0 }],
+    );
 
-    const [instructions, setInstructions] = useState<InstructionUI[]>([
-        { id: crypto.randomUUID(), stepNumber: 1, description: "", images: [] },
-    ]);
+    const [instructions, setInstructions] = useState<InstructionUI[]>(
+        recipe && recipe.instructions.length > 0
+            ? recipe.instructions.map((inst) => ({
+                id: inst.id,
+                stepNumber: inst.stepNumber,
+                description: inst.description,
+                images: [],
+            }))
+            : [{ id: crypto.randomUUID(), stepNumber: 1, description: "", images: [] }],
+    );
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -126,8 +176,8 @@ export function RecipeCreateForm() {
         title,
         description: comment,
         thumbnailPath,
-        servingCount: Number(servingCount) || 1,
-        preparationTimeMinutes: Number(minutes) || 0,
+        servingCount: Number(servingCount),
+        preparationTimeMinutes: Number(minutes),
         isDraft,
         categoryIds: selectedCategories,
         ingredients: ingredients.map((ing, idx) => ({
@@ -146,7 +196,7 @@ export function RecipeCreateForm() {
     const handleSubmit = (isDraft: boolean) => {
         setError(null);
         startTransition(async () => {
-            let thumbnailPath: string | undefined;
+            let uploadedPath: string | undefined;
 
             // サムネイルは原寸のまま送る。流れは app/recipe/new/レシピ新規と画像.md
             if (imageFile) {
@@ -157,14 +207,28 @@ export function RecipeCreateForm() {
                     if (!uploadResult.success) {
                         throw new Error(uploadResult.error);
                     }
-                    thumbnailPath = uploadResult.path;
+                    uploadedPath = uploadResult.path;
                 } catch (e) {
                     setError(e instanceof Error ? e.message : "画像のアップロードに失敗しました");
                     return;
                 }
             }
 
-            const result = await createRecipeAction(buildFormData(isDraft, thumbnailPath));
+            const thumbnailPath = resolveThumbnailPath({
+                isEdit,
+                uploadedPath,
+                hasPreview: imagePreview != null,
+                currentPath: recipe?.thumbnailPath,
+            });
+
+            const payload = buildFormData(isDraft, thumbnailPath ?? undefined);
+            const result = isEdit
+                ? await updateRecipeAction({
+                    ...payload,
+                    id: recipe.id,
+                    thumbnailPath,
+                })
+                : await createRecipeAction(payload);
             if (result.success) {
                 router.push(`/recipe/${result.recipe.id}`);
             } else {
@@ -229,14 +293,18 @@ export function RecipeCreateForm() {
                         disabled={isPending}
                         onClick={() => handleSubmit(true)}
                     >
-                        {isPending ? "保存中..." : "下書き保存"}
+                        {isPending ? "保存中..." : draftLabel}
                     </Button>
                     <Button
                         type="submit"
                         className="order-1 sm:order-2 bg-emerald-600 hover:bg-emerald-700 focus-visible:ring-emerald-500"
                         disabled={isPending}
                     >
-                        {isPending ? "登録中..." : "レシピを登録"}
+                        {isPending
+                            ? isEdit
+                                ? "保存中..."
+                                : "登録中..."
+                            : submitLabel}
                     </Button>
                 </section>
                 </CardContent>

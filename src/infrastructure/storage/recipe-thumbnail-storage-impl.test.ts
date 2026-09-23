@@ -11,12 +11,14 @@ vi.mock("@/lib/supabase/server", () => ({
 
 describe("recipeThumbnailStorageImpl", () => {
   const mockUpload = vi.fn();
+  const mockRemove = vi.fn();
   const mockFrom = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
     mockUpload.mockResolvedValue({ error: null });
-    mockFrom.mockReturnValue({ upload: mockUpload });
+    mockRemove.mockResolvedValue({ error: null });
+    mockFrom.mockReturnValue({ upload: mockUpload, remove: mockRemove });
     vi.mocked(createAuthedClient).mockResolvedValue({
       supabase: { storage: { from: mockFrom } },
       user: { id: "user-1" },
@@ -43,6 +45,21 @@ describe("recipeThumbnailStorageImpl", () => {
         upsert: false,
       }),
     );
+  });
+
+  it("remove は指定したパスを削除する", async () => {
+    await recipeThumbnailStorageImpl.remove("user-1/old.jpg");
+
+    expect(mockFrom).toHaveBeenCalledWith(RECIPE_THUMBNAIL_BUCKET);
+    expect(mockRemove).toHaveBeenCalledWith(["user-1/old.jpg"]);
+  });
+
+  it("remove が失敗したら throw する", async () => {
+    mockRemove.mockResolvedValue({ error: { message: "not found" } });
+
+    await expect(
+      recipeThumbnailStorageImpl.remove("user-1/old.jpg"),
+    ).rejects.toThrow("not found");
   });
 
   it("upload が失敗したら throw する", async () => {

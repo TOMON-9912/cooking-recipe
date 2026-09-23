@@ -30,6 +30,23 @@ export const putRecipeThumbnail = async (
   return { path };
 };
 
+/**
+ * 差し替え前などで不要になったサムネイルを削除する
+ * @param path バケット内のオブジェクトパス
+ */
+export const removeRecipeThumbnail = async (path: string): Promise<void> => {
+  const { supabase } = await createAuthedClient();
+
+  const { error } = await supabase.storage
+    .from(RECIPE_THUMBNAIL_BUCKET)
+    .remove([path]);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+};
+
 export const recipeThumbnailStorageImpl: RecipeThumbnailStorage = {
   put: putRecipeThumbnail,
+  remove: removeRecipeThumbnail,
 };
