@@ -1,0 +1,20 @@
+name: Supabase Keep Alive
+
+on:
+  # Free プランは約 7 日間 DB アクティビティ不足で pause されうるため、1 日 2 回本番へ ping する
+  schedule:
+    - cron: "0 3,15 * * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Ping production health
+        env:
+          PRODUCTION_URL: https://cooking-recipe-liard.vercel.app
+        run: |
+          code="$(curl -fsS -o /tmp/health.json -w "%{http_code}" "${PRODUCTION_URL}/api/health")"
+          cat /tmp/health.json
+          test "$code" = "200"
