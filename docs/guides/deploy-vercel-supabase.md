@@ -195,6 +195,21 @@ feature/* → develop（Preview デプロイ）→ main（Production デプロ�
 
 **DB スキーマ変更時**は、Vercel デプロイ**前に**対象 Supabase プロジェクトへ `npx supabase db push` を実行してください。
 
+### Free プランの自動休止（pause）対策
+
+Supabase Free は **約 7 日間、十分な DB アクティビティがない** とプロジェクトが pause されうる（[Project Pausing](https://supabase.com/docs/guides/platform/free-project-pausing)）。pg_cron のゲスト削除だけでは防げない（pause 中は DB ごと止まる）。
+
+本リポジトリでは次で対策する。
+
+| 要素 | 役割 |
+|---|---|
+| `GET /api/health` | anon で `recipes` に 1 件 SELECT し、PostgREST 経由の DB アクセスを発生 |
+| `.github/workflows/supabase-keep-alive.yml` | 1 日 2 回（UTC 3:00 / 15:00）、本番 URL の `/api/health` を curl |
+
+スケジュールは **デフォルトブランチ（`develop`）上の workflow** が動く。本番 URL は README のデモ URL と揃える。URL を変えたら workflow の `PRODUCTION_URL` も更新する。
+
+手動確認: Actions → **Supabase Keep Alive** → **Run workflow**。または `curl https://cooking-recipe-liard.vercel.app/api/health` で `{"ok":true}`。
+
 ---
 
 ## 6. トラブルシューティング
