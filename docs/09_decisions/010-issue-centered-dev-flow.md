@@ -8,19 +8,19 @@ ADR 009 のハーネスは、学びを候補として残すところまでを決
 
 ## 決定内容
 
-- **Issue** は「何を作るか」の正（Goal / Why / Scope / Out of Scope / Acceptance Criteria と Ready 条件のチェックリスト）
+- **Issue** は「何を作るか」の正（目的 / なぜ作るか / 含めること / 含めないこと / 完了条件と、実装開始条件のチェックリスト）
 - **docs/01〜09** は Specification / Design / Decision / Test Design の正。Issue に設計本文を複製しない
-- **Change Types** は Issue 作成時の必須入力にしない。`/plan` が既存仕様とコードを見て確定する
-- **実装開始** は Issue の Ready 条件が揃い、かつユーザーが Cursor 上で Ready を明示したときだけ
+- **変更種別** は Issue 作成時の必須入力にしない。`/plan` が既存仕様とコードを見て確定する
+- **実装開始** は Issue の実装開始条件が揃い、仕様書・設計書のレビューのあと、ユーザーが Cursor 上で承認を明示したときだけ
 - 設計の執筆は `/design`。`implement-feature` は Ready 済み Issue の実装だけを行う
 - ハーネス改善は `docs/90_workspace/harness/candidates/`。学習の隙間は `docs/90_workspace/learning/`。どちらも Issue にしない
 - GitHub Project の列は一覧用であり、Ready の正本にしない（導入は後回し）
 
 ## なぜ Ready を Issue とチャットに分けるか
 
-条件（仕様・必要設計・テスト設計・Implementation Plan）は Issue に無いと、次のセッションで再現できない。最後の承認だけチャットに置くのは、AI が「実装できるだろう」と Ready を自称しないためである。Project の Ready 列を正にすると、Issue と列の二重管理になる。
+条件（仕様の確定・必要な設計・テスト設計・実装計画・仕様と設計のレビュー）は Issue に無いと、次のセッションで再現できない。レビュー後の承認だけチャットに置くのは、AI が「実装できるだろう」と自称しないためである。Project の Ready 列を正にすると、Issue と列の二重管理になる。
 
-## なぜ Change Types を作成時に確定しないか
+## なぜ変更種別を作成時に確定しないか
 
 「お気に入りを足す」だけでは、永続化が要るか UI だけかは分からない。先に正解のチェックを要求すると、空の設計書か誤った範囲指定が先に来る。
 

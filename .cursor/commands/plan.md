@@ -1,5 +1,5 @@
 ---
-description: 計画モード - Issue の Change Types と必要設計を理由つきで判定する
+description: 計画モード - Issue の変更種別と必要設計を理由つきで判定する
 ---
 
 # 計画モード

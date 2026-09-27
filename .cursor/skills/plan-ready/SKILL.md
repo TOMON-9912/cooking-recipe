@@ -7,18 +7,18 @@ description: Reads a GitHub Issue, determines change types, and lists required d
 
 コードは実装しない。docs 本文も書かない（書くのは `/design`）。Ready も付けない。
 
-Issue 番号が無ければ聞く。作成時点の Change Types は空でよい。ここで確定する。
+Issue 番号が無ければ聞く。作成時点の変更種別は空でよい。ここで確定する。
 
 ## 手順
 
-1. Issue の Goal / Why / Scope / Out of Scope / AC を読む
+1. Issue の目的 / なぜ作るか / 含めること / 含めないこと / 完了条件を読む
 2. 既存の `docs/01`〜`09` と、関係する実装を必要な分だけ見る
-3. Change Types を確定する（作成時のチェックを正解扱いしない）
+3. 変更種別を確定する（作成時のチェックを正解扱いしない）
 4. 必要な Specification / Design / Test Design を、**理由つき**で出す。変更しない層は要求しない
 5. 不足があれば列挙して `/design` へ戻す。Implementation Plan は、必要な正本が揃ってから出す
 6. 判断が要る（採用する案が複数、範囲が曖昧）なら止まって聞く
 
-## Change Types と docs
+## 変更種別と docs
 
 | 種別 | 見る正本 |
 | --- | --- |
@@ -46,7 +46,7 @@ Test Design が不要なとき（挙動不変の文言修正など）は、理�
 ```markdown
 # Plan: Issue #N
 
-## Change Types
+## 変更種別
 - Database: 必要
   理由: …
 - API: 不要
@@ -73,8 +73,8 @@ Test Design が不要なとき（挙動不変の文言修正など）は、理�
 
 ## 次
 不足がある → /design
-揃っている → 人間が Issue の Ready 条件を付け、チャットで Ready を宣言する
+揃っている → 人間が仕様書・設計書をレビューし、Issue の実装開始条件を付け、チャットでレビュー後の承認を宣言する
 ```
 
 Issue のチェックボックスは人間が付ける。AI は `gh` で Ready を更新しない。
-Design links / Implementation Plan / Change Types を Issue に反映するのは、人間が依頼したときだけ。
+設計のリンク / 実装計画 / 変更種別を Issue に反映するのは、人間が依頼したときだけ。

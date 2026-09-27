@@ -14,7 +14,7 @@
 
 ```
 GitHub Issue（What / Why / Scope / AC）
-  → /plan（Change Types 確定、必要設計と理由、不足なら停止）
+  → /plan（変更種別の確定、必要設計と理由、不足なら停止）
   → /design（不足している正本だけ。仕様・設計・テスト設計を混ぜない）
   → Issue の Ready 条件
   → 人間がチャットで Ready
@@ -30,10 +30,10 @@ GitHub Issue（What / Why / Scope / AC）
 | 置き場 | 役割 |
 | --- | --- |
 | Issue | Ready **条件**の正（チェックリスト。本文は docs） |
-| Cursor | Human Approved だけ（ユーザーの明示） |
+| Cursor | 仕様・設計レビュー後の承認だけ（ユーザーの明示） |
 | Project | 一覧。正本にしない |
 
-AI は Ready を付けない。Human Approved を自分で成立させない。
+AI は実装開始条件を付けない。レビュー後の承認を自分で成立させない。
 
 ## 全体構造
 

@@ -1,84 +1,100 @@
-name: Slice
-description: 1操作の開発対象（What / Why / Scope / AC）。実装方法は書かない。
-title: "[slice] "
+name: スライス
+description: 1操作の開発対象（目的・理由・範囲・完了条件）。実装方法は書かない。
+title: ""
 labels: ["slice"]
 body:
   - type: markdown
     attributes:
       value: |
-        設計の本文は `docs/01`〜`09` に置く。Change Types は作成時は空でよい（`/plan` で確定する）。
+        タイトルは Conventional Commits の種別で始める（このリポジトリの commit / PR と同じ）。`feat:` 固定ではない。
+
+        - `feat:` 新機能・画面追加（「追加」もこれ。`add:` は使わない）
+        - `fix:` 不具合修正
+        - `docs:` ドキュメントのみ
+        - `refactor:` 挙動を変えない整理
+        - `chore:` 開発基盤・雑務
+
+        画面に閉じる変更は種別を増やさず、スコープで書く。例: `feat(ui): 検索フィルタを追加` / `fix(ui): ボタンが重なる`
+
+        例: `feat: 家族グループへのメンバー追加` / `fix: 確認メールのリンク先が間違っている`
+
+        設計の本文は `docs/01`〜`09` に置く。変更種別は作成時は空でよい（`/plan` で確定する）。
+  - type: dropdown
+    id: type
+    attributes:
+      label: 種別
+      description: タイトル先頭と一致させる。該当するものを選ぶ（feat 固定ではない）。
+      options:
+        - feat
+        - fix
+        - docs
+        - refactor
+        - chore
+    validations:
+      required: true
   - type: textarea
     id: goal
     attributes:
-      label: Goal
+      label: 目的
       description: 何を実現するか（1〜3文）
     validations:
       required: true
   - type: textarea
     id: why
     attributes:
-      label: Why
+      label: なぜ作るか
     validations:
       required: true
   - type: textarea
     id: scope
     attributes:
-      label: Scope
+      label: 含めること
     validations:
       required: true
   - type: textarea
     id: out-of-scope
     attributes:
-      label: Out of Scope
+      label: 含めないこと
     validations:
       required: true
   - type: textarea
     id: acceptance
     attributes:
-      label: Acceptance Criteria
+      label: 完了条件
       description: 利用者から見て終わった状態。テストケースや実装手順は書かない。
     validations:
       required: true
   - type: checkboxes
     id: change-types
     attributes:
-      label: Change Types（任意。/plan で確定する）
+      label: 変更種別（任意。/plan で確定する）
       options:
-        - label: Domain
-        - label: Database
-        - label: Application
+        - label: ドメイン
+        - label: データベース
+        - label: アプリケーション
         - label: API
         - label: UI
-        - label: Test strategy
+        - label: テスト戦略
         - label: ADR
   - type: textarea
     id: design-links
     attributes:
-      label: Design links
+      label: 設計のリンク
       description: 正本へのパスのみ。本文は貼らない。
   - type: textarea
     id: impl-plan
     attributes:
-      label: Implementation Plan
-      description: 1行スライス、触る層、主なパス、検証コマンド。How の詳細は書かない。
-  - type: dropdown
-    id: mode
-    attributes:
-      label: Mode
-      options:
-        - 未定
-        - AI
-        - Human
-        - Pair
-      default: 0
+      label: 実装計画
+      description: 1行スライス、触る層、主なパス、検証コマンド。実現方法の詳細は書かない。
   - type: checkboxes
     id: ready
     attributes:
-      label: Ready
-      description: 条件の正。中身は docs。Human Approved は Cursor 上の宣言で成立する。AI は付けない。
+      label: 実装開始条件
+      description: 条件の正。中身は docs。「レビュー後の承認」は、仕様書・設計書のレビューのあと、Cursor 上で人間が宣言したときだけ成立する。AI は付けない。
       options:
-        - label: Specification
-        - label: Required Design
-        - label: Test Design
-        - label: Implementation Plan
-        - label: Human Approved
+        - label: 仕様の確定
+        - label: 必要な設計
+        - label: テスト設計
+        - label: 実装計画
+        - label: 仕様・設計のレビュー
+        - label: レビュー後の承認
