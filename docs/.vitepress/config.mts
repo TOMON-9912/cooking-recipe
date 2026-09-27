@@ -16,6 +16,7 @@ export default withMermaid(
   cleanUrls: true,
   srcExclude: [
     "**/04_application/source-index/_template.md",
+    "**/02_domain/_template.md",
     "**/90_workspace/**",
   ],
   ignoreDeadLinks: true,
@@ -56,6 +57,7 @@ export default withMermaid(
           text: "Domain",
           items: [
             { text: "Overview", link: "/02_domain/overview" },
+            { text: "設計書の書き方", link: "/02_domain/writing-guide" },
             { text: "Recipe", link: "/02_domain/recipe" },
             { text: "User", link: "/02_domain/user" },
           ],

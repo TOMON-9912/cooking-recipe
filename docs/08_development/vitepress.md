@@ -67,4 +67,4 @@ flowchart TD
 
 - 見出し内でバッククォートを二重に使わない
 - 二重中括弧は Vue 插値と解釈される（Actions の secrets 参照はコードブロック内など）
-- `04_application/source-index/_template.md` はビルド対象外（`srcExclude`）
+- `04_application/source-index/_template.md` と `02_domain/_template.md` はビルド対象外（`srcExclude`）
