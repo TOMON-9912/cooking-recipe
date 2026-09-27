@@ -57,6 +57,6 @@ E2E テストフレームワークとして **Playwright（`@playwright/test`）
 
 ## 関連
 
-- 操作手順: [`docs/guides/e2e-testing-with-playwright.md`](../guides/e2e-testing-with-playwright.md)
+- 操作手順: [`docs/07_testing/e2e-playwright.md`](../07_testing/e2e-playwright.md)
 - 設定: リポジトリルートの `playwright.config.ts`
 - テスト: `e2e/` 配下

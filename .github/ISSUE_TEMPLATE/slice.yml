@@ -1,0 +1,84 @@
+name: Slice
+description: 1操作の開発対象（What / Why / Scope / AC）。実装方法は書かない。
+title: "[slice] "
+labels: ["slice"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        設計の本文は `docs/01`〜`09` に置く。Change Types は作成時は空でよい（`/plan` で確定する）。
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: 何を実現するか（1〜3文）
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+    validations:
+      required: true
+  - type: textarea
+    id: out-of-scope
+    attributes:
+      label: Out of Scope
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance Criteria
+      description: 利用者から見て終わった状態。テストケースや実装手順は書かない。
+    validations:
+      required: true
+  - type: checkboxes
+    id: change-types
+    attributes:
+      label: Change Types（任意。/plan で確定する）
+      options:
+        - label: Domain
+        - label: Database
+        - label: Application
+        - label: API
+        - label: UI
+        - label: Test strategy
+        - label: ADR
+  - type: textarea
+    id: design-links
+    attributes:
+      label: Design links
+      description: 正本へのパスのみ。本文は貼らない。
+  - type: textarea
+    id: impl-plan
+    attributes:
+      label: Implementation Plan
+      description: 1行スライス、触る層、主なパス、検証コマンド。How の詳細は書かない。
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Mode
+      options:
+        - 未定
+        - AI
+        - Human
+        - Pair
+      default: 0
+  - type: checkboxes
+    id: ready
+    attributes:
+      label: Ready
+      description: 条件の正。中身は docs。Human Approved は Cursor 上の宣言で成立する。AI は付けない。
+      options:
+        - label: Specification
+        - label: Required Design
+        - label: Test Design
+        - label: Implementation Plan
+        - label: Human Approved

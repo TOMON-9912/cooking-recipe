@@ -32,7 +32,7 @@
 
 ## 1. プロジェクト全体・技術選定（Q001〜Q008）
 
-**関連:** `docs/adr/*`、`BACKLOG.md`、`README`
+**関連:** `docs/09_decisions/`、`BACKLOG.md`、`README`
 
 | # | 質問 | 観点 | 難 |
 |---|------|------|----|
@@ -137,7 +137,7 @@
 
 ## 6. 認証・セッション・セキュリティ（Q061〜Q075）
 
-**関連:** `src/proxy.ts`、`src/lib/supabase/server.ts`、`src/app/auth/callback/route.ts`、`src/lib/site-url.ts`、`docs/tips/email-confirmation-and-auth-callback.md`
+**関連:** `src/proxy.ts`、`src/lib/supabase/server.ts`、`src/app/auth/callback/route.ts`、`src/lib/site-url.ts`、`docs/08_development/tips/email-confirmation-and-auth-callback.md`
 
 | # | 質問 | 観点 | 難 |
 |---|------|------|----|
@@ -161,7 +161,7 @@
 
 ## 7. Supabase・RLS・SQL（Q076〜Q088）
 
-**関連:** `supabase/migrations/**`、`docs/adr/06-rls-helper-functions.md`、`recipe-read-repository-impl.ts`
+**関連:** `supabase/migrations/**`、`docs/09_decisions/006-rls-helper-functions.md`、`recipe-read-repository-impl.ts`
 
 | # | 質問 | 観点 | 難 |
 |---|------|------|----|
@@ -216,7 +216,7 @@
 
 ## 10. CI/CD・運用（Q104〜Q110）
 
-**関連:** `.github/workflows/ci.yml`、`docs/guides/deploy-vercel-supabase.md`、`BACKLOG.md`
+**関連:** `.github/workflows/ci.yml`、`docs/08_development/deploy-vercel-supabase.md`、`BACKLOG.md`
 
 | # | 質問 | 観点 | 難 |
 |---|------|------|----|

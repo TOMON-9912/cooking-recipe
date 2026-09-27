@@ -31,7 +31,7 @@ AI 開発 × 実務未経験という前提では、次のギャップが本丸�
 
 | 項目 | 内容 |
 |------|------|
-| **対象ファイル/箇所** | `src/app/auth/callback/route.ts`（`GET` / `toSafeNextPath`）<br>`src/lib/site-url.ts`（`getSiteOrigin`）<br>`src/infrastructure/repositories/auth-repository-impl.ts`（`emailRedirectTo`）<br>`src/constants/auth.ts`<br>`docs/tips/email-confirmation-and-auth-callback.md` |
+| **対象ファイル/箇所** | `src/app/auth/callback/route.ts`（`GET` / `toSafeNextPath`）<br>`src/lib/site-url.ts`（`getSiteOrigin`）<br>`src/infrastructure/repositories/auth-repository-impl.ts`（`emailRedirectTo`）<br>`src/constants/auth.ts`<br>`docs/08_development/tips/email-confirmation-and-auth-callback.md` |
 | **現状のコードの役割** | 確認メールの戻り先をアプリ側 `/auth/callback` に固定し、`code`（PKCE）と `token_hash`（OTP）の両方でセッション確立。オリジンは `NEXT_PUBLIC_SITE_URL` 優先で解決し、`next` クエリはオープンリダイレクト防止で丸める。 |
 | **抽出理由と学びのポイント** | 「動いたつもり」から本番で落ちる典型事故。Hosting の Site URL / Redirect URLs / アプリの `emailRedirectTo` / オリジン解決の **4 点が揃わないと壊れる**話は、読者の再現性が高く反応が取りやすい。すでに tips にフロー図と不具合経緯があるので、記事化コストが低い。 |
 | **記事アウトライン案** | **タイトル例:** 「Supabase の確認メールが localhost に飛ぶ理由と、Next.js で直した話」<br>1. 症状（本番メールのリンクが localhost）<br>2. 確認フロー全体図（確認完了 ≠ セッション確立）<br>3. Site URL / Redirect URLs / `emailRedirectTo` / `getSiteOrigin` の責務分担<br>4. `code` と `token_hash` 両対応にした理由<br>5. `toSafeNextPath` でオープンリダイレクトを防ぐ<br>6. 本番チェックリスト |
@@ -42,7 +42,7 @@ AI 開発 × 実務未経験という前提では、次のギャップが本丸�
 
 | 項目 | 内容 |
 |------|------|
-| **対象ファイル/箇所** | `docs/adr/06-rls-helper-functions.md`<br>`supabase/migrations/20260307000002_create_family_tables.sql`（`get_my_family_ids` / `is_same_family`）<br>`supabase/migrations/20260307000003_create_recipe_tables.sql`（`accessible_recipe_ids` ビュー） |
+| **対象ファイル/箇所** | `docs/09_decisions/006-rls-helper-functions.md`<br>`supabase/migrations/20260307000002_create_family_tables.sql`（`get_my_family_ids` / `is_same_family`）<br>`supabase/migrations/20260307000003_create_recipe_tables.sql`（`accessible_recipe_ids` ビュー） |
 | **現状のコードの役割** | `family_members` をポリシー内で直接参照すると RLS が再帰する問題を、`security definer` ヘルパーで回避。子テーブルは `accessible_recipe_ids`（`security_invoker`）で親 RLS を再利用。 |
 | **抽出理由と学びのポイント** | 「RLS を入れただけ」の記事は多いが、**再帰エラーの構造説明 → 代替案比較 → ヘルパー＋ビューの二段構え**まで書ける記事は少ない。個人開発でも「家族共有」は共感されやすく、セキュリティ系で評価されやすい。ADR がほぼ記事の下書きになっている。 |
 | **記事アウトライン案** | **タイトル例:** 「Supabase RLS で無限再帰した話：`security definer` とビューで家族共有を設計する」<br>1. やりたかった権限モデル（自分＋家族の公開レシピ）<br>2. 素直なポリシーが再帰する理由（図解）<br>3. 捨てた案（ポリシー重複記述、アプリ側フィルタのみ）<br>4. `get_my_family_ids` / `is_same_family` の採用理由<br>5. 子テーブルを `accessible_recipe_ids` に寄せた理由<br>6. `search_path` 固定など security definer の落とし穴 |
@@ -53,7 +53,7 @@ AI 開発 × 実務未経験という前提では、次のギャップが本丸�
 
 | 項目 | 内容 |
 |------|------|
-| **対象ファイル/箇所** | `eslint.config.mjs`（`FORBIDDEN` / `restrictedImportRule`）<br>`docs/guides/eslint-clean-architecture.md`<br>`docs/architect/clean-architecture-and-directory.md`<br>usecase 例: `src/usecase/recipe/create-recipe-usecase.ts`（`CreateRecipeDeps`） |
+| **対象ファイル/箇所** | `eslint.config.mjs`（`FORBIDDEN` / `restrictedImportRule`）<br>`docs/08_development/eslint-clean-architecture.md`<br>`docs/01_architecture/overview.md`<br>usecase 例: `src/usecase/recipe/create-recipe-usecase.ts`（`CreateRecipeDeps`） |
 | **現状のコードの役割** | domain / usecase は `error`、infrastructure / presentation は `warn` で層跨ぎ import を禁止。usecase は infra / lib を直接触らず、deps で注入する。 |
 | **抽出理由と学びのポイント** | 「クリーンアーキを勉強した」系は多いが、**Lint ルールとして運用に落とした具体コード**は希少。個人開発でも破綻しにくい仕組みとして刺さる。deps DI とセットで書くと実践記事になる。 |
 | **記事アウトライン案** | **タイトル例:** 「個人開発でも崩れないクリーンアーキ：ESLint `no-restricted-imports` で依存を強制する」<br>1. 文書だけだと守られない問題<br>2. 層ごとの禁止リスト設計<br>3. usecase は deps オブジェクトでテスト容易に<br>4. error と warn の使い分け<br>5. Auth だけ DIContainer が残っている話（移行のリアル） |
@@ -64,7 +64,7 @@ AI 開発 × 実務未経験という前提では、次のギャップが本丸�
 
 | 項目 | 内容 |
 |------|------|
-| **対象ファイル/箇所** | `docs/design/レシピ検索-キーワードマッチング設計.md`<br>`src/infrastructure/repositories/recipe/recipe-read-repository-impl.ts`（`recipe_summaries_ids_matching_keyword` RPC） |
+| **対象ファイル/箇所** | `docs/06_ui/screens/recipe-search-keyword.md`<br>`src/infrastructure/repositories/recipe/recipe-read-repository-impl.ts`（`recipe_summaries_ids_matching_keyword` RPC） |
 | **現状のコードの役割** | `%` / `_` をメタ文字として解釈する `ILIKE` を避け、DB 側で `strpos` + `lower` の部分一致 RPC を呼び、該当 ID で一覧を絞り込む。 |
 | **抽出理由と学びのポイント** | 「エスケープすればよい」と思いがちな落とし穴を、**PostgREST の制約込みで設計回避した**ストーリーが強い。セキュリティ（インジェクション）と検索正しさ（メタ文字）を混同しがちな点も教育的。 |
 | **記事アウトライン案** | **タイトル例:** 「Supabase で `%` がワイルドカードになる問題：ILIKE をやめて strpos RPC にした理由」<br>1. 「50%」で意図しないヒットが出る<br>2. アプリ側エスケープだけでは足りない理由<br>3. 選択肢 A/B/C の比較（設計書そのまま）<br>4. RPC → ID 配列 → `in` 絞り込みの実装<br>5. 規模が増えたときの限界（URL 長・インデックス） |
@@ -75,7 +75,7 @@ AI 開発 × 実務未経験という前提では、次のギャップが本丸�
 
 | 項目 | 内容 |
 |------|------|
-| **対象ファイル/箇所** | `src/lib/get-presigned-image-url.ts`<br>`src/domain/repositories/recipe/recipe-thumbnail-storage.ts`<br>`src/infrastructure/storage/recipe-thumbnail-storage-impl.ts`<br>`src/usecase/recipe/upload-recipe-thumbnail-usecase.ts`<br>`src/lib/recipe-thumbnail-upload-controls.ts`<br>`docs/tips/image-upload-with-s3.md` / `docs/architect/` の S3 関連 |
+| **対象ファイル/箇所** | `src/lib/get-presigned-image-url.ts`<br>`src/domain/repositories/recipe/recipe-thumbnail-storage.ts`<br>`src/infrastructure/storage/recipe-thumbnail-storage-impl.ts`<br>`src/usecase/recipe/upload-recipe-thumbnail-usecase.ts`<br>`src/lib/recipe-thumbnail-upload-controls.ts`<br>`docs/08_development/tips/image-upload-with-supabase-storage.md` / `docs/01_architecture/` の関連 |
 | **現状のコードの役割** | バケット非公開。アップロードは usecase で MIME/サイズ検証 → storage 抽象に委譲。表示はサーバーでプレサイン GET。Action 層でプロセス内レート制限と構造化監査ログ。 |
 | **抽出理由と学びのポイント** | 「Supabase Storage で簡単に」ではなく、**権限境界（Domain Storage 抽象）と漏洩時の被害限定（期限付き URL）**まで語れる。個人開発でも「公開バケット直 URL」を避ける姿勢は発信価値が高い。 |
 | **記事アウトライン案** | **タイトル例:** 「レシピ画像を公開バケットにしない：S3 プレサイン URL と usecase バリデーションの設計」<br>1. なぜ DB には path だけ保存するか<br>2. クライアント直アップロード vs サーバー経由<br>3. usecase のバリデーションと infra の責務分離<br>4. レート制限の限界（プロセス内 Map → Redis）<br>5. 監査ログを JSON 一行にした意図 |
@@ -86,7 +86,7 @@ AI 開発 × 実務未経験という前提では、次のギャップが本丸�
 
 | 項目 | 内容 |
 |------|------|
-| **対象ファイル/箇所** | `supabase/migrations/20260801000001_guest_cleanup_pg_cron.sql`<br>`docs/implementation/guest/guest-cleanup-batch.md`<br>`docs/guides/guest-cleanup-batch-operations.md`<br>`docs/adr/07-guest-login.md` |
+| **対象ファイル/箇所** | `supabase/migrations/20260801000001_guest_cleanup_pg_cron.sql`<br>`docs/04_application/guest/guest-cleanup-batch.md`<br>`docs/08_development/guest-cleanup-batch-operations.md`<br>`docs/09_decisions/007-guest-login.md` |
 | **現状のコードの役割** | Anonymous ユーザーの期限切れ削除を DB 側ジョブ（`cleanup_anonymous_users` + `cron.schedule`）に寄せる。アプリの `/api/cron` は採用していない。 |
 | **抽出理由と学びのポイント** | 「Cron はどこに置くか」は実務でよく議論される。**ホスティング Cron vs DB Cron** のトレードオフ（認証ヘッダ、スリープ、権限、監査）を自分の選択理由で書けると差別化できる。 |
 | **記事アウトライン案** | **タイトル例:** 「ゲストユーザー掃除を Vercel Cron から pg_cron に移した理由」<br>1. Anonymous Sign-In の寿命問題<br>2. アプリ Cron の痛点（秘密ヘッダ、デプロイ依存）<br>3. `security definer` SQL + CASCADE の設計<br>4. 運用手順（ガイドへのリンク） |
@@ -125,7 +125,7 @@ AI 開発 × 実務未経験という前提では、次のギャップが本丸�
 
 | 項目 | 内容 |
 |------|------|
-| **対象ファイル/箇所** | `src/proxy.ts`（`proxy` / `PUBLIC_PATHS` / cookie `setAll`）<br>各テーブルの RLS ポリシー（migrations）<br>`docs/adr/06-rls-helper-functions.md` |
+| **対象ファイル/箇所** | `src/proxy.ts`（`proxy` / `PUBLIC_PATHS` / cookie `setAll`）<br>各テーブルの RLS ポリシー（migrations）<br>`docs/09_decisions/006-rls-helper-functions.md` |
 | **現状のコードの役割** | proxy は未ログインを `/login` へ。データ権限は DB RLS。callback はセッション確立前に来るため PUBLIC。 |
 | **なぜ深掘りが重要か** | 「フロントで隠す」と「DB で拒否する」の違いを誤解すると、**UI だけ守って API/直クエリが抜ける**事故が起きる。`getUser()` と cookie コピーの NOTE は、SSR セッションの本質に触れている。 |
 | **学び方の提案** | 1. proxy を外しても RLS で守られるか実験する（ローカル）<br>2. `getSession` vs `getUser` の公式推奨理由を読む<br>3. 「認可はどこに置くか」を図にして ADR 追記 |
@@ -227,7 +227,7 @@ AI 開発 × 実務未経験という前提では、次のギャップが本丸�
 
 | 項目 | 内容 |
 |------|------|
-| **対象ファイル/箇所** | `eslint.config.mjs` の `FORBIDDEN` ブロック<br>`docs/guides/eslint-clean-architecture.md` |
+| **対象ファイル/箇所** | `eslint.config.mjs` の `FORBIDDEN` ブロック<br>`docs/08_development/eslint-clean-architecture.md` |
 | **現状のコードの役割** | 層別 `no-restricted-imports`。 |
 | **汎用化アドバイス** | `eslint-config-clean-layers` のような共有 config パッケージ化。ディレクトリ名（domain/usecase/...）をオプションにする。Qiita より npm 公開の方が資産性が高い。 |
 
@@ -293,7 +293,7 @@ AI 開発 × 実務未経験という前提では、次のギャップが本丸�
 
 | 項目 | 内容 |
 |------|------|
-| **対象ファイル/箇所** | `eslint.config.mjs`、`docs/architect/clean-architecture-and-directory.md`、`CreateRecipeDeps` 等 |
+| **対象ファイル/箇所** | `eslint.config.mjs`、`docs/01_architecture/overview.md`、`CreateRecipeDeps` 等 |
 | **現状のコードの役割** | 依存方向を人間の記憶ではなくツールで守る。 |
 | **なぜ評価が高いか** | 多くの個人開発は「フォルダ分けしただけ」で終わる。**違反が CI で落ちる**状態は、実務のチーム開発と同じ規律。これは自信を持ってよい。 |
 
@@ -303,7 +303,7 @@ AI 開発 × 実務未経験という前提では、次のギャップが本丸�
 
 | 項目 | 内容 |
 |------|------|
-| **対象ファイル/箇所** | `docs/adr/*`、`docs/tips/email-confirmation-and-auth-callback.md`、`docs/design/レシピ検索-キーワードマッチング設計.md`、`docs/bugs/` |
+| **対象ファイル/箇所** | `docs/09_decisions/`、`docs/08_development/tips/email-confirmation-and-auth-callback.md`、`docs/06_ui/screens/recipe-search-keyword.md`、`docs/07_testing/incidents/` |
 | **現状のコードの役割** | 採用理由・不採用理由・事故の事後分析。 |
 | **なぜ評価が高いか** | コードより先に腐るのが文脈知識。未来の自分と読者（記事読者含む）への投資になっている。発信の原材料もすでに揃っている。 |
 
@@ -353,7 +353,7 @@ AI 開発 × 実務未経験という前提では、次のギャップが本丸�
 
 | 項目 | 内容 |
 |------|------|
-| **対象ファイル/箇所** | `docs/adr/07-guest-login.md`、`BACKLOG.md`（Identity Linking、招待 UI、RLS 関門） |
+| **対象ファイル/箇所** | `docs/09_decisions/007-guest-login.md`、`BACKLOG.md`（Identity Linking、招待 UI、RLS 関門） |
 | **現状のコードの役割** | やったこと／まだやらないことを分離。 |
 | **なぜ評価が高いか** | 機能を盛りすぎず、**未完了を可視化できる**のはプロダクト判断力。技術力と同じく評価される。 |
 
@@ -372,7 +372,7 @@ AI 開発 × 実務未経験という前提では、次のギャップが本丸�
 | **観点** | AI 開発では、層分け・Auth・RLS のような上位設計まで一気に揃いやすい一方、**一行の意味を口頭で説明できない**状態が残りやすい。 |
 | **このリポジトリでの兆候** | `src/proxy.ts` の cookie `setAll`、`isRedirectError`、`useActionState` の第 2 引数 `FormData`、`"use client"` の境界など、「おまじない」になりやすい箇所が複数ある。 |
 | **学びのポイント** | 面接・発信・デバッグのどれでも、「なぜこの API か」を 30 秒で言えるかが分岐点。コードを増やすより、**既存ファイルを 1 つ選んで自分の言葉で解説ノートを書く**方が伸びる。 |
-| **実践** | 週 1 本、「このファイルを新人に説明する」メモを `docs/tips/` に足す（すでにその型の docs があるので型が揃っている）。 |
+| **実践** | 週 1 本、「このファイルを新人に説明する」メモを `docs/08_development/tips/` に足す（すでにその型の docs があるので型が揃っている）。 |
 
 ---
 

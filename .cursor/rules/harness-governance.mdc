@@ -1,0 +1,52 @@
+---
+description: AI 開発ハーネスの統治（正本・Ready・変更禁止・改善は候補まで）
+alwaysApply: true
+---
+
+# ハーネス統治
+
+## 目的
+
+チャット指示で開発する。AI にリポジトリを自律改修させない。
+
+## 正本
+
+- プロダクトの事実・仕様・判断理由は `docs/01_architecture`〜`docs/09_decisions`
+- 開発対象と Ready 条件は GitHub Issue
+- ハーネスの運用説明は `docs/90_workspace/harness/README.md`
+- 仕様を Rule や Issue にコピーしない
+
+## 実装開始
+
+- 必要な設計が無い状態で実装しない。判定は `/plan`
+- Ready 条件の正は Issue のチェックリスト。Human Approved はユーザーがこのチャットで Ready と明示したときだけ成立する
+- AI は Ready を付けない。Human Approved を自分で成立させない
+- 「実装できるだろう」で Ready 扱いしない。判断が必要なら止まって聞く
+- 実装モードはユーザーが選んだ Command に従う
+
+## 変更してよい範囲
+
+ユーザーが **Rules を直して / Skill を更新して** など、対象が分かる指示をしたときだけ、`.cursor/rules/**` と `.cursor/skills/**` を編集する。
+
+「続けて」「改善して」「直して」だけではハーネス改変の許可ではない。
+
+## 改善の止め方
+
+ハーネスのずれは `.cursor/skills/record-improvement-candidate/SKILL.md` に従い **候補まで**。
+人間の学習の隙間は `docs/90_workspace/learning/`。どちらも Issue にしない。
+
+- Adopt / Defer / Reject を AI が決めない
+- 候補を Rule / Skill に自動反映しない
+
+## 置き場の早見
+
+| 種類 | 置くもの |
+| --- | --- |
+| Issue | What / Why / Scope / AC / Ready 条件 |
+| Rule | 常時の不変条件だけ |
+| Skill | 特定作業の手順 |
+| Documentation | このアプリ固有の事実 |
+| Candidate | ハーネスの未採否の学び |
+| Learning | 人間が次に練習すること |
+
+判断に迷ったら `docs/90_workspace/harness/placement-criteria.md`。

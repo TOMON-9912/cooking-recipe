@@ -80,7 +80,7 @@
 - 公開済みレシピは家族全員が編集・削除できるため、「家族の資産」として共同で手入れできる
 - レシピごとの公開範囲設定 UI を第 1 段階では不要にできる
 
-関連: [`docs/tables/README.md` の RLS 設計方針](../../tables/README.md)
+関連: [`docs/03_database/tables/README.md` の RLS 設計方針](../03_database/tables/README.md)
 
 ---
 
@@ -111,7 +111,7 @@
 - `recipes` の RLS 変更がビュー経由で子テーブルに自動追従する
 - `security_invoker = true` により、スーパーユーザー権限での RLS バイパスを防ぐ
 
-関連: [`docs/tables/view/accessible_recipe_ids.md`](../../tables/view/accessible_recipe_ids.md)
+関連: [`docs/03_database/tables/accessible_recipe_ids.md`](../03_database/tables/accessible_recipe_ids.md)
 
 ---
 
@@ -252,7 +252,7 @@ DB・RLS は「本人が `family_members` に INSERT する」前提まで整備
 - 他人レシピへの部品追加は、データ整合性・監査の観点で別設計が必要
 - 公開済みレシピの編集（UPDATE）で内容変更は可能
 
-関連: [`docs/tables/recipe/recipe_ingredients.md`](../../tables/recipe/recipe_ingredients.md)
+関連: [`docs/03_database/tables/recipe_ingredients.md`](../03_database/tables/recipe_ingredients.md)
 
 ---
 

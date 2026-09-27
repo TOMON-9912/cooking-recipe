@@ -139,6 +139,7 @@ export default withMermaid(
           items: [
             { text: "Setup", link: "/08_development/setup" },
             { text: "Conventions", link: "/08_development/conventions" },
+            { text: "Issue 起点の開発", link: "/08_development/issue-workflow" },
             { text: "Git workflow", link: "/08_development/git-branch-workflow" },
             { text: "Deploy", link: "/08_development/deploy-vercel-supabase" },
             { text: "GitHub Actions", link: "/08_development/github-actions-workflow" },
@@ -162,6 +163,8 @@ export default withMermaid(
             { text: "006 RLS ヘルパー", link: "/09_decisions/006-rls-helper-functions" },
             { text: "007 ゲストログイン", link: "/09_decisions/007-guest-login" },
             { text: "008 画像保存先", link: "/09_decisions/008-image-storage" },
+            { text: "009 AI 開発ハーネス", link: "/09_decisions/009-ai-dev-harness" },
+            { text: "010 Issue 起点フロー", link: "/09_decisions/010-issue-centered-dev-flow" },
           ],
         },
       ],

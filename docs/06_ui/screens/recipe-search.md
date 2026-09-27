@@ -21,7 +21,7 @@
 家族が登録した**公開済みレシピ**を、キーワードと（必要なら）カテゴリで絞り込み、一覧で見つけられる画面を追加する。トップのクイックアクセス「レシピ検索」（現状 `TopHero.tsx` の `QuickAccessSection`）から遷移できるようにし、**主目的は「条件を入れて結果を見る」1 つ**に絞る。
 
 **スコープの前提（重要）**  
-`recipe_summaries` ビューには **タイトル・説明・カテゴリ** はあるが、**材料名は含まれていない**（`docs/tables/view/recipe_summaries.md`）。文言上「食材から探す」とあるため、**第1段階は「タイトル・説明のキーワード + カテゴリ」**とし、**材料横断検索は第2段階**（ビュー拡張や別クエリ）として切り出すと実装が破綻しにくい。
+`recipe_summaries` ビューには **タイトル・説明・カテゴリ** はあるが、**材料名は含まれていない**（`docs/03_database/tables/recipe_summaries.md`）。文言上「食材から探す」とあるため、**第1段階は「タイトル・説明のキーワード + カテゴリ」**とし、**材料横断検索は第2段階**（ビュー拡張や別クエリ）として切り出すと実装が破綻しにくい。
 
 ---
 
@@ -123,7 +123,7 @@
 | `recipe_summaries` のマッピング      | `src/infrastructure/repositories/recipe/recipe-read-repository-impl.ts` の `getRecipeSummaries` |
 | プレサイン付き一覧ページ             | `src/app/top/page.tsx`                                                                          |
 | カード・フィルタ UI の雰囲気         | `src/presentation/components/recipe/RecipeListPage.tsx` / `RecipeCard.tsx`                      |
-| ビューに含まれる列・含まれない列     | `docs/tables/view/recipe_summaries.md`                                                          |
+| ビューに含まれる列・含まれない列     | `docs/03_database/tables/recipe_summaries.md`                                                          |
 
 ---
 
@@ -173,7 +173,7 @@
 
 2. **参照するリソース名は既存の成功例と同じにする**  
    - 一覧取得で既に動いている `getRecipeSummaries` は **ビュー `recipe_summaries`** に対して `.select("*")` している。検索用関数も **まず同じ `.from(...)`** から始め、`is_draft` フィルタも同様にかけると、テーブル名の取り違え（例: `recipe` / `recipes` など）を防げる。  
-   - ビュー定義と列名は `docs/tables/view/recipe_summaries.md` を参照。
+   - ビュー定義と列名は `docs/03_database/tables/recipe_summaries.md` を参照。
 
 3. **行 → `RecipeSummary` の変換は 1 か所に寄せる**  
    - `getRecipeSummaries` 内の `data.map((row) => ({ ... }))` と**同じ形**のオブジェクトを組み立てる必要がある。コピペで二重管理すると片方だけ直し忘れるので、**ファイル内の非 export の小さな関数**（例: 行を受け取り `RecipeSummary` を返す）にまとめると設計書の意図どおりになる。

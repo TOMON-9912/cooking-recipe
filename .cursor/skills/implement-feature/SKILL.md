@@ -1,81 +1,69 @@
 ---
 name: implement-feature
-description: クリーンアーキテクチャに従った新機能の実装ガイド。新しい機能を追加するとき、CRUD 機能を実装するとき、レシピ関連の機能を作るときに使用。
+description: Implements one Ready GitHub Issue end-to-end under Clean Architecture. Use when the user has declared Ready and runs /implement.
 ---
 
-# 新機能実装ガイド
+# 機能実装（Ready 済み Issue）
 
-このプロジェクトはクリーンアーキテクチャを採用しています。**1 機能（操作）= 1 PR** を目安に、end-to-end で実装してください。
+**1 操作 = 1 スライス = 1 PR**。設計は書かない。完成コードはファイルに書く。
 
-## 実装単位
+常時制約: `clean-architecture.mdc` / `file-naming.mdc` / `code-style.mdc` / `ui-design.mdc` / `git-workflow.mdc` / `harness-governance.mdc`
 
-| 操作 | 例（family） | PR の目安 |
-|---|---|---|
-| 登録 | 家族グループ作成 | create-family ブランチ |
-| 取得 | 所属家族・メンバー一覧 | get-family ブランチ |
-| 更新 | グループ名変更 | update-family-name ブランチ |
-| 参加・脱退 | 招待参加 / 脱退 | join-family / leave-family ブランチ |
+## 実装してよいか
 
-**1 操作の PR に、無関係な別操作を含めない。**
+次が揃うまで **1 行も実装しない**。足りないものは `/plan` または `/design` へ戻す。
 
-## 1 機能内の実装順序
+1. Issue（番号または URL）がある
+2. Issue の Ready 条件が付いている: Specification / Required Design / Test Design / Implementation Plan
+3. **このチャットで** ユーザーが Ready を明示している（「Ready」「この設計で Ready。/implement」など）
+4. Implementation Plan と、変更種別に対する正本がある
+5. 未確定の判断が無い
+
+AI が「まあ実装できる」と判断して進まない。Issue の Human Approved を AI が付けない。
+
+`docs/04` が無いからスコープを短く宣言して着手する、ことはしない。
+
+未 Ready の停止例:
+
+```text
+DB 変更が必要なのに docs/03_database に該当設計がありません。
+実装を開始しません。/design で DB 設計を確定してください。
+```
+
+## 着手後
+
+正本と Implementation Plan に従い、必要な層だけ下から実装する。
 
 ```
-1. domain/models      → 型定義（不足分のみ）
-2. domain/repositories → インターフェース（不足分のみ）
-3. infrastructure     → DB 実装
-4. usecase            → オーケストレーション
-5. app                → Server Action
-6. presentation       → UI
+domain/models → domain/repositories → infrastructure → usecase → app → presentation
 ```
 
-## 各層のチェックリスト
+| 層 | この操作でやること |
+| --- | --- |
+| domain | 不足している型・interface だけ |
+| infrastructure | `{関心事}-repository-impl.ts`、snake_case 変換、単体テスト |
+| usecase | `{操作}-{関心事}-usecase.ts`、deps、バリデーション、単体テスト |
+| app | Action で deps 組み立て、認証・パース・エラー整形、単体テスト |
+| presentation | UI。Action だけ呼ぶ |
 
-### domain/models / repositories
+参考: `src/usecase/recipe/`、`src/usecase/family/create-family-usecase.ts`、`docs/04_application/family/create-family.md`
 
-- [ ] この操作に必要な型・interface だけ追加
-- [ ] usecase は infrastructure を import しない
+## テスト
 
-### infrastructure
+| 状況 | 行動 |
+| --- | --- |
+| テストがある | 通す実装のみ。緩和・削除はしない |
+| ない | Test Design に沿って usecase / infrastructure / action に追加する |
+| 完了時 | Implementation Plan の検証コマンドを実行して報告する |
 
-- [ ] `{関心事}-repository-impl.ts` に Supabase 実装
-- [ ] snake_case → camelCase 変換
-- [ ] 単体テストを追加
+## 完了報告
 
-### usecase
+1. Issue 番号と何をしたか
+2. スコープ外
+3. 触ったファイル
+4. テストと結果
+5. レビューで見てほしい点
+6. 次の提案は 1 つ（着手しない）
+7. ずれがあれば candidate まで（採否しない）
 
-- [ ] `{操作}-{関心事}-usecase.ts`
-- [ ] deps パターン
-- [ ] ビジネスバリデーション（未所属チェック等）
-- [ ] 単体テストを追加
-
-### app
-
-- [ ] Server Action で deps 組み立て
-- [ ] 認証・FormData パース・エラー整形
-- [ ] 単体テストを追加
-
-### presentation
-
-- [ ] フォーム / 画面。Action のみ呼び出す
-
-## スコープ定義
-
-新機能着手時は `docs/implementation/<feature>/<operation>.md` に以下を書く:
-
-- 含める操作・画面
-- **含めない**操作（別 PR）
-- 完了条件（E2E で確認できること）
-
-## 既存コードの参考先
-
-| 機能 | 参考ファイル |
-|-----|------------|
-| 認証 | `src/usecase/auth/`, `src/app/(auth)/` |
-| レシピ CRUD | `src/usecase/recipe/`, `src/app/recipe/` |
-| 家族作成 | `src/usecase/family/create-family-usecase.ts`, `docs/implementation/family/create-family.md` |
-
-## アーキテクチャ詳細
-
-- `docs/architect/clean-architecture-and-directory.md`
-- `docs/adr/` の該当 ADR
+PR は明示依頼があるときだけ。次の機能へ自動では進まない。

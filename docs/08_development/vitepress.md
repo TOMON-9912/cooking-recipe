@@ -25,7 +25,7 @@
 | `07_testing/` | テスト設計 |
 | `08_development/` | 開発者向け手順 |
 | `09_decisions/` | ADR |
-| `90_workspace/` | 作業用（VitePress・公開対象外） |
+| `90_workspace/` | 作業用・ハーネス・学習ログ（VitePress・公開対象外） |
 
 設定は `docs/.vitepress/config.mts`。新規ページをサイドバーに載せるときは `themeConfig.sidebar` を更新します。
 

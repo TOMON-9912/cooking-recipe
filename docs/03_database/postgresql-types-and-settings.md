@@ -250,21 +250,19 @@ create policy "authenticated users can insert"
 
 ## テーブル定義書の書き方ルール
 
-`docs/tables/{ドメイン}/` 配下に以下の形式で記述します。
+`docs/03_database/tables/` 配下に 1 テーブル（またはビュー）1 ファイルで記述します。型のリファレンスはこのファイル（`docs/03_database/postgresql-types-and-settings.md`）です。
 
 ### ファイル命名規則
 
 ```
-docs/tables/
+docs/03_database/
 ├── postgresql-types-and-settings.md   ← このファイル（リファレンス）
-├── recipe/
-│   ├── recipes.md
-│   ├── categories.md
-│   ├── recipe_categories.md           ← 中間テーブル
-│   ├── ingredients.md
-│   └── instructions.md
-└── auth/
-    └── profiles.md
+└── tables/
+    ├── README.md
+    ├── profiles.md
+    ├── recipes.md
+    ├── recipe_ingredients.md
+    └── ...
 ```
 
 ### テーブル定義書のフォーマット
