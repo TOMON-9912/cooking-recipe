@@ -49,4 +49,4 @@
 
 ## 設計上の補足
 
-メンバー所属は `family_members`。RLS ヘルパー `get_my_family_ids()` / `is_same_family()` は [008-rls-helper-functions.md](../../09_decisions/008-rls-helper-functions.md) を参照。
+メンバー所属は `family_members`。RLS ヘルパー `get_my_family_ids()` / `is_same_family()` は [006-rls-helper-functions.md](../../09_decisions/006-rls-helper-functions.md) を参照。

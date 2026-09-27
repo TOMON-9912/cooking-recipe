@@ -1,11 +1,14 @@
 import { defineConfig } from "vitepress";
+import { withMermaid } from "vitepress-plugin-mermaid";
 
 const repo = "https://github.com/TOMON-9912/cooking-recipe";
 
 /**
  * VitePress 設定。docs/ の新ディレクトリ構成に合わせたナビ・サイドバー。
+ * ```mermaid フェンスは withMermaid が描画する。ER 図は <ErDiagram> のまま。
  */
-export default defineConfig({
+export default withMermaid(
+  defineConfig({
   title: "食卓手帖 Docs",
   description: "食卓手帖（cooking-recipe）の設計・実装・運用ドキュメント",
   lang: "ja-JP",
@@ -19,13 +22,22 @@ export default defineConfig({
   markdown: {
     lineNumbers: true,
   },
+  mermaid: {},
+  vite: {
+    optimizeDeps: {
+      include: ["mermaid"],
+    },
+    ssr: {
+      noExternal: ["mermaid"],
+    },
+  },
   themeConfig: {
     logo: { text: "食卓手帖" },
     nav: [
       { text: "Architecture", link: "/01_architecture/overview" },
       { text: "Domain", link: "/02_domain/overview" },
       { text: "Development", link: "/08_development/setup" },
-      { text: "Decisions", link: "/09_decisions/001-authentication" },
+      { text: "Decisions", link: "/09_decisions/001-architecture" },
       { text: "リポジトリ", link: repo },
     ],
     sidebar: {
@@ -140,14 +152,14 @@ export default defineConfig({
         {
           text: "Decisions (ADR)",
           items: [
-            { text: "001 Authentication", link: "/09_decisions/001-authentication" },
-            { text: "002 Image storage", link: "/09_decisions/002-image-storage" },
-            { text: "003 Architecture", link: "/09_decisions/003-architecture" },
-            { text: "004 Supabase", link: "/09_decisions/004-supabase" },
-            { text: "005 Vercel", link: "/09_decisions/005-vercel" },
-            { text: "006 Playwright", link: "/09_decisions/006-playwright" },
-            { text: "007 Family", link: "/09_decisions/007-family-feature" },
-            { text: "008 RLS helpers", link: "/09_decisions/008-rls-helper-functions" },
+            { text: "001 Next.js", link: "/09_decisions/001-architecture" },
+            { text: "002 Supabase", link: "/09_decisions/002-supabase" },
+            { text: "003 Vercel", link: "/09_decisions/003-vercel" },
+            { text: "004 Playwright", link: "/09_decisions/004-playwright" },
+            { text: "005 家族機能", link: "/09_decisions/005-family-feature" },
+            { text: "006 RLS ヘルパー", link: "/09_decisions/006-rls-helper-functions" },
+            { text: "007 ゲストログイン", link: "/09_decisions/007-guest-login" },
+            { text: "008 画像保存先", link: "/09_decisions/008-image-storage" },
           ],
         },
       ],
@@ -161,4 +173,5 @@ export default defineConfig({
       provider: "local",
     },
   },
-});
+}),
+);

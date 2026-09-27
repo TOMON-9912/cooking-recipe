@@ -262,5 +262,5 @@ npm run test:run
 - [Supabase ローカル開発](./supabase-local-dev-with-docker.md)
 - [メール確認と /auth/callback のしくみ](../tips/email-confirmation-and-auth-callback.md)
 - [Git ブランチ運用](./git-branch-workflow.md)
-- [ADR: Vercel](../adr/03-Vercel.md)
+- [ADR 003: Vercel](../09_decisions/003-vercel.md)
 - [環境変数テンプレート](../../.env.example)

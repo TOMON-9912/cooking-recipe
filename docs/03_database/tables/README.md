@@ -44,4 +44,4 @@
 - [ER 図](../er-diagram.md)
 - [PostgreSQL 型](../postgresql-types-and-settings.md)
 - [Storage セキュリティ](../storage-security.md)
-- [RLS ヘルパー](../../09_decisions/008-rls-helper-functions.md)
+- [RLS ヘルパー](../../09_decisions/006-rls-helper-functions.md)

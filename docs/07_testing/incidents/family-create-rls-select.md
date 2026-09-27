@@ -105,7 +105,7 @@ using (
 | ユースケース（作成順序） | `src/usecase/family/create-family-usecase.ts` |
 | Server Action | `src/app/family/new/create-family.action.ts` |
 | テーブル定義ドキュメント | `docs/03_database/tables/families.md` |
-| ADR | `docs/09_decisions/007-family-feature.md` |
+| ADR | `docs/09_decisions/005-family-feature.md` |
 
 ---
 

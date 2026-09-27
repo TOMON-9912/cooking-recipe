@@ -3,7 +3,7 @@
 新規登録の確認メールまわりで実際に起きた不具合と、その修正で書いたコードの解説です。
 「なぜそう書くのか」を認証の前提知識から順に説明します。
 
-関連: [実装スコープ](../implementation/auth/email-confirmation-callback.md) / [ADR 02 Supabase](../adr/02-Supabase.md)
+関連: [実装スコープ](../../04_application/auth/email-confirmation-callback.md) / [ADR 002 Supabase](../../09_decisions/002-supabase.md)
 
 ---
 
@@ -316,7 +316,7 @@ Supabase を使うと認証の難しい部分は肩代わりしてもらえま�
 | アクセストークン（JWT）の署名と検証 | Supabase |
 | 戻り先 URL の許可リスト照合 | Supabase（ただし**登録するのは自分**） |
 | どのパスを未ログインで公開するか | 自分（`src/proxy.ts`） |
-| 誰がどのデータを読めるか | 自分（Postgres の RLS。[ADR 06](../adr/06-rls-helper-functions.md)） |
+| 誰がどのデータを読めるか | 自分（Postgres の RLS。[ADR 006](../../09_decisions/006-rls-helper-functions.md)） |
 | `next` などクエリ経由の遷移先の検証 | 自分 |
 | 環境変数（本番 URL、キー）の管理 | 自分 |
 

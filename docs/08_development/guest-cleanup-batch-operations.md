@@ -1,6 +1,6 @@
 # ゲストユーザー削除バッチ — 運用手順書
 
-関連: [実装スコープ](../implementation/guest/guest-cleanup-batch.md) / [ADR 007](../adr/07-guest-login.md)
+関連: [実装スコープ](../04_application/guest/guest-cleanup-batch.md) / [ADR 007](../09_decisions/007-guest-login.md)
 
 ## このバッチは何をするか
 
@@ -351,4 +351,4 @@ SELECT cron.alter_job(
 - [Supabase ローカル開発](./supabase-local-dev-with-docker.md)
 - [Vercel + Supabase 本番デプロイ](./deploy-vercel-supabase.md)
 - [ゲストユーザー削除バッチ — 実装スコープ](../implementation/guest/guest-cleanup-batch.md)
-- [ADR 007: ゲストユーザーログイン](../adr/07-guest-login.md)
+- [ADR 007: ゲストユーザーログイン](../09_decisions/007-guest-login.md)

@@ -93,7 +93,7 @@
 
 `family_members` の RLS は自テーブル参照による**無限再帰**を避けるため、上記関数を `security definer` + `set search_path` で実装する。
 
-**理由**（詳細は [ADR 006: RLS ヘルパー関数](./06-rls-helper-functions.md) を参照）
+**理由**（詳細は [ADR 006: RLS ヘルパー関数](./006-rls-helper-functions.md) を参照）
 
 - `family_members` の SELECT ポリシーが同テーブルを参照すると RLS が再帰しエラーになる（Supabase 公式も推奨するパターン）
 - `recipes` など他テーブルのポリシーからも同じ判定ロジックを再利用できる
@@ -331,6 +331,6 @@ DB・RLS は「本人が `family_members` に INSERT する」前提まで整備
 - [テーブル定義: families](../../tables/family/families.md)
 - [テーブル定義: family_members](../../tables/family/family_members.md)
 - [RLS 設計方針](../../tables/README.md)
-- [ADR 002: Supabase](./02-Supabase.md)
-- [ADR 006: RLS ヘルパー関数](./06-rls-helper-functions.md)
+- [ADR 002: Supabase](./002-supabase.md)
+- [ADR 006: RLS ヘルパー関数](./006-rls-helper-functions.md)
 - [クリーンアーキテクチャとディレクトリ構成](../../architect/clean-architecture-and-directory.md)

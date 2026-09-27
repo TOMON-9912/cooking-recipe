@@ -40,4 +40,4 @@
 
 ## 設計上の補足
 
-ポリシー名に `accessible` とある子テーブルはすべて本ビュー経由。詳細は [008-rls-helper-functions.md](../../09_decisions/008-rls-helper-functions.md)。
+ポリシー名に `accessible` とある子テーブルはすべて本ビュー経由。詳細は [006-rls-helper-functions.md](../../09_decisions/006-rls-helper-functions.md)。

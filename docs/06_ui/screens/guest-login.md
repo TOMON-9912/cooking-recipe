@@ -10,7 +10,7 @@
 
 関連ドキュメント:
 
-- 設計判断の詳細 … [ADR 007: ゲストユーザーログイン](../adr/07-guest-login.md)
+- 設計判断の詳細 … [ADR 007: ゲストユーザーログイン](../../09_decisions/007-guest-login.md)
 - 実装スコープ … [application/guest/guest-login.md](../../04_application/guest/guest-login.md)
 
 ---

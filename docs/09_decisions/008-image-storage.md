@@ -147,8 +147,8 @@ Pro プランの Image Transformation は**配信時**にサイズを変える�
 
 - [画像アップロード（Supabase Storage）](../tips/image-upload-with-supabase-storage.md)
 - [Storage 画像セキュリティ](../architect/supabase-storage-image-security.md)
-- [ADR 002: Supabase](./02-Supabase.md)
-- [ADR 006: RLS ヘルパー関数](./06-rls-helper-functions.md)
+- [ADR 002: Supabase](./002-supabase.md)
+- [ADR 006: RLS ヘルパー関数](./006-rls-helper-functions.md)
 
 ---
 

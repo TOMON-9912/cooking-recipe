@@ -10,4 +10,4 @@
 
 - DB: [profiles テーブル](../03_database/tables/profiles.md)
 - 画面: [ui/screens/guest-login.md](../06_ui/screens/guest-login.md)
-- ADR: [decisions/001-authentication.md](../09_decisions/001-authentication.md)
+- ADR: [007 ゲストログイン](../09_decisions/007-guest-login.md)

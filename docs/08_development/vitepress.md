@@ -29,7 +29,18 @@
 
 設定は `docs/.vitepress/config.mts`。新規ページをサイドバーに載せるときは `themeConfig.sidebar` を更新します。
 
-## 図表（ER 図・画面遷移）
+## 図表
+
+### Mermaid（フロー・コンテキスト図）
+
+`mermaid` フェンスは `vitepress-plugin-mermaid` が描画する（`withMermaid`）。対象は [data-flow.md](../01_architecture/data-flow.md) と [system-context.md](../01_architecture/system-context.md) など。**ER 図には使わない**（`<ErDiagram>`）。
+
+````md
+```mermaid
+flowchart TD
+  A --> B
+```
+````
 
 ### ER 図（DBML から自動生成）
 

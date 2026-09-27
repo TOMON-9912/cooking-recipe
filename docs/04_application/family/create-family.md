@@ -26,4 +26,4 @@
 
 ## 関連 ADR
 
-- [ADR 005: 家族機能](../../adr/05-family-feature.md)
+- [ADR 005: 家族機能](../../09_decisions/005-family-feature.md)

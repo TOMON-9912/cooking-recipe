@@ -52,5 +52,5 @@ dbdiagram.io でも確認・編集したい場合は、DBML をそのまま [dbd
 ## 関連
 
 - [テーブル一覧](./tables/README.md)
-- [RLS ヘルパー](../09_decisions/008-rls-helper-functions.md)
+- [RLS ヘルパー](../09_decisions/006-rls-helper-functions.md)
 - [Storage セキュリティ](./storage-security.md)

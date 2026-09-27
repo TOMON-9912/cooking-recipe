@@ -412,3 +412,15 @@
 .er-relation-table code {
   white-space: nowrap;
 }
+
+/* ---------- Mermaid (```mermaid fences) ---------- */
+
+.vp-doc .mermaid {
+  margin: 16px 0 32px;
+  overflow-x: auto;
+}
+
+.vp-doc .mermaid svg {
+  max-width: 100%;
+  height: auto;
+}

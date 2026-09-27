@@ -25,4 +25,4 @@
 
 ## 関連 ADR
 
-- [ADR 005: 家族機能](../../adr/05-family-feature.md)（`is_same_family` によるプロフィール参照）
+- [ADR 005: 家族機能](../../09_decisions/005-family-feature.md)（`is_same_family` によるプロフィール参照）

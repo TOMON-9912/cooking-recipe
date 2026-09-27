@@ -25,7 +25,7 @@ features:
     link: /03_database/er-diagram
   - title: Decisions
     details: ADR — なぜその設計か
-    link: /09_decisions/001-authentication
+    link: /09_decisions/001-architecture
 ---
 
 ディレクトリの役割は [README](./README.md) の表を参照してください。

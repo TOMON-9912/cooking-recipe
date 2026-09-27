@@ -10,7 +10,7 @@
 | [ui](./06_ui/screen-flow.md) | どういう画面か |
 | [testing](./07_testing/strategy.md) | どうテストするか |
 | [development](./08_development/setup.md) | どう開発するか |
-| [decisions](./09_decisions/001-authentication.md) | **なぜその設計にしたか**（ADR） |
+| [decisions](./09_decisions/001-architecture.md) | **なぜその設計にしたか**（ADR） |
 
 | [workspace](./90_workspace/README.md) | 作業用（QA・reviews・work。gitignore 多め） |
 

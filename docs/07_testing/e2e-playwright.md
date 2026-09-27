@@ -1,7 +1,7 @@
 # E2E テスト（Playwright）の使い方
 
 ブラウザを実際に動かして画面をまたぐ挙動を検証する E2E テストの手順です。
-ツール選定の経緯は [ADR 004](../adr/04-Playwright.md) を参照してください。
+ツール選定の経緯は [ADR 004](../09_decisions/004-playwright.md) を参照してください。
 
 ---
 
@@ -156,6 +156,6 @@ npm run test:e2e -- e2e/header-navigation.spec.ts
 
 ## 関連ドキュメント
 
-- [ADR 004: E2E テストに Playwright を採用](../adr/04-Playwright.md)
+- [ADR 004: E2E テストに Playwright を採用](../09_decisions/004-playwright.md)
 - [GitHub Actions ワークフローの導入](./github-actions-workflow.md)
 - [Playwright 公式ドキュメント](https://playwright.dev/)

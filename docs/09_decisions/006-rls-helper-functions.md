@@ -10,7 +10,7 @@
 
 本 ADR は、**なぜ `get_my_family_ids()` / `is_same_family()` といった RLS ヘルパー関数を採用したか**、および**採用しなかった代替案**を記録する。
 
-関連: [ADR 005: 家族機能](./05-family-feature.md)
+関連: [ADR 005: 家族機能](./005-family-feature.md)
 
 ---
 
@@ -288,5 +288,5 @@ create policy "users can select accessible recipe ingredients"
 - [ビュー定義: accessible_recipe_ids](../../tables/view/accessible_recipe_ids.md)
 - [マイグレーション: 家族テーブル](../../supabase/migrations/20260307000002_create_family_tables.sql)
 - [マイグレーション: レシピテーブル](../../supabase/migrations/20260307000003_create_recipe_tables.sql)
-- [ADR 002: Supabase](./02-Supabase.md)
-- [ADR 005: 家族機能](./05-family-feature.md)
+- [ADR 002: Supabase](./002-supabase.md)
+- [ADR 005: 家族機能](./005-family-feature.md)

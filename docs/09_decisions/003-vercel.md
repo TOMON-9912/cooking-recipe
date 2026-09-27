@@ -1,4 +1,4 @@
-# Vercel
+# ADR 003: Vercel
 
 ## 背景
 - Next.js App Router との相性を考える
@@ -14,7 +14,7 @@ Vercel を採用する
 - 小規模〜中規模スケールまで対応可能
 - 無料枠から始められる
 
-本番デモ: [https://cooking-recipe-liard.vercel.app/](https://cooking-recipe-liard.vercel.app/)（デプロイ手順は [deploy-vercel-supabase.md](../guides/deploy-vercel-supabase.md)）
+本番デモ: [https://cooking-recipe-liard.vercel.app/](https://cooking-recipe-liard.vercel.app/)（デプロイ手順は [deploy-vercel-supabase.md](../08_development/deploy-vercel-supabase.md)）
 
 ## 考慮点・トレードオフ
 - 無料枠ではストレージ・帯域制限があるため、本番運用では課金計画が必要

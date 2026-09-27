@@ -1,4 +1,4 @@
-# Supabase
+# ADR 002: Supabase
 
 ## 背景
 - 家族単位でデータを閉じたい  

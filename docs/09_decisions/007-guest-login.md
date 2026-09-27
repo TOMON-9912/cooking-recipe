@@ -317,9 +317,9 @@ Q1 / Q2 を踏まえ、案 A 採用時は次を前提とする。
 
 - [Supabase Anonymous Sign-Ins](https://supabase.com/docs/guides/auth/auth-anonymous)
 - [Identity Linking](https://supabase.com/docs/guides/auth/auth-identity-linking)
-- [ADR 002: Supabase](./02-Supabase.md)
-- [ADR 005: 家族機能](./05-family-feature.md)
-- [ADR 006: RLS ヘルパー関数](./06-rls-helper-functions.md)
+- [ADR 002: Supabase](./002-supabase.md)
+- [ADR 005: 家族機能](./005-family-feature.md)
+- [ADR 006: RLS ヘルパー関数](./006-rls-helper-functions.md)
 - [デプロイ手順](../guides/deploy-vercel-supabase.md)
 
 ---

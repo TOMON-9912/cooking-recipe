@@ -11,4 +11,4 @@
 - DB: [database/tables/recipes.md](../03_database/tables/recipes.md)
 - 画面: [ui/screens/recipe-search.md](../06_ui/screens/recipe-search.md)
 - ユースケース: [application/recipes/update-recipe.md](../04_application/recipes/update-recipe.md)
-- ADR: [decisions/002-image-storage.md](../09_decisions/002-image-storage.md)
+- ADR: [008 画像保存先](../09_decisions/008-image-storage.md)
