@@ -22,6 +22,28 @@ description: Reviews application code against project architecture, naming, and 
 2. 上記の観点と、対象機能の Documentation を読む
 3. 良い点と、重要度つきの改善点を具体的に書く
 4. レビューで見つかったずれ・知識不足は、採否せず候補にする（`.cursor/skills/record-improvement-candidate/SKILL.md`）
+5. 報告テンプレでレビュー結果を出す
+6. **同じターンで必ず次の行動を問う。** 編集・採否・コミットには進まない
+
+## レビュー後に必ず問うこと
+
+報告の直後に AskQuestion を呼ぶ。使えないときは同じ内容を番号付きで聞く。ユーザーが答えるまで、指摘の修正や候補の Adopt はしない。
+
+必須は次の 2 問。選択肢はレビュー内容に合わせて変えてよい。
+
+1. **指摘のうち、どれを直すか**（複数可。「今は直さない」を必ず入れる）
+2. **このレビューのあと何をするか**（次のどちらか、または状況に応じた同等の選択肢）
+   - 選んだ指摘だけ直す
+   - 直したあと候補を `/decide-candidate` する
+   - 候補だけ `/decide-candidate` する（指摘はまだ直さない）
+   - `/retrospect` する
+   - このまま残す
+   - コミットする（ユーザーが明示したときだけ実行）
+
+AskQuestion の形（id は固定する）:
+
+- `id: findings` / `allow_multiple: true` — 指摘の採否
+- `id: after-review` — レビュー後の次アクション（単一）
 
 ## 報告
 

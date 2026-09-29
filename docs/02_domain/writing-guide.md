@@ -1,6 +1,6 @@
 # ドメイン設計書の書き方
 
-新しい関心事（レシピ、家族、ユーザーなど）を実装する前に、リポジトリの `docs/02_domain/_template.md` をコピーして `docs/02_domain/{関心事}.md` を書く。テンプレート本体は VitePress のビルド対象外である。
+新しい関心事を実装する前に、リポジトリの `docs/02_domain/_template.md` をコピーして `docs/02_domain/{関心事}.md` を書く。テンプレート本体は VitePress のビルド対象外である。既存は recipe / user / family / favorite。
 
 この文書は **何が正しいか** を固定する。テーブル定義・画面部品・usecase の関数名は書かない。
 

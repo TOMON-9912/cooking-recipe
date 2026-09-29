@@ -15,10 +15,14 @@
 | ID | 機能 | ルート / 入口 | ドキュメント | 状態 |
 |----|------|---------------|--------------|------|
 | `recipe-search` | レシピ検索 | `/recipe/search` | [features/recipe-search.md](./features/recipe-search.md) | 記載済 |
-| `recipe-top` | TOP・一覧 | `/top` | （未作成） | — |
-| `recipe-detail` | レシピ詳細 | `/recipe/[id]` | （未作成） | — |
-| `recipe-create` | レシピ登録 | `/recipe/new` | （未作成） | — |
-| `auth` | ログイン・サインアップ | `/login`, `/signup` | （未作成） | — |
+| `recipe-top` | TOP・一覧 | `/top` | [features/recipe-top.md](./features/recipe-top.md) | 記載済 |
+| `recipe-detail` | レシピ詳細 | `/recipe/[id]` | [features/recipe-detail.md](./features/recipe-detail.md) | 記載済 |
+| `recipe-create` | レシピ登録 | `/recipe/new` | [features/recipe-create.md](./features/recipe-create.md) | 記載済 |
+| `recipe-edit` | レシピ編集 | `/recipe/[id]/edit` | [features/recipe-edit.md](./features/recipe-edit.md) | 記載済 |
+| `recipe-favorite` | お気に入り切替 | `/top` | [features/recipe-favorite.md](./features/recipe-favorite.md) | 記載済 |
+| `auth` | ログイン・サインアップ | `/login`, `/signup` | [features/auth.md](./features/auth.md) | 記載済 |
+| `family` | 家族 | `/family` | [features/family.md](./features/family.md) | 記載済 |
+| `profile` | プロフィール作成 | `/profile/new` | [features/profile.md](./features/profile.md) | 記載済 |
 
 > 新しい機能を追加したら、上表に 1 行追加し、`features/<ID>.md` を作成してください。
 

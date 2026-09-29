@@ -61,9 +61,20 @@
 
 ## 画面設計書（機能単位）
 
+新規の画面設計は [screens/_template.md](./screens/_template.md) をコピーする。
+
 | 画面 | ドキュメント |
 | --- | --- |
+| LP | [screens/lp.md](./screens/lp.md) |
+| ログイン | [screens/login.md](./screens/login.md) |
 | ゲストログイン | [screens/guest-login.md](./screens/guest-login.md) |
+| サインアップ | [screens/signup.md](./screens/signup.md) |
+| プロフィール作成 | [screens/profile-new.md](./screens/profile-new.md) |
+| ホーム | [screens/top.md](./screens/top.md) |
+| 家族 | [screens/family.md](./screens/family.md) |
+| レシピ作成 | [screens/recipe-new.md](./screens/recipe-new.md) |
+| レシピ詳細 | [screens/recipe-detail.md](./screens/recipe-detail.md) |
+| レシピ編集 | [screens/recipe-edit.md](./screens/recipe-edit.md) |
 | レシピ検索 | [screens/recipe-search.md](./screens/recipe-search.md) |
 | キーワード検索（詳細） | [screens/recipe-search-keyword.md](./screens/recipe-search-keyword.md) |
 

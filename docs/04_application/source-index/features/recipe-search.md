@@ -63,6 +63,7 @@
 
 ## 関連ドキュメント
 
-- [レシピ検索画面-設計書](../../design/レシピ検索画面-設計書.md)
-- [レシピ検索-キーワードマッチング設計](../../design/レシピ検索-キーワードマッチング設計.md)
-- [recipe_summaries ビュー](../../tables/view/recipe_summaries.md)
+- [レシピ検索画面](../../../06_ui/screens/recipe-search.md)
+- [キーワード検索](../../../06_ui/screens/recipe-search-keyword.md)
+- [検索操作メモ](../../recipes/search-recipe-summaries.md)
+- [recipe_summaries ビュー](../../../03_database/tables/recipe_summaries.md)

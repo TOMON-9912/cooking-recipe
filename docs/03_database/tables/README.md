@@ -4,6 +4,8 @@
 
 テーブル間の関係は [ER 図](../er-diagram.md)（[cooking-recipe.dbml](../cooking-recipe.dbml) から自動生成）を参照。
 
+新規テーブルは [_template.md](./_template.md) をコピーする。
+
 ## フォーマット
 
 各ファイルは次の章立てで統一する。

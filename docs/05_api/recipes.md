@@ -5,6 +5,7 @@
 - ルート: `/recipe/new`
 - Action: `src/app/recipe/new/action.ts`
 - Usecase: `createRecipeUsecase`
+- 詳細: [application/recipes/create-recipe.md](../04_application/recipes/create-recipe.md)
 
 ## 更新
 
