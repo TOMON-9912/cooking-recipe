@@ -23,7 +23,7 @@ description: Applies a human Adopt, Defer, or Reject decision to one improvement
 - Target 別:
   - `Rule` → `.cursor/rules/` の該当 1 ファイル（新規 alwaysApply は原則作らない）
   - `Skill` → `.cursor/skills/` の該当 1 ファイル
-  - `Documentation` → `docs/01`〜`docs/09` の該当 1 ファイル
+  - `Documentation` → `docs/01_requirements`〜`docs/04_decisions` の該当 1 ファイル
   - `Judgment` → ハーネス知識は更新しない。Decision に「今回限り」と書く
 - 仕様を Rule にコピーしない。既存文の重複・矛盾を増やさない
 - この Adopt は、Target が Rule / Skill ならハーネス変更の明示依頼とみなす

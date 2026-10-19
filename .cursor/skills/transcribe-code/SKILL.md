@@ -9,7 +9,7 @@ description: Provides complete source and commentary in Markdown so the user can
 
 常時制約は Rule を指す: `clean-architecture.mdc` / `file-naming.mdc` / `code-style.mdc` / `ui-design.mdc`
 
-仕様・判断は `docs/01`〜`09` を読む。
+仕様・判断は `docs/01_requirements`〜`docs/04_decisions` を読む。
 
 ## 1 ファイルの出し方
 

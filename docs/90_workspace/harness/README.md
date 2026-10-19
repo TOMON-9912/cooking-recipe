@@ -1,8 +1,8 @@
 # AI 開発ハーネス
 
-チャットで指示し、Issue から設計を経て実装し、学びを **人間の採否を経て** 次回へ残す作業領域。プロダクト仕様の正本ではない。正本は `docs/01`〜`docs/09`。
+チャットで指示し、Issue から設計を経て実装し、学びを **人間の採否を経て** 次回へ残す作業領域。プロダクト仕様の正本ではない。正本は `docs/01_requirements`〜`docs/04_decisions`。
 
-判断の理由は [ADR 009](../../09_decisions/009-ai-dev-harness.md) と [ADR 010](../../09_decisions/010-issue-centered-dev-flow.md)。Issue と docs の分担は [issue-workflow.md](../../08_development/issue-workflow.md)。
+判断の理由は [ADR 009](../../04_decisions/009-ai-dev-harness.md)、[ADR 010](../../04_decisions/010-issue-centered-dev-flow.md)、[ADR 012](../../04_decisions/012-requirements-before-design.md)。Issue と docs の分担は [issue-workflow.md](../../05_development/issue-workflow.md)。
 
 ## 目的
 
@@ -14,8 +14,10 @@
 
 ```
 GitHub Issue（What / Why / Scope / AC）
-  → /plan（変更種別の確定、必要設計と理由、不足なら停止）
-  → /design（不足している正本だけ。仕様・設計・テスト設計を混ぜない）
+  → /plan（変更種別の確定、必要な正本と理由、不足なら停止）
+  → /requirements（要件定義。何を・なぜ作るか。設計の前）
+  → 要件定義のレビュー
+  → /design（不足している仕様・設計・テスト設計だけ。混ぜない）
   → Issue の Ready 条件
   → 人間がチャットで Ready
   → /implement または /coding または /pairpro
@@ -43,7 +45,7 @@ AI は実装開始条件を付けない。レビュー後の承認を自分で�
 | `.cursor/rules/` | 常時の不変条件 |
 | `.cursor/skills/` | 工程の手順 |
 | `.cursor/commands/` | 工程の入口 |
-| `docs/01`〜`09` | Specification / Design / Decision / Test Design |
+| `docs/01_requirements`〜`04_decisions` | Requirements / Specification / Design / Test Design / Decision |
 | このディレクトリ | ハーネス運用と改善候補 |
 | `../learning/` | Learning Gap（人間の練習） |
 
@@ -89,8 +91,9 @@ AI は実装開始条件を付けない。レビュー後の承認を自分で�
 
 | やりたいこと | Command / Skill |
 | --- | --- |
-| 必要設計の判定 | `/plan` → `plan-ready` |
-| 不足 docs を書く | `/design` → `write-design` |
+| 必要な正本の判定 | `/plan` → `plan-ready` |
+| 要件定義を書く | `/requirements` → `define-requirements` |
+| 不足している設計を書く | `/design` → `write-design` |
 | AI 実装 | `/implement` → `implement-feature` |
 | 人間が書く | `/coding` → `human-coding` |
 | ペアプロ | `/pairpro` → `pair-programming` |

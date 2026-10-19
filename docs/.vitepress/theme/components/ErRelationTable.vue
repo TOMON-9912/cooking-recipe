@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { withBase } from "vitepress";
-import { data } from "../../../03_database/er.data";
+import { data } from "../../../02_design/database/er.data";
 
 const tableByKey = new Map(data.tables.map((table) => [table.key, table]));
 
@@ -32,7 +32,7 @@ const rows = computed(() =>
  * @returns URL。外部テーブルは null
  */
 function hrefOf(table: { name: string; external: boolean }): string | null {
-  return table.external ? null : withBase(`/03_database/tables/${table.name}`);
+  return table.external ? null : withBase(`/02_design/database/tables/${table.name}`);
 }
 </script>
 

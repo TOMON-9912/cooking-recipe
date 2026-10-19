@@ -10,11 +10,11 @@ description: Reviews application code against project architecture, naming, and 
 ## 参照（本文はここにコピーしない）
 
 - 観点一覧: `docs/90_workspace/reviews/00_レビュー観点.md`
-- 依存・層: `.cursor/rules/clean-architecture.mdc`、`docs/01_architecture/overview.md`
+- 依存・層: `.cursor/rules/clean-architecture.mdc`、`docs/02_design/architecture/overview.md`
 - 命名: `.cursor/rules/file-naming.mdc`
 - スタイル: `.cursor/rules/code-style.mdc`
 - UI: `.cursor/rules/ui-design.mdc`
-- 対象機能の正本: `docs/02_domain`〜`docs/07_testing` と `docs/09_decisions` の該当ページ
+- 対象機能の正本: `docs/01_requirements`〜`docs/04_decisions` の該当ページ
 
 ## 手順
 

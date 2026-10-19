@@ -18,7 +18,7 @@ body:
 
         例: `feat: 家族グループへのメンバー追加` / `fix: 確認メールのリンク先が間違っている`
 
-        設計の本文は `docs/01`〜`09` に置く。変更種別は作成時は空でよい（`/plan` で確定する）。
+        要件定義・設計の本文は `docs/01_requirements`〜`docs/04_decisions` に置く。変更種別は作成時は空でよい（`/plan` で確定する）。
   - type: dropdown
     id: type
     attributes:
@@ -92,6 +92,7 @@ body:
       label: 実装開始条件
       description: 条件の正。中身は docs。「レビュー後の承認」は、仕様書・設計書のレビューのあと、Cursor 上で人間が宣言したときだけ成立する。AI は付けない。
       options:
+        - label: 要件定義の確定
         - label: 仕様の確定
         - label: 必要な設計
         - label: テスト設計

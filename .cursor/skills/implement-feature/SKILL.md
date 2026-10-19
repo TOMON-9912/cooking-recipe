@@ -14,19 +14,19 @@ description: Implements one Ready GitHub Issue end-to-end under Clean Architectu
 次が揃うまで **1 行も実装しない**。足りないものは `/plan` または `/design` へ戻す。
 
 1. Issue（番号または URL）がある
-2. Issue の実装開始条件が付いている: 仕様の確定 / 必要な設計 / テスト設計 / 実装計画 / 仕様・設計のレビュー
+2. Issue の実装開始条件が付いている: 要件定義の確定 / 仕様の確定 / 必要な設計 / テスト設計 / 実装計画 / 仕様・設計のレビュー
 3. **このチャットで** ユーザーが、仕様書・設計書レビュー後の承認を明示している（「レビューを承認した。/implement」など）
-4. Implementation Plan と、変更種別に対する正本がある
+4. Implementation Plan と、要件定義および変更種別に対する正本がある
 5. 未確定の判断が無い
 
 AI が「まあ実装できる」と判断して進まない。Issue の「仕様・設計のレビュー」と「レビュー後の承認」を AI が付けない。
 
-`docs/04` が無いからスコープを短く宣言して着手する、ことはしない。
+要件定義や `docs/02_design/application` が無いからスコープを短く宣言して着手する、ことはしない。
 
 未 Ready の停止例:
 
 ```text
-DB 変更が必要なのに docs/03_database に該当設計がありません。
+DB 変更が必要なのに docs/02_design/database に該当設計がありません。
 実装を開始しません。/design で DB 設計を確定してください。
 ```
 
@@ -46,7 +46,7 @@ domain/models → domain/repositories → infrastructure → usecase → app →
 | app | Action で deps 組み立て、認証・パース・エラー整形、単体テスト |
 | presentation | UI。Action だけ呼ぶ |
 
-参考: `src/usecase/recipe/`、`src/usecase/family/create-family-usecase.ts`、`docs/04_application/family/create-family.md`
+参考: `src/usecase/recipe/`、`src/usecase/family/create-family-usecase.ts`、`docs/02_design/application/family/create-family.md`
 
 ## テスト
 
