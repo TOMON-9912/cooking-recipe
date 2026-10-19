@@ -2,7 +2,7 @@
 
 ## Refactors
 
-- [x] auth の deps パターン統一（DIContainer → deps 直渡し）→ [ADR 007](docs/adr/07-guest-login.md)
+- [x] auth の deps パターン統一（DIContainer → deps 直渡し）→ [ADR 001](docs/09_decisions/001-authentication.md)
 - [ ] 認証・認可まわりの責務整理（usecase / action / proxy の境界）
 
 ## Features
@@ -14,7 +14,7 @@
 - [ ] レシピ削除
 - [ ] 手順画像の Storage 保存（作成・更新とも `image_url` は未保存のまま）
 - [ ] 家族メンバーによるレシピ編集（解禁するならアプリの認可と RLS を同時に戻す）
-  - 現状: [docs/implementation/recipe/update-recipe.md](docs/implementation/recipe/update-recipe.md)
+  - 現状: [docs/04_application/recipes/update-recipe.md](docs/04_application/recipes/update-recipe.md)
 
 ## Bugs
 
@@ -28,7 +28,7 @@
 - [ ] 本番 Supabase: `npx supabase db push`（CASCADE マイグレーション含む）
 - [ ] 本番 Supabase: Site URL / Redirect URLs を本番 URL に設定（確認メールの localhost 問題）
 - [ ] 本番ホスティング: `NEXT_PUBLIC_SITE_URL` に本番 URL を設定
-  - 手順: [docs/implementation/auth/email-confirmation-callback.md](docs/implementation/auth/email-confirmation-callback.md)
+  - 手順: [docs/04_application/auth/email-confirmation-callback.md](docs/04_application/auth/email-confirmation-callback.md)
 
 
 ## Inbox（未分類・殴り書き）
