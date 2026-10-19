@@ -26,6 +26,7 @@
 | [profiles.md](./profiles.md) | `profiles` | ユーザープロフィール（`auth.users` 1:1） |
 | [families.md](./families.md) | `families` | 家族グループ |
 | [family_members.md](./family_members.md) | `family_members` | 家族所属 |
+| [family_invites.md](./family_invites.md) | `family_invites` | 家族の招待（宛先メール指定） |
 | [recipes.md](./recipes.md) | `recipes` | レシピ本体 |
 | [categories.md](./categories.md) | `categories` | カテゴリマスター |
 | [ingredients.md](./ingredients.md) | `ingredients` | 材料マスター |

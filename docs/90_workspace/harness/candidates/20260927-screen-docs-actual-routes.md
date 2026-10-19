@@ -11,5 +11,5 @@
 | Target | Skill |
 | Status | proposed |
 | Source | ai-review |
-| Recurrence | 同一差分で 2 画面 |
+| Recurrence | 同一差分で 2 画面。2026-10-19 に `docs/02_design/ui/screens/family-join.md` が未実装の `/family/join/{token}` を実ルートとして書いた（`src/app/family/` に当該 page は無い）。テンプレの「未確認なら未記載」は既にある |
 | Decision | 未決 |

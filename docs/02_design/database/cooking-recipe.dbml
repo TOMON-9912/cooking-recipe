@@ -46,6 +46,25 @@ Table family_members {
   Note: 'ユーザーの家族所属'
 }
 
+Table family_invites {
+  id uuid [pk, default: `gen_random_uuid()`]
+  family_id uuid [not null]
+  invited_email text [not null]
+  created_by uuid [not null]
+  expires_at timestamptz [not null]
+  used_by uuid
+  used_at timestamptz
+  revoked_at timestamptz
+  created_at timestamptz [not null, default: `now()`]
+
+  indexes {
+    family_id
+    (family_id, invited_email)
+  }
+
+  Note: '家族の招待（宛先メール指定、1 人宛て）'
+}
+
 Table recipes {
   id uuid [pk, default: `gen_random_uuid()`]
   title text [not null]
@@ -149,6 +168,9 @@ Ref: profiles.id - auth_users.id [delete: cascade]
 Ref: families.owner_id > auth_users.id [delete: cascade]
 Ref: family_members.family_id > families.id [delete: cascade]
 Ref: family_members.user_id > auth_users.id [delete: cascade]
+Ref: family_invites.family_id > families.id [delete: cascade]
+Ref: family_invites.created_by > auth_users.id [delete: cascade]
+Ref: family_invites.used_by > auth_users.id [delete: set null]
 Ref: recipes.author_id > auth_users.id [delete: cascade]
 Ref: recipe_categories.recipe_id > recipes.id [delete: cascade]
 Ref: recipe_categories.category_id > categories.id [delete: cascade]
@@ -163,6 +185,7 @@ TableGroup user_family {
   profiles
   families
   family_members
+  family_invites
 }
 
 TableGroup recipe {

@@ -7,7 +7,7 @@
 | `harness/` | AI 開発ハーネスの説明と改善候補（[README](./harness/README.md)） |
 | `learning/` | Learning Gap と小さな Challenge（[README](./learning/README.md)） |
 | `QA/` | 調査・Q&A メモ |
-| `reviews/` | レビュー観点・チェックリスト（`00_レビュー観点.md` は追跡する） |
+| `reviews/` | レビュー観点・チェックリスト（`00_レビュー観点.md` は追跡する）。設計レビューは `reviews/findings/` に **1 回 1 ファイル**（Issue番号・タイトル・日時、追跡する） |
 | `work/` | 作業メモ、ペアプロ中の学習用下書き（Ready には数えない） |
 
-`QA/`・`work/` と `reviews/` の個人メモは `.gitignore` 対象です。VitePress の公開サイトにも載せません。
+`QA/`・`work/` と `reviews/` の個人メモは `.gitignore` 対象です。`reviews/findings/` のレビュー記録（1 回 1 ファイル）は追跡します。VitePress の公開サイトにも載せません。
