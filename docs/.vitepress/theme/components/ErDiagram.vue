@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { withBase } from "vitepress";
-import { data } from "../../../03_database/er.data";
-import type { ErColumn, ErRelation, ErTable } from "../../../03_database/er.data";
+import { data } from "../../../02_design/database/er.data";
+import type { ErColumn, ErRelation, ErTable } from "../../../02_design/database/er.data";
 
 const props = defineProps<{
   /** 列ごとのテーブル配置（上から順に積む）。表示名または DBML の alias を指定 */
@@ -362,7 +362,7 @@ const statusText = computed(() => {
  * @returns URL。外部テーブルは null
  */
 function tableHref(table: ErTable): string | null {
-  return table.external ? null : withBase(`/03_database/tables/${table.name}`);
+  return table.external ? null : withBase(`/02_design/database/tables/${table.name}`);
 }
 
 /**

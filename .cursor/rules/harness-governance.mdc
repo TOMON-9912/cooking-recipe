@@ -11,14 +11,14 @@ alwaysApply: true
 
 ## 正本
 
-- プロダクトの事実・仕様・判断理由は `docs/01_architecture`〜`docs/09_decisions`
+- プロダクトの要件・仕様・判断理由は `docs/01_requirements`〜`docs/04_decisions`
 - 開発対象と Ready 条件は GitHub Issue
 - ハーネスの運用説明は `docs/90_workspace/harness/README.md`
 - 仕様を Rule や Issue にコピーしない
 
 ## 実装開始
 
-- 必要な設計が無い状態で実装しない。判定は `/plan`
+- 要件定義と必要な設計が無い状態で実装しない。判定は `/plan`。要件定義は設計より先に書く（`/requirements`）
 - 実装開始条件の正は Issue のチェックリスト。レビュー後の承認は、仕様書・設計書のレビューのあと、ユーザーがこのチャットで明示したときだけ成立する
 - AI は実装開始条件を付けない。仕様・設計のレビューとレビュー後の承認を自分で成立させない
 - 「実装できるだろう」で Ready 扱いしない。判断が必要なら止まって聞く

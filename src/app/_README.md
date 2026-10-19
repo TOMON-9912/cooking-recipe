@@ -183,5 +183,5 @@ export async function createRecipeAction(input: CreateRecipeInput) {
 
 ## 参照
 
-- クリーンアーキテクチャとディレクトリの対応: `docs/01_architecture/data-flow.md`
+- クリーンアーキテクチャとディレクトリの対応: `docs/02_design/architecture/data-flow.md`
 - ユースケース層のルール: `src/usecase/_README.md`

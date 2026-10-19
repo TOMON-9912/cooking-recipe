@@ -1,0 +1,36 @@
+name: 要件定義（子）
+description: 親 Issue の要件定義。何を・なぜ作るかを docs/01_requirements に書く。通常は /requirements が作る。
+title: "docs(requirements): "
+body:
+  - type: input
+    id: parent
+    attributes:
+      label: 親 Issue
+      description: "親 Issue の番号（例: #37）"
+    validations:
+      required: true
+  - type: textarea
+    id: goal
+    attributes:
+      label: 目的
+      description: この要件定義で、何を決めるか（1〜2文）
+    validations:
+      required: true
+  - type: textarea
+    id: outputs
+    attributes:
+      label: 成果物
+      description: docs のパスだけ。本文は貼らない。
+      placeholder: docs/01_requirements/{機能}.md
+    validations:
+      required: true
+  - type: checkboxes
+    id: done
+    attributes:
+      label: 完了条件
+      description: 付けるのは人間だけ。AI は付けない。
+      options:
+        - label: 要件定義書が書かれている
+        - label: 未決が決まっている、または設計に送ると要件定義書に明記されている
+        - label: 要件定義のレビュー
+        - label: 要件定義の確定

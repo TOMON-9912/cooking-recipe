@@ -1,0 +1,41 @@
+name: テスト設計（子）
+description: 親 Issue のテスト設計。要件定義・設計の確定後に書く。通常は /test-design が作る。
+title: "docs(test): "
+body:
+  - type: input
+    id: parent
+    attributes:
+      label: 親 Issue
+      description: "親 Issue の番号（例: #37）"
+    validations:
+      required: true
+  - type: input
+    id: prerequisite
+    attributes:
+      label: 前提（要件定義・設計の Issue）
+      description: "例: 要件定義 #40、設計 #41"
+    validations:
+      required: true
+  - type: textarea
+    id: goal
+    attributes:
+      label: 目的
+      description: 何を検証する設計を書くか（1〜2文）
+    validations:
+      required: true
+  - type: textarea
+    id: outputs
+    attributes:
+      label: 成果物
+      description: docs のパスだけ。本文は貼らない。
+      placeholder: docs/03_test/design/{関心事}/{操作}.md
+    validations:
+      required: true
+  - type: checkboxes
+    id: done
+    attributes:
+      label: 完了条件
+      description: 付けるのは人間だけ。AI は付けない。
+      options:
+        - label: 操作ごとのテスト設計が書かれている
+        - label: テスト設計のレビュー
