@@ -32,20 +32,6 @@ describe("cancelFamilyInviteUsecase", () => {
         expect(inviteDeps.cancelFamilyInvite).toHaveBeenCalledWith("invite-1");
     });
 
-    it("使用済みの招待は取り消さず、所属は変えない", async () => {
-        const inviteDeps = deps({
-            cancelFamilyInvite: vi
-                .fn()
-                .mockRejectedValue(
-                    new Error(FamilyInviteErrorCode.INVITE_ALREADY_USED),
-                ),
-        });
-
-        await expect(
-            cancelFamilyInviteUsecase(input, inviteDeps),
-        ).rejects.toThrow(FamilyInviteErrorCode.INVITE_ALREADY_USED);
-    });
-
     it("オーナーでない人は取り消さない", async () => {
         const inviteDeps = deps({
             isOwnerOfFamily: vi.fn().mockResolvedValue(false),

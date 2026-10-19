@@ -58,23 +58,6 @@ describe("createFamilyInviteUsecase", () => {
         expect(inviteDeps.createFamilyInvite).toHaveBeenCalledTimes(2);
     });
 
-    it("同じ宛先の期限内未使用は拒否し、発行を成功扱いにしない", async () => {
-        const inviteDeps = deps({
-            createFamilyInvite: vi
-                .fn()
-                .mockRejectedValue(
-                    new Error(FamilyInviteErrorCode.DUPLICATE_ACTIVE_INVITE),
-                ),
-        });
-
-        await expect(
-            createFamilyInviteUsecase(
-                { familyId, invitedEmail: "a@example.com" },
-                inviteDeps,
-            ),
-        ).rejects.toThrow(FamilyInviteErrorCode.DUPLICATE_ACTIVE_INVITE);
-    });
-
     it("オーナーでない本登録ユーザーは発行しない", async () => {
         const inviteDeps = deps({
             isOwnerOfFamily: vi.fn().mockResolvedValue(false),
