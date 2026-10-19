@@ -64,6 +64,7 @@ export default withMermaid(
           text: "Requirements",
           items: [
             { text: "要件定義の書き方", link: "/01_requirements/README" },
+            { text: "家族へのメンバー追加", link: "/01_requirements/family-member-join" },
           ],
         },
       ],
@@ -225,6 +226,7 @@ export default withMermaid(
             { text: "008 画像保存先", link: "/04_decisions/008-image-storage" },
             { text: "009 AI 開発ハーネス", link: "/04_decisions/009-ai-dev-harness" },
             { text: "010 Issue 起点フロー", link: "/04_decisions/010-issue-centered-dev-flow" },
+            { text: "011 家族への招待と承認", link: "/04_decisions/011-family-invite-link" },
             { text: "012 要件定義を設計の前に", link: "/04_decisions/012-requirements-before-design" },
             { text: "013 プロセスごとの Issue", link: "/04_decisions/013-issue-per-process" },
           ],
