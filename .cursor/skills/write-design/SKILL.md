@@ -1,11 +1,11 @@
 ---
 name: write-design
-description: Writes only Architecture, database, and ADR for a planned slice whose requirements are confirmed. Does not write domain, application, api, or ui. Test code is a separate process (/test-design). Use when filling design, or running /design.
+description: Writes only Architecture, database, and ADR for a planned slice whose requirements are confirmed. Does not write domain, application, api, or ui. Tests are written later with /implement, not in this process. Use when filling design, or running /design.
 ---
 
 # 設計を書く
 
-実装しない。テストは書かない（`/test-design`）。書くのは次だけ（[ADR 014](../../docs/04_decisions/014-narrow-design-and-test-artifacts.md)）。
+実装しない。テストも書かない。テストは `/implement` がコードと一緒に書く。書くのは次だけ（[ADR 014](../../docs/04_decisions/014-narrow-design-and-test-artifacts.md)）。
 
 | 書く | 書かない |
 | --- | --- |
@@ -47,4 +47,4 @@ description: Writes only Architecture, database, and ADR for a planned slice who
 
 ## 完了
 
-書いたパス、作った Issue とブランチ、まだ人間が決めることを列挙する。次は `/review-design`。PR は依頼があるときだけ（本文に `Closes #{設計 Issue}`）。実装へ進まない。Ready は付けない。
+書いたパス、作った Issue とブランチ、まだ人間が決めることを列挙する。次は `/review-design`。PR は依頼があるときだけ（本文に `Closes #{設計 Issue}`）。この Skill では実装しない。設計 Issue が閉じて承認されたあとの次のフェーズは `/implement`（コードと、必要な Vitest・e2e）。Ready は付けない。

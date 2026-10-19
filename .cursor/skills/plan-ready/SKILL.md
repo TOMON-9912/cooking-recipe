@@ -9,7 +9,7 @@ description: Reads a GitHub Issue, determines change types, and lists required d
 
 親 Issue の番号が無ければ聞く。作成時点の変更種別は空でよい。ここで確定する。
 
-このスキルが作る Issue は、**親 Issue だけ**（無いときに限る）。要件定義・設計・テスト設計・実装の子 Issue は、各プロセスの Skill が、そのプロセスを始めるときに作る（`docs/05_development/issue-workflow.md`）。
+このスキルが作る Issue は、**親 Issue だけ**（無いときに限る）。要件定義・設計・実装の子 Issue は、各プロセスの Skill が、そのプロセスを始めるときに作る（`docs/05_development/issue-workflow.md`）。テストは実装に含める。
 
 ## 手順
 
@@ -29,7 +29,7 @@ description: Reads a GitHub Issue, determines change types, and lists required d
 2. ユーザーが OK したあとに、`gh issue create` で作る。本文に設計や実装の手順を書かない
 3. 親が既にあれば作らない
 
-子 Issue（要件定義・設計・テスト設計・実装）、ブランチ、チェックボックスは、このスキルでは作らない・付けない。
+子 Issue（要件定義・設計・実装）、ブランチ、チェックボックスは、このスキルでは作らない・付けない。
 
 ## 要件定義が要るか
 
@@ -101,8 +101,7 @@ description: Reads a GitHub Issue, determines change types, and lists required d
 ## 次
 要件定義が不足 → /requirements
 要件は確定済みで設計が不足 → /design
-設計は済みでテストが不足 → /test-design
-揃っている → 人間が要件・仕様・設計をレビューし、Issue の実装開始条件を付け、チャットでレビュー後の承認を宣言する
+設計が済み → 人間が要件と設計をレビューし、実装 Issue の実装開始条件を付け、チャットでレビュー後の承認を宣言する。テストは /implement がコードと一緒に書く
 ```
 
 Issue のチェックボックスは人間が付ける。AI は `gh` で Ready を更新しない。

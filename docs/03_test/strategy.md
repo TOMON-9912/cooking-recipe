@@ -1,6 +1,6 @@
 # テスト戦略
 
-テストフェーズの成果物は次の 3 つ（[ADR 014](../04_decisions/014-narrow-design-and-test-artifacts.md)）。操作ごとのテスト設計 Markdown は、新規では書かない。
+実装と同じフェーズで書くテストは次の 3 つ（[ADR 014](../04_decisions/014-narrow-design-and-test-artifacts.md)）。操作ごとのテスト設計 Markdown は、新規では書かない。
 
 | 種類 | 見ること | 置き場 |
 | --- | --- | --- |

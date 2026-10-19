@@ -1,6 +1,6 @@
 # テストスコープ
 
-テストフェーズの成果物は [strategy.md](./strategy.md) の 3 種（[ADR 014](../04_decisions/014-narrow-design-and-test-artifacts.md)）。
+実装と同じフェーズで書くテストは [strategy.md](./strategy.md) の 3 種（[ADR 014](../04_decisions/014-narrow-design-and-test-artifacts.md)）。
 
 ## 層ごとの重点
 

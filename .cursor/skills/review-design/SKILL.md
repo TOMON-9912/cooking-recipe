@@ -7,7 +7,7 @@ description: Reviews specification and design docs against confirmed requirement
 
 設計書はレビュー中に編集しない。指摘はチャットと、**レビュー 1 回につき 1 ファイル**にまとめて残す。
 
-コードレビューは `review-code`。テスト設計のレビューは設計が確定してから。
+コードとテストのレビューは `review-code`。設計の次のフェーズは `/implement`（コードとテスト）で、テストだけのレビュー工程は無い。
 
 ## 参照（本文はここにコピーしない）
 

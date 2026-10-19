@@ -1,6 +1,6 @@
 # Issue 起点の開発
 
-判断理由は [ADR 010](../04_decisions/010-issue-centered-dev-flow.md)、[ADR 013](../04_decisions/013-issue-per-process.md)。手順の本体は `.cursor/skills/`（`/plan` `/requirements` `/design` `/test-design` `/implement` など）。
+判断理由は [ADR 010](../04_decisions/010-issue-centered-dev-flow.md)、[ADR 013](../04_decisions/013-issue-per-process.md)。手順の本体は `.cursor/skills/`（`/plan` `/requirements` `/design` `/implement` など）。テストは `/implement` に含める。
 
 ## 責務
 
@@ -23,9 +23,8 @@ develop にいる
   → 親 Issue                                    /plan が下書きを作り、あなたの OK のあとに作る
   → /requirements   要件定義 Issue → ブランチ → 作業 → PR → マージ → Issue を閉じる
   → /design         設計 Issue     → ブランチ → 作業 → PR → マージ → Issue を閉じる
-  → /test-design    テスト Issue → ブランチ → 作業 → PR → マージ → Issue を閉じる
-  → /implement      実装 Issue（操作ごと。Ready 未チェックで作る）
-                    → あなたが Ready → ブランチ → 実装 → PR → マージ → Issue を閉じる
+  → /implement      実装 Issue（操作ごと。コードと 3 種のテスト。Ready 未チェックで作る）
+                    → あなたが Ready → ブランチ → 実装とテスト → PR → マージ → Issue を閉じる
 ```
 
 Issue は、**そのプロセスを始めるとき**に、そのプロセスの Skill が作る。前のプロセスの PR のマージを待ってから作る。
@@ -34,8 +33,7 @@ Issue は、**そのプロセスを始めるとき**に、そのプロセスの 
 | --- | --- | --- | --- | --- |
 | 1 | `/requirements` | 要件定義 Issue | `docs/{Issue}-requirements-{slug}` | `docs/01_requirements`、必要な ADR |
 | 2 | `/design` | 設計 Issue | `docs/{Issue}-design-{slug}` | Architecture、database、必要な ADR（[ADR 014](../04_decisions/014-narrow-design-and-test-artifacts.md)） |
-| 3 | `/test-design` | テスト Issue | `docs/{Issue}-test-design-{slug}` | Vitest（モック）、Vitest（実 DB）、e2e |
-| 4 | `/implement` | 実装 Issue（1 操作 1 つ） | `{種別}/{Issue}-{slug}`（`feature/` `fix/` など） | コード、テスト |
+| 3 | `/implement` | 実装 Issue（1 操作 1 つ） | `{種別}/{Issue}-{slug}`（`feature/` `fix/` など） | コードと、その操作に必要な Vitest（モック）、Vitest（実 DB）、e2e |
 
 `{Issue}` は、そのプロセスの子 Issue の番号。`{slug}` は親の機能を表す英語の短い名前。
 
@@ -57,7 +55,7 @@ Issue は、**そのプロセスを始めるとき**に、そのプロセスの 
 
 ### タイトル
 
-Conventional Commits の種別で始める。要件定義は `docs(requirements): …`、設計は `docs(design): …`、テスト設計は `docs(test): …`、実装は `feat: …` / `fix: …` など親の種別に合わせる。
+Conventional Commits の種別で始める。要件定義は `docs(requirements): …`、設計は `docs(design): …`、実装は `feat: …` / `fix: …` など親の種別に合わせる。テストは実装のコミットに含める。
 
 ## Issue 本文の骨格
 
@@ -100,31 +98,11 @@ GitHub 上で人が作るときのひな形は `.github/ISSUE_TEMPLATE/`。AI �
 - [ ] レビュー後に、設計の Skill を見直した
 ```
 
-### テスト設計 Issue
-
-```markdown
-親: #{親}
-前提: 要件定義 #{…}、設計 #{…}
-
-## 目的
-何を、どの種類のテストで確かめるか（1〜2 文）
-
-## 成果物
-- Vitest（モックあり）
-- Vitest（実 DB）
-- e2e
-
-## 完了条件
-- [ ] 必要な 3 種のテストが書かれている
-- [ ] テストのレビュー
-- [ ] レビュー後に、テストの Skill を見直した
-```
-
 ### 実装 Issue
 
 ```markdown
 親: #{親}
-前提: 要件定義 #{…}、設計 #{…}、テスト設計 #{…}
+前提: 要件定義 #{…}、設計 #{…}
 
 ## 目的
 この操作で何を実現するか（1〜3 文）
@@ -132,7 +110,7 @@ GitHub 上で人が作るときのひな形は `.github/ISSUE_TEMPLATE/`。AI �
 ## 含めること
 ## 含めないこと
 ## 完了条件
-利用者から見て終わった状態。要件定義の受け入れ条件のうち、この操作の分
+利用者から見て終わった状態。要件定義の受け入れ条件のうち、この操作の分。加えて、その操作に必要な Vitest（モック）、Vitest（実 DB）、e2e
 
 ## 設計のリンク
 正本のパスだけ
@@ -144,7 +122,6 @@ GitHub 上で人が作るときのひな形は `.github/ISSUE_TEMPLATE/`。AI �
 - [ ] 要件定義の確定
 - [ ] 仕様の確定
 - [ ] 必要な設計
-- [ ] テスト（Vitest のモック、Vitest の実 DB、e2e）
 - [ ] 実装計画
 - [ ] 仕様・設計のレビュー
 - [ ] レビュー後の承認
@@ -156,13 +133,12 @@ GitHub 上で人が作るときのひな形は `.github/ISSUE_TEMPLATE/`。AI �
 - [ ] 要件定義の確定
 - [ ] 仕様の確定
 - [ ] 必要な設計
-- [ ] テスト（Vitest のモック、Vitest の実 DB、e2e）
 - [ ] 実装計画
 - [ ] 仕様・設計のレビュー
 - [ ] レビュー後の承認
 ```
 
-各項目の中身は docs 側。要件定義は設計より先に書き、確定してから設計に進む（[ADR 012](../04_decisions/012-requirements-before-design.md)）。要件定義・設計・テスト設計の Issue が閉じている（PR がマージ済み）ことは、この条件の裏づけになる。
+各項目の中身は docs 側。要件定義は設計より先に書き、確定してから設計に進む（[ADR 012](../04_decisions/012-requirements-before-design.md)）。要件定義と設計の Issue が閉じている（PR がマージ済み）ことは、この条件の裏づけになる。テストは実装 Issue の完了条件に含める。
 
 「仕様・設計のレビュー」は人間が正本を見た記録。「レビュー後の承認」は、そのレビューのあと Cursor 上で人間が宣言したときだけ成立する。AI はチェックを付けない。
 

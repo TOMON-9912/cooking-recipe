@@ -29,7 +29,7 @@ description: Reviews application code against project architecture, naming, and 
 
 聞かない。どの指摘を直すか、次に何をするかは、ユーザーが自分で決める。AskQuestion で採否や次の行動を尋ねない。
 
-報告のあと、そのフェーズの Skill を読む（コードレビューなら `implement-feature`、テストのレビューなら `write-test-design`）。今回のレビューで、手順が足りない、または手順が成果物を増やしていると分かった箇所だけを、その Skill に直す。指摘を設計書やコードへ反映することは、この見直しに含めない。
+報告のあと、そのフェーズの Skill を読む（コードとテストのレビューなら `implement-feature`）。今回のレビューで、手順が足りない、または手順が成果物を増やしていると分かった箇所だけを、その Skill に直す。指摘を設計書やコードへ反映することは、この見直しに含めない。
 
 ## 報告
 
