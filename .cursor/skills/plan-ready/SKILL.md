@@ -39,17 +39,15 @@ description: Reads a GitHub Issue, determines change types, and lists required d
 
 ## 変更種別と docs
 
+新規スライスで要求する設計は Architecture、database、ADR だけ（ADR 014）。domain / application / api / ui と、操作ごとのテスト設計 Markdown は要求しない。既存ファイルは参照してよい。
+
 | 種別 | 見る正本 |
 | --- | --- |
 | Requirements | `docs/01_requirements` |
-| Domain | `docs/02_design/domain` |
+| Architecture | `docs/02_design/architecture` |
 | Database | `docs/02_design/database` |
-| Application | `docs/02_design/application` |
-| API | `docs/02_design/api` |
-| UI | `docs/02_design/ui` |
-| Test design | `docs/03_test/design` |
-| Test strategy | `docs/03_test` |
 | ADR | `docs/04_decisions` |
+| Test | Vitest（モック）、Vitest（実 DB）、e2e。手順は `docs/03_test/strategy.md` |
 
 「お気に入りを足す」だけでは種別は決まらない。永続化が要るか、既存概念か、画面だけかを見てから書く。
 
@@ -58,10 +56,10 @@ description: Reads a GitHub Issue, determines change types, and lists required d
 - Requirements: 何を・なぜ作るか（利用者の要求と要件）
 - Specification: 要件を満たすためのルール・状態・権限・失敗の意味
 - Design: 内部でどう実現するか
-- Test Design: 何をどう検証するか（AC のコピーにしない）
-- 不要な設計は「不要」と理由だけ書く。空の設計書を作らせない
+- Test: モックの Vitest、実 DB の Vitest、e2e のどれが要るか
+- 不要な設計は「不要」と理由だけ書く。domain / application / ui の新規ファイルは要求しない
 
-Test Design が不要なとき（挙動不変の文言修正など）は、理由を書いて Issue 上は人間が Test Design をチェックする。
+テストが不要なとき（挙動不変の文言修正など）は、理由を書いて Issue 上は人間がテストをチェックする。
 
 ## 報告
 
@@ -86,8 +84,8 @@ Test Design が不要なとき（挙動不変の文言修正など）は、理�
 ## Specification
 現状: あり（path） / 不足
 
-## Test Design
-必要または不要（理由）
+## Test
+必要または不要（理由）。種類は Vitest（モック）/ Vitest（実 DB）/ e2e
 現状: あり（path） / 不足 / 不要
 
 ## Implementation Plan
@@ -103,7 +101,7 @@ Test Design が不要なとき（挙動不変の文言修正など）は、理�
 ## 次
 要件定義が不足 → /requirements
 要件は確定済みで設計が不足 → /design
-設計は済みでテスト設計が不足 → /test-design
+設計は済みでテストが不足 → /test-design
 揃っている → 人間が要件・仕様・設計をレビューし、Issue の実装開始条件を付け、チャットでレビュー後の承認を宣言する
 ```
 

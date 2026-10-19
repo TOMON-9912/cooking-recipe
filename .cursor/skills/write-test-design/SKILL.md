@@ -1,38 +1,47 @@
 ---
 name: write-test-design
-description: Writes the test design (what to verify and how) for a slice whose requirements and design are confirmed. Use when filling test design, or running /test-design.
+description: Writes the three test-phase artifacts (Vitest with mocks, Vitest against a real database, and e2e) for a slice whose requirements and design are confirmed. Does not write test-design markdown. Use when filling tests, or running /test-design.
 ---
 
-# テスト設計を書く
+# テストを書く
 
-実装しない。仕様・設計は書かない（`/design`）。書くのは `docs/03_test/design/{関心事}/{操作}.md`（設計の `docs/02_design/application` と同じ構成）。テスト戦略自体の変更だけ `docs/03_test` 直下。
+仕様・設計は書かない（`/design`）。操作ごとのテスト設計 Markdown は書かない。成果物は次の 3 つだけ（[ADR 014](../../docs/04_decisions/014-narrow-design-and-test-artifacts.md)）。
 
-このスキルは、テスト設計 Issue を作り、そのブランチでテスト設計を書く（`docs/05_development/issue-workflow.md`）。次のプロセス（実装）の Issue は作らない。
+| 種類 | 見ること | 置き場 | 実行 |
+| --- | --- | --- | --- |
+| Vitest（モックあり） | usecase / action。deps はモック | `src/**/*.test.ts` | `npm run test:run` |
+| Vitest（実 DB） | RLS、RPC、書き込み後の読み戻し、同時実行 | `src/**/*.db.test.ts` | `npm run test:db` |
+| e2e | 画面をまたぐクリティカルパス | `e2e/**/*.spec.ts` | `npm run test:e2e` |
+
+その操作に無い種類は書かない。モックが通ったことを、RLS の検証にしない。
+
+実装がまだ無い操作のテストは、このフェーズでは失敗してよい。実装フェーズで通す。
+
+このスキルは、テスト Issue を作り、そのブランチでテストを書く（`docs/05_development/issue-workflow.md`）。次のプロセス（実装）の Issue は作らない。
 
 ## 始める前
 
-1. 要件定義（`docs/01_requirements/{機能}.md`）と設計（`docs/02_design`）がある
-2. 要件定義 Issue と設計 Issue が閉じている（PR がマージ済み）、またはユーザーがこのチャットで確定を明示している
+1. 要件定義（`docs/01_requirements/{機能}.md`）がある
+2. 設計として、必要な Architecture / database / ADR がある
+3. 要件定義 Issue と設計 Issue が閉じている（PR がマージ済み）、またはユーザーがこのチャットで確定を明示している
 
-どちらかが無いときは、書かずに止まり、`/requirements` または `/design` へ戻す。
+足りないときは書かずに止まり、`/requirements` または `/design` へ戻す。
 
 ## 始め方
 
 `docs/05_development/issue-workflow.md` の「各プロセスの始め方」に従う。
 
 1. `git fetch origin` のあと、`develop` にいて、作業ツリーに無関係な変更が無いことを確かめる。違えば止まって聞く
-2. 設計 Issue が閉じていることを確かめる（`gh issue view {番号} --json state`）。開いていれば止まって聞く
-3. 親の子 Issue を確かめ（`gh api 'repos/{owner}/{repo}/issues/{親}/sub_issues' --jq '.[] | "\(.number) \(.state) \(.title)"'`）、テスト設計 Issue が無ければ作る。タイトルは `docs(test): {機能}のテスト設計`、本文は骨格のとおり。前提に要件定義 Issue と設計 Issue、成果物にパスだけ書く（`gh issue create --parent {親} --title "…" --body-file {ファイル}`）
+2. 設計 Issue が閉じていることを確かめる。開いていれば止まって聞く
+3. 親の子 Issue を確かめ、テスト Issue が無ければ作る。タイトルは `test: {機能}のテスト`。成果物は 3 種のテスト
 4. `git switch -c docs/{Issue}-test-design-{slug} origin/develop` で作業ブランチを切る。push しない
 
 ## 書き方
 
-- 要件の ID（`FR-` / `NFR-`）と、要件定義の受け入れ条件を、検証の観点に結びつける
-- 設計（失敗の意味、権限、状態）から、正常系・異常系・境界の観点を出す
-- 受け入れ条件の全文コピー、完成したテストコードは書かない
-- 要件・設計に無いことを足さない。足りないと気づいたら、書かずに戻り先（`/requirements` または `/design`）を示す
-- ひな形は `docs/03_test/design/_template.md`、一覧は `docs/03_test/design/README.md`
+- 要件の ID と、database / ADR の失敗・権限・状態から、正常系・異常系・境界を選ぶ
+- 受け入れ条件の全文コピーは、テスト名の代わりにしない
+- 要件・設計に無いことを足さない
 
 ## 完了
 
-書いたパス、作った Issue とブランチ、まだ人間が決めることを列挙する。次は人間によるレビューと PR（依頼があるときだけ。PR 本文に `Closes #{テスト設計 Issue}`）。PR がマージされて Issue が閉じたら、実装 Issue を `/implement` が作る。実装へ進まない。Ready は付けない。
+書いたパス、実行したコマンドと結果、作った Issue とブランチを列挙する。次は人間によるレビューと PR（依頼があるときだけ。本文に `Closes #{テスト Issue}`）。実装へ進まない。Ready は付けない。

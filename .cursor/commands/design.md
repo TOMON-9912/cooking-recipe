@@ -1,7 +1,7 @@
 ---
-description: 設計モード - 要件が確定した Issue の、不足している仕様・設計・テスト設計だけ書く
+description: 設計モード - 要件が確定した Issue の Architecture、database、ADR だけ書く
 ---
 
 # 設計モード
 
-`.cursor/skills/write-design/SKILL.md` に従う。要件定義が無い・未確定なら書かず `/requirements` へ戻る。実装しない。設計の子 Issue とブランチを切って始める。データ系 → バックエンド（層の内側から）→ フロントエンドの順で、段階の終わりで止まってレビューを待つ。テスト設計は `/test-design`。
+`.cursor/skills/write-design/SKILL.md` に従う。要件定義が無い・未確定なら書かず `/requirements` へ戻る。実装しない。domain / application / api / ui は書かない。テストは `/test-design`。

@@ -23,7 +23,7 @@ develop にいる
   → 親 Issue                                    /plan が下書きを作り、あなたの OK のあとに作る
   → /requirements   要件定義 Issue → ブランチ → 作業 → PR → マージ → Issue を閉じる
   → /design         設計 Issue     → ブランチ → 作業 → PR → マージ → Issue を閉じる
-  → /test-design    テスト設計 Issue → ブランチ → 作業 → PR → マージ → Issue を閉じる
+  → /test-design    テスト Issue → ブランチ → 作業 → PR → マージ → Issue を閉じる
   → /implement      実装 Issue（操作ごと。Ready 未チェックで作る）
                     → あなたが Ready → ブランチ → 実装 → PR → マージ → Issue を閉じる
 ```
@@ -33,8 +33,8 @@ Issue は、**そのプロセスを始めるとき**に、そのプロセスの 
 | 順 | Skill | 作る子 Issue | 作業ブランチ | PR に入れるもの |
 | --- | --- | --- | --- | --- |
 | 1 | `/requirements` | 要件定義 Issue | `docs/{Issue}-requirements-{slug}` | `docs/01_requirements`、必要な ADR |
-| 2 | `/design` | 設計 Issue | `docs/{Issue}-design-{slug}` | 仕様・設計（`docs/02_design`、必要な ADR） |
-| 3 | `/test-design` | テスト設計 Issue | `docs/{Issue}-test-design-{slug}` | `docs/03_test/design` |
+| 2 | `/design` | 設計 Issue | `docs/{Issue}-design-{slug}` | Architecture、database、必要な ADR（[ADR 014](../04_decisions/014-narrow-design-and-test-artifacts.md)） |
+| 3 | `/test-design` | テスト Issue | `docs/{Issue}-test-design-{slug}` | Vitest（モック）、Vitest（実 DB）、e2e |
 | 4 | `/implement` | 実装 Issue（1 操作 1 つ） | `{種別}/{Issue}-{slug}`（`feature/` `fix/` など） | コード、テスト |
 
 `{Issue}` は、そのプロセスの子 Issue の番号。`{slug}` は親の機能を表す英語の短い名前。
@@ -92,12 +92,12 @@ GitHub 上で人が作るときのひな形は `.github/ISSUE_TEMPLATE/`。AI �
 
 ## 成果物
 書く場所（docs のパスだけ）
-- 仕様（domain）/ 設計（database、application、api、ui など）
+- Architecture（構造が変わるとき）/ database / ADR
 
 ## 完了条件
-- [ ] 必要な仕様が書かれている
-- [ ] 必要な設計が書かれている
+- [ ] 必要な Architecture、database、ADR が書かれている
 - [ ] 設計のレビュー
+- [ ] レビュー後に、設計の Skill を見直した
 ```
 
 ### テスト設計 Issue
@@ -107,14 +107,17 @@ GitHub 上で人が作るときのひな形は `.github/ISSUE_TEMPLATE/`。AI �
 前提: 要件定義 #{…}、設計 #{…}
 
 ## 目的
-何を検証する設計を書くか（1〜2 文）
+何を、どの種類のテストで確かめるか（1〜2 文）
 
 ## 成果物
-- docs/03_test/design/{関心事}/{操作}.md
+- Vitest（モックあり）
+- Vitest（実 DB）
+- e2e
 
 ## 完了条件
-- [ ] 操作ごとのテスト設計が書かれている
-- [ ] テスト設計のレビュー
+- [ ] 必要な 3 種のテストが書かれている
+- [ ] テストのレビュー
+- [ ] レビュー後に、テストの Skill を見直した
 ```
 
 ### 実装 Issue
@@ -141,7 +144,7 @@ GitHub 上で人が作るときのひな形は `.github/ISSUE_TEMPLATE/`。AI �
 - [ ] 要件定義の確定
 - [ ] 仕様の確定
 - [ ] 必要な設計
-- [ ] テスト設計
+- [ ] テスト（Vitest のモック、Vitest の実 DB、e2e）
 - [ ] 実装計画
 - [ ] 仕様・設計のレビュー
 - [ ] レビュー後の承認
@@ -153,7 +156,7 @@ GitHub 上で人が作るときのひな形は `.github/ISSUE_TEMPLATE/`。AI �
 - [ ] 要件定義の確定
 - [ ] 仕様の確定
 - [ ] 必要な設計
-- [ ] テスト設計
+- [ ] テスト（Vitest のモック、Vitest の実 DB、e2e）
 - [ ] 実装計画
 - [ ] 仕様・設計のレビュー
 - [ ] レビュー後の承認

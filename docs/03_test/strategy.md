@@ -1,8 +1,17 @@
 # テスト戦略
 
-## 単体・結合（Vitest）
+テストフェーズの成果物は次の 3 つ（[ADR 014](../04_decisions/014-narrow-design-and-test-artifacts.md)）。操作ごとのテスト設計 Markdown は、新規では書かない。
 
-- 配置: `src/**/*.test.ts`
+| 種類 | 見ること | 置き場 |
+| --- | --- | --- |
+| Vitest（モックあり） | usecase / action。deps はモック | `src/**/*.test.ts` |
+| Vitest（実 DB） | RLS、RPC、書き込み後の読み戻し、同時実行。実行は `npm run test:db` | `src/**/*.db.test.ts` |
+| e2e | 画面をまたぐクリティカルパス | `e2e/**/*.spec.ts` |
+
+モックの Vitest が通っても、RLS を検証したことにはしない。
+
+## Vitest（モックあり）
+
 - 実行: `npm run test:run`
 - usecase / app Action は deps モックで層を分離してテスト
 
@@ -15,15 +24,6 @@
 ## CI
 
 `main` / `develop` への push と PR で lint + Vitest。E2E は認証情報未設定時スキップするケースあり。
-
-## 観点
-
-操作に依存しない洗い出しは、次を正とする。
-
-- [単体テスト観点表](./viewpoints-unit.md)
-- [結合テスト（E2E）観点表](./viewpoints-e2e.md)
-
-操作ごとのケースは [design/](./design/README.md)。
 
 ## スコープ
 

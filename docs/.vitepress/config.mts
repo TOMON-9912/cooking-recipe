@@ -238,6 +238,7 @@ export default withMermaid(
             { text: "011 家族への招待と承認", link: "/04_decisions/011-family-invite-link" },
             { text: "012 要件定義を設計の前に", link: "/04_decisions/012-requirements-before-design" },
             { text: "013 プロセスごとの Issue", link: "/04_decisions/013-issue-per-process" },
+            { text: "014 設計とテストの成果物", link: "/04_decisions/014-narrow-design-and-test-artifacts" },
           ],
         },
       ],

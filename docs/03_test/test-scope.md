@@ -1,6 +1,6 @@
 # テストスコープ
 
-洗い出す観点は [単体テスト観点表](./viewpoints-unit.md) と [結合テスト（E2E）観点表](./viewpoints-e2e.md)。
+テストフェーズの成果物は [strategy.md](./strategy.md) の 3 種（[ADR 014](../04_decisions/014-narrow-design-and-test-artifacts.md)）。
 
 ## 層ごとの重点
 
