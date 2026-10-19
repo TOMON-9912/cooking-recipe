@@ -1,0 +1,41 @@
+name: 設計（子）
+description: 親 Issue の仕様・設計。要件定義の確定後に書く。通常は /design が作る。
+title: "docs(design): "
+body:
+  - type: input
+    id: parent
+    attributes:
+      label: 親 Issue
+      description: "親 Issue の番号（例: #37）"
+    validations:
+      required: true
+  - type: input
+    id: prerequisite
+    attributes:
+      label: 前提（要件定義 Issue）
+      description: "要件定義 Issue の番号（例: #40）"
+    validations:
+      required: true
+  - type: textarea
+    id: goal
+    attributes:
+      label: 目的
+      description: この設計で、何を決めるか（1〜2文）
+    validations:
+      required: true
+  - type: textarea
+    id: outputs
+    attributes:
+      label: 成果物
+      description: 書く場所（docs のパスだけ。仕様 / 設計）。本文は貼らない。
+    validations:
+      required: true
+  - type: checkboxes
+    id: done
+    attributes:
+      label: 完了条件
+      description: 付けるのは人間だけ。AI は付けない。
+      options:
+        - label: 必要な仕様が書かれている
+        - label: 必要な設計が書かれている
+        - label: 設計のレビュー

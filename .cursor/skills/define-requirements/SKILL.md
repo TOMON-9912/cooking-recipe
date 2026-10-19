@@ -9,9 +9,20 @@ description: Writes the requirements definition (what to build and why) for one 
 
 「要件定義の確定」は人間のレビューのあとに成立する。AI は Issue のチェックを付けない。
 
+このスキルは、要件定義 Issue を作り、そのブランチで要件定義を書く（`docs/05_development/issue-workflow.md`）。次のプロセス（設計）の Issue は作らない。
+
+## 始め方（手順の前）
+
+`docs/05_development/issue-workflow.md` の「各プロセスの始め方」に従う。
+
+1. `git fetch origin` のあと、`develop` にいて、作業ツリーに無関係な変更が無いことを確かめる。違えば止まって聞く
+2. 親 Issue が開いていること（前のプロセスは無い）を確かめる
+3. 親の子 Issue を確かめ（`gh api 'repos/{owner}/{repo}/issues/{親}/sub_issues' --jq '.[] | "\(.number) \(.state) \(.title)"'`）、要件定義 Issue が無ければ作る。タイトルは `docs(requirements): {機能}の要件定義`、本文は骨格のとおり（`gh issue create --parent {親} --title "…" --body-file {ファイル}`）
+4. `git switch -c docs/{Issue}-requirements-{slug} origin/develop` で作業ブランチを切る。push しない
+
 ## 手順
 
-1. Issue（目的 / なぜ作るか / 含めること / 含めないこと / 完了条件）を読む。番号が無ければ聞く
+1. 親 Issue（目的 / なぜ作るか / 含めること / 含めないこと / 完了条件）を読む。番号が無ければ聞く
 2. `docs/01_requirements/` に既存の要件があれば、差分だけ直す
 3. 関係する ADR・`docs/02_design/domain`・現状の実装を、**現状の事実を確かめる分だけ**見る
 4. `docs/01_requirements/_template.md` をコピーして書く
@@ -38,4 +49,4 @@ description: Writes the requirements definition (what to build and why) for one 
 
 ## 完了
 
-書いたパスと、人間が決めること（未決）を列挙する。次は人間による要件定義のレビュー。確定したら `/design`。実装へ進まない。Ready は付けない。
+書いたパス、作った Issue とブランチ、人間が決めること（未決）を列挙する。次は人間による要件定義のレビューと PR（依頼があるときだけ。PR 本文に `Closes #{要件定義 Issue}`）。PR がマージされて Issue が閉じたら `/design`。設計・実装へ進まない。Ready は付けない。

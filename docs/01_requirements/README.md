@@ -11,8 +11,10 @@ GitHub Issue（目的・なぜ・範囲・完了条件）
   → /plan         どの正本が足りないかを判定する
   → /requirements 要件定義を書く（このディレクトリ）
   → 要件定義のレビュー
-  → /design       設計・テスト設計を書く（02_design / 03_test）
-  → 設計のレビュー → レビュー後の承認 → 実装
+  → /design       設計を書く（02_design）
+  → /test-design  テスト設計を書く（03_test/design）
+  → /implement    実装 Issue を作り、レビュー後の承認のあとに実装
+  （各プロセスは、Issue・ブランチ・PR を 1 つずつ。前の PR のマージ後に始める）
 ```
 
 ## 何を書き、何を書かないか

@@ -1,5 +1,5 @@
-name: スライス
-description: 1操作の開発対象（目的・理由・範囲・完了条件）。実装方法は書かない。
+name: 開発対象（親）
+description: 開発対象の親 Issue（目的・理由・範囲・完了条件）。要件定義・設計・実装は子 Issue に切る。実装方法は書かない。
 title: ""
 labels: ["slice"]
 body:
@@ -19,6 +19,7 @@ body:
         例: `feat: 家族グループへのメンバー追加` / `fix: 確認メールのリンク先が間違っている`
 
         要件定義・設計の本文は `docs/01_requirements`〜`docs/04_decisions` に置く。変更種別は作成時は空でよい（`/plan` で確定する）。
+        要件定義・設計・テスト設計・実装の Issue は、この Issue の子として、各プロセスの開始時に Skill（`/requirements` `/design` `/test-design` `/implement`）が作る（`docs/05_development/issue-workflow.md`）。
   - type: dropdown
     id: type
     attributes:
@@ -76,26 +77,3 @@ body:
         - label: UI
         - label: テスト戦略
         - label: ADR
-  - type: textarea
-    id: design-links
-    attributes:
-      label: 設計のリンク
-      description: 正本へのパスのみ。本文は貼らない。
-  - type: textarea
-    id: impl-plan
-    attributes:
-      label: 実装計画
-      description: 1行スライス、触る層、主なパス、検証コマンド。実現方法の詳細は書かない。
-  - type: checkboxes
-    id: ready
-    attributes:
-      label: 実装開始条件
-      description: 条件の正。中身は docs。「レビュー後の承認」は、仕様書・設計書のレビューのあと、Cursor 上で人間が宣言したときだけ成立する。AI は付けない。
-      options:
-        - label: 要件定義の確定
-        - label: 仕様の確定
-        - label: 必要な設計
-        - label: テスト設計
-        - label: 実装計画
-        - label: 仕様・設計のレビュー
-        - label: レビュー後の承認

@@ -43,5 +43,6 @@ ADR 009 のハーネスは、学びを候補として残すところまでを決
 
 - [ADR 009](./009-ai-dev-harness.md)
 - [ADR 012 要件定義を設計の前に置く](./012-requirements-before-design.md)
+- [ADR 013 プロセスごとに子 Issue を切る](./013-issue-per-process.md)
 - 運用: `docs/90_workspace/harness/README.md`
 - Issue と docs の分担: `docs/05_development/issue-workflow.md`

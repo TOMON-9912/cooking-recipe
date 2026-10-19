@@ -2,7 +2,7 @@
 
 チャットで指示し、Issue から設計を経て実装し、学びを **人間の採否を経て** 次回へ残す作業領域。プロダクト仕様の正本ではない。正本は `docs/01_requirements`〜`docs/04_decisions`。
 
-判断の理由は [ADR 009](../../04_decisions/009-ai-dev-harness.md)、[ADR 010](../../04_decisions/010-issue-centered-dev-flow.md)、[ADR 012](../../04_decisions/012-requirements-before-design.md)。Issue と docs の分担は [issue-workflow.md](../../05_development/issue-workflow.md)。
+判断の理由は [ADR 009](../../04_decisions/009-ai-dev-harness.md)、[ADR 010](../../04_decisions/010-issue-centered-dev-flow.md)、[ADR 012](../../04_decisions/012-requirements-before-design.md)、[ADR 013](../../04_decisions/013-issue-per-process.md)。Issue と docs の分担は [issue-workflow.md](../../05_development/issue-workflow.md)。
 
 ## 目的
 
@@ -13,12 +13,13 @@
 ## 開発フロー
 
 ```
-GitHub Issue（What / Why / Scope / AC）
+親 Issue（What / Why / Scope / AC。/plan が下書きを作る）
   → /plan（変更種別の確定、必要な正本と理由、不足なら停止）
+  各プロセス: 子 Issue → ブランチ → 作業 → PR → マージ → Issue を閉じる（前のプロセスのマージ後に始める）
   → /requirements（要件定義。何を・なぜ作るか。設計の前）
-  → 要件定義のレビュー
-  → /design（不足している仕様・設計・テスト設計だけ。混ぜない）
-  → Issue の Ready 条件
+  → /design（不足している仕様・設計だけ。混ぜない）
+  → /test-design（操作ごとのテスト設計）
+  → /implement が実装 Issue（操作ごと）を作る → 実装 Issue の Ready 条件
   → 人間がチャットで Ready
   → /implement または /coding または /pairpro
   → 検証 → /review → PR（明示依頼時）
@@ -31,7 +32,8 @@ GitHub Issue（What / Why / Scope / AC）
 
 | 置き場 | 役割 |
 | --- | --- |
-| Issue | Ready **条件**の正（チェックリスト。本文は docs） |
+| 実装 Issue | Ready **条件**の正（チェックリスト。本文は docs） |
+| 要件定義・設計 Issue | そのプロセスの完了条件（書いた、レビュー、確定） |
 | Cursor | 仕様・設計レビュー後の承認だけ（ユーザーの明示） |
 | Project | 一覧。正本にしない |
 
@@ -41,7 +43,7 @@ AI は実装開始条件を付けない。レビュー後の承認を自分で�
 
 | 場所 | 役割 |
 | --- | --- |
-| GitHub Issue | 開発対象と Ready 条件 |
+| GitHub Issue | 開発対象（親）と、プロセスごとの子 Issue、実装の Ready 条件 |
 | `.cursor/rules/` | 常時の不変条件 |
 | `.cursor/skills/` | 工程の手順 |
 | `.cursor/commands/` | 工程の入口 |
@@ -94,6 +96,7 @@ AI は実装開始条件を付けない。レビュー後の承認を自分で�
 | 必要な正本の判定 | `/plan` → `plan-ready` |
 | 要件定義を書く | `/requirements` → `define-requirements` |
 | 不足している設計を書く | `/design` → `write-design` |
+| テスト設計を書く | `/test-design` → `write-test-design` |
 | AI 実装 | `/implement` → `implement-feature` |
 | 人間が書く | `/coding` → `human-coding` |
 | ペアプロ | `/pairpro` → `pair-programming` |

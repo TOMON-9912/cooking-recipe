@@ -226,6 +226,7 @@ export default withMermaid(
             { text: "009 AI 開発ハーネス", link: "/04_decisions/009-ai-dev-harness" },
             { text: "010 Issue 起点フロー", link: "/04_decisions/010-issue-centered-dev-flow" },
             { text: "012 要件定義を設計の前に", link: "/04_decisions/012-requirements-before-design" },
+            { text: "013 プロセスごとの Issue", link: "/04_decisions/013-issue-per-process" },
           ],
         },
       ],
