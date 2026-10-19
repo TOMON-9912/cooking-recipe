@@ -13,7 +13,7 @@ pageClass: er-page
 
 ## ユーザー・家族
 
-<ErDiagram :columns="[['profiles'], ['auth.users'], ['families', 'family_members']]" />
+<ErDiagram :columns="[['profiles'], ['auth.users'], ['families', 'family_members', 'family_invites']]" />
 
 ## レシピ
 

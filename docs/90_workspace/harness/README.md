@@ -101,7 +101,8 @@ AI は実装開始条件を付けない。レビュー後の承認を自分で�
 | 人間が書く | `/coding` → `human-coding` |
 | ペアプロ | `/pairpro` → `pair-programming` |
 | 写経 | `/transcribe` → `transcribe-code` |
-| レビュー | `/review` → `review-code` |
+| コードレビュー | `/review` → `review-code` |
+| 設計レビュー | `/review-design` → `review-design` |
 | 振り返り | `/retrospect` → `retrospect-slice` |
 | 候補を残す | `/record-candidate` → `record-improvement-candidate` |
 | 採否 | `/decide-candidate` → `decide-improvement-candidate` |

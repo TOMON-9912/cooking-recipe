@@ -169,5 +169,6 @@
 
 | 種類 | リンク |
 | --- | --- |
-| 仕様・設計・テスト設計 | 要件の確定後に作成する |
+| 仕様・設計 | [family.md](../02_design/domain/family.md)、[create-family-invite.md](../02_design/application/family/create-family-invite.md)、[list-family-invites.md](../02_design/application/family/list-family-invites.md)、[list-my-family-invites.md](../02_design/application/family/list-my-family-invites.md)、[cancel-family-invite.md](../02_design/application/family/cancel-family-invite.md)、[join-family.md](../02_design/application/family/join-family.md)、[family-join.md](../02_design/ui/screens/family-join.md)、[family_invites.md](../02_design/database/tables/family_invites.md) |
+| テスト設計 | `/test-design` で書く（この設計には含めない） |
 | ADR | [011](../04_decisions/011-family-invite-link.md) |

@@ -32,7 +32,8 @@
 | `/auth/callback` | 不要（code 交換） | メール確認完了 | メール内リンク |
 | `/profile/new` | 必要 | 初回プロフィール | `/top` からの redirect |
 | `/top` | 必要 | **ホーム**・レシピ一覧 | ログイン成功、ロゴ、ナビ |
-| `/family` | 必要 | 家族作成 or 概要 | ヘッダー、旧 `/family/new` |
+| `/family` | 必要 | 家族作成 or 概要。オーナーは招待の発行・一覧。自分宛ての招待の確認（所属済みでも。未所属だけ承認へ） | ヘッダー、旧 `/family/new`、案内 URL |
+| `/family/join` | 必要 | 自分宛ての招待を承認（新規。実装の page は未作成） | `/family` の自分宛ての招待から |
 | `/recipe/new` | 必要 | レシピ作成 | ヘッダー、ヒーロー CTA、空状態 |
 | `/recipe/search` | 必要 | キーワード・カテゴリ検索 | トップクイックアクセス |
 | `/recipe/[id]` | 必要 | 詳細 | 一覧カード |
@@ -72,6 +73,7 @@
 | プロフィール作成 | [screens/profile-new.md](./screens/profile-new.md) |
 | ホーム | [screens/top.md](./screens/top.md) |
 | 家族 | [screens/family.md](./screens/family.md) |
+| 家族に参加 | [screens/family-join.md](./screens/family-join.md) |
 | レシピ作成 | [screens/recipe-new.md](./screens/recipe-new.md) |
 | レシピ詳細 | [screens/recipe-detail.md](./screens/recipe-detail.md) |
 | レシピ編集 | [screens/recipe-edit.md](./screens/recipe-edit.md) |
