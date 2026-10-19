@@ -16,6 +16,15 @@
 
 `main` / `develop` への push と PR で lint + Vitest。E2E は認証情報未設定時スキップするケースあり。
 
+## 観点
+
+操作に依存しない洗い出しは、次を正とする。
+
+- [単体テスト観点表](./viewpoints-unit.md)
+- [結合テスト（E2E）観点表](./viewpoints-e2e.md)
+
+操作ごとのケースは [design/](./design/README.md)。
+
 ## スコープ
 
 [test-scope.md](./test-scope.md) と [application/source-index/](../02_design/application/source-index/README.md) を参照してください。

@@ -181,6 +181,8 @@ export default withMermaid(
           items: [
             { text: "Strategy", link: "/03_test/strategy" },
             { text: "Test scope", link: "/03_test/test-scope" },
+            { text: "単体テスト観点表", link: "/03_test/viewpoints-unit" },
+            { text: "結合テスト（E2E）観点表", link: "/03_test/viewpoints-e2e" },
             { text: "E2E Playwright", link: "/03_test/e2e-playwright" },
             { text: "Incident: 家族 RLS", link: "/03_test/incidents/family-create-rls-select" },
           ],
