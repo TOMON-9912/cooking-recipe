@@ -185,7 +185,7 @@ src/
 
 ### 必要なもの
 
-- Node.js 20+
+- Node.js 24
 - Supabase プロジェクト（[supabase.com](https://supabase.com) で無料作成可能）
 
 ### 手順
