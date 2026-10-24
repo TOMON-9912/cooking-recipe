@@ -41,4 +41,4 @@ GitHub Issue（目的・なぜ・範囲・完了条件）
 | 機能 | ファイル | ステータス |
 | --- | --- | --- |
 | 家族グループへのメンバー追加 | [family-member-join.md](./family-member-join.md) | 確定（Issue #37） |
-| Node.js のセキュリティ更新への追従 | [node-security-update.md](./node-security-update.md) | 草案（Issue #46） |
+| Node.js のセキュリティ更新への追従 | [node-security-update.md](./node-security-update.md) | 確定（Issue #46） |
