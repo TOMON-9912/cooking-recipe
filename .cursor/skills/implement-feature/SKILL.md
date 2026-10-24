@@ -1,81 +1,86 @@
 ---
 name: implement-feature
-description: クリーンアーキテクチャに従った新機能の実装ガイド。新しい機能を追加するとき、CRUD 機能を実装するとき、レシピ関連の機能を作るときに使用。
+description: Implements one Ready GitHub Issue end-to-end under Clean Architecture. Use when the user has declared Ready and runs /implement.
 ---
 
-# 新機能実装ガイド
+# 機能実装（Ready 済み Issue）
 
-このプロジェクトはクリーンアーキテクチャを採用しています。**1 機能（操作）= 1 PR** を目安に、end-to-end で実装してください。
+**1 操作 = 1 スライス = 1 PR**。設計は書かない。完成コードはファイルに書く。
 
-## 実装単位
+常時制約: `clean-architecture.mdc` / `file-naming.mdc` / `code-style.mdc` / `ui-design.mdc` / `git-workflow.mdc` / `harness-governance.mdc`
 
-| 操作 | 例（family） | PR の目安 |
-|---|---|---|
-| 登録 | 家族グループ作成 | create-family ブランチ |
-| 取得 | 所属家族・メンバー一覧 | get-family ブランチ |
-| 更新 | グループ名変更 | update-family-name ブランチ |
-| 参加・脱退 | 招待参加 / 脱退 | join-family / leave-family ブランチ |
+## 実装してよいか
 
-**1 操作の PR に、無関係な別操作を含めない。**
+次が揃うまで **1 行も実装しない**。足りないものは `/plan` または `/design` へ戻す。
 
-## 1 機能内の実装順序
+1. 実装 Issue（番号または URL）がある。親 Issue、要件定義 Issue、設計 Issue は対象にしない。無いときは、下の「実装 Issue がまだ無いとき」へ
+2. 実装 Issue の実装開始条件が付いている: 要件定義の確定 / 必要な設計（Architecture、database、ADR）/ 実装計画 / 設計のレビュー
+3. **このチャットで** ユーザーが、仕様書・設計書レビュー後の承認を明示している（「レビューを承認した。/implement」など）
+4. Implementation Plan と、要件定義および変更種別に対する正本がある
+5. 未確定の判断が無い
+
+AI が「まあ実装できる」と判断して進まない。Issue の「仕様・設計のレビュー」と「レビュー後の承認」を AI が付けない。
+
+要件定義や、必要な database 設計が無いからスコープを短く宣言して着手する、ことはしない。
+
+未 Ready の停止例:
+
+```text
+DB 変更が必要なのに docs/02_design/database に該当設計がありません。
+実装を開始しません。/design で DB 設計を確定してください。
+```
+
+## 実装 Issue がまだ無いとき
+
+要件定義と設計の Issue が閉じている（PR がマージ済み）ことを確かめてから、実装 Issue を作る。テストだけの Issue は待たない。開いていれば止まって聞く。
+
+1. `git fetch origin` のあと、`develop` にいて、作業ツリーに無関係な変更が無いことを確かめる。違えば止まって聞く
+2. 操作の分け方は、要件定義の「進め方」と `docs/02_design/application` の操作の一覧に従う。決まっていない、または複数の案があるときは、案を示して AskQuestion で聞いて止まる
+3. 親の子 Issue を確かめ（`gh api 'repos/{owner}/{repo}/issues/{親}/sub_issues' --jq '.[] | "\(.number) \(.state) \(.title)"'`）、同じ操作の実装 Issue が無ければ、操作ごとに 1 つずつ作る（`gh issue create --parent {親} --title "feat: …" --body-file {ファイル}`）。本文は `docs/05_development/issue-workflow.md` の「実装 Issue」の骨格。完了条件は要件定義の受け入れ条件のうちその操作の分、実装計画（スライス / 触る層 / 主なパス / 検証コマンド）はここで書く。実装開始条件はすべて未チェックのまま
+4. 作った Issue の番号と URL を示して**止まる**。ここでは実装もブランチ作成もしない。人間がレビューして Ready を付け、承認を明示するのを待つ
+
+## ブランチ
+
+実装開始条件が揃い、承認が明示されたら、その実装 Issue のブランチを切る: `git switch -c {種別}/{Issue}-{slug} origin/develop`（`feature/` `fix/` など。push しない）。同時に 1 つの実装 Issue だけ進める。
+
+## 着手後
+
+正本と Implementation Plan に従い、必要な層だけ下から実装する。
 
 ```
-1. domain/models      → 型定義（不足分のみ）
-2. domain/repositories → インターフェース（不足分のみ）
-3. infrastructure     → DB 実装
-4. usecase            → オーケストレーション
-5. app                → Server Action
-6. presentation       → UI
+domain/models → domain/repositories → infrastructure → usecase → app → presentation
 ```
 
-## 各層のチェックリスト
+| 層 | この操作でやること |
+| --- | --- |
+| domain | 不足している型・interface だけ |
+| infrastructure | `{関心事}-repository-impl.ts`、snake_case 変換、単体テスト |
+| usecase | `{操作}-{関心事}-usecase.ts`、deps、バリデーション、単体テスト |
+| app | Action で deps 組み立て、認証・パース・エラー整形、単体テスト |
+| presentation | UI。Action だけ呼ぶ |
 
-### domain/models / repositories
+参考: `src/usecase/recipe/`、`src/usecase/family/create-family-usecase.ts`、`docs/02_design/application/family/create-family.md`
 
-- [ ] この操作に必要な型・interface だけ追加
-- [ ] usecase は infrastructure を import しない
+## テスト
 
-### infrastructure
+このフェーズで、コードと一緒に書く。テストだけの先行フェーズは無い。
 
-- [ ] `{関心事}-repository-impl.ts` に Supabase 実装
-- [ ] snake_case → camelCase 変換
-- [ ] 単体テストを追加
+| 種類 | いつ書くか |
+| --- | --- |
+| Vitest（モック） | その usecase や action を書くのと一緒に。`src/**/*.test.ts` |
+| Vitest（実 DB） | RLS、RPC、書き込み後の読み戻し、同時実行がこの操作にあるとき。`src/**/*.db.test.ts`。`npm run test:db` |
+| e2e | 画面をまたぐクリティカルパスがこの操作にあるとき。`e2e/**/*.spec.ts` |
 
-### usecase
+その操作に無い種類は書かない。モックが通ったことを、RLS の検証にしない。あるテストは緩和も削除もしない。完了時は Implementation Plan の検証コマンドを実行して報告する。
 
-- [ ] `{操作}-{関心事}-usecase.ts`
-- [ ] deps パターン
-- [ ] ビジネスバリデーション（未所属チェック等）
-- [ ] 単体テストを追加
+## 完了報告
 
-### app
+1. Issue 番号と何をしたか
+2. スコープ外
+3. 触ったファイル
+4. テストと結果
+5. レビューで見てほしい点
+6. 次の提案は 1 つ（着手しない）
+7. ずれがあれば candidate まで（採否しない）
 
-- [ ] Server Action で deps 組み立て
-- [ ] 認証・FormData パース・エラー整形
-- [ ] 単体テストを追加
-
-### presentation
-
-- [ ] フォーム / 画面。Action のみ呼び出す
-
-## スコープ定義
-
-新機能着手時は `docs/implementation/<feature>/<operation>.md` に以下を書く:
-
-- 含める操作・画面
-- **含めない**操作（別 PR）
-- 完了条件（E2E で確認できること）
-
-## 既存コードの参考先
-
-| 機能 | 参考ファイル |
-|-----|------------|
-| 認証 | `src/usecase/auth/`, `src/app/(auth)/` |
-| レシピ CRUD | `src/usecase/recipe/`, `src/app/recipe/` |
-| 家族作成 | `src/usecase/family/create-family-usecase.ts`, `docs/implementation/family/create-family.md` |
-
-## アーキテクチャ詳細
-
-- `docs/architect/clean-architecture-and-directory.md`
-- `docs/adr/` の該当 ADR
+PR は明示依頼があるときだけ。次の機能へ自動では進まない。

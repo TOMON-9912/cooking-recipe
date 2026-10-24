@@ -8,10 +8,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
+type Props = {
+    /** 主ボタンにするか。招待がある画面では補助にする */
+    emphasis?: "primary" | "secondary";
+};
+
 /**
  * 家族グループ作成フォーム
+ * @param props ボタンの強さ
  */
-export function CreateFamilyForm() {
+export function CreateFamilyForm({ emphasis = "primary" }: Props) {
     const [state, formAction, isPending] = useActionState<
         CreateFamilyResult | null,
         FormData
@@ -59,7 +65,11 @@ export function CreateFamilyForm() {
             <Button
                 type="submit"
                 disabled={isPending}
-                className="w-full sm:w-auto px-6 py-3 h-auto bg-emerald-600 hover:bg-emerald-700 focus-visible:ring-emerald-500 rounded-lg font-semibold"
+                className={
+                    emphasis === "primary"
+                        ? "w-full sm:w-auto px-6 py-3 h-auto bg-emerald-600 hover:bg-emerald-700 focus-visible:ring-emerald-500 rounded-lg font-semibold"
+                        : "w-full sm:w-auto px-6 py-3 h-auto bg-white text-emerald-700 border border-emerald-200 rounded-lg hover:bg-emerald-50 font-semibold"
+                }
             >
                 {isPending ? "作成中..." : "家族グループを作成する"}
             </Button>

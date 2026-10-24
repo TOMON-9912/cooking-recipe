@@ -1,0 +1,45 @@
+name: テスト（子）
+description: 親 Issue のテスト。要件定義・設計の確定後に、Vitest（モック）、Vitest（実 DB）、e2e を書く。通常は /test-design が作る。
+title: "test: "
+body:
+  - type: input
+    id: parent
+    attributes:
+      label: 親 Issue
+      description: "親 Issue の番号（例: #37）"
+    validations:
+      required: true
+  - type: input
+    id: prerequisite
+    attributes:
+      label: 前提（要件定義・設計の Issue）
+      description: "例: 要件定義 #40、設計 #42"
+    validations:
+      required: true
+  - type: textarea
+    id: goal
+    attributes:
+      label: 目的
+      description: 何を、どの種類のテストで確かめるか（1〜2文）
+    validations:
+      required: true
+  - type: textarea
+    id: outputs
+    attributes:
+      label: 成果物
+      description: テストの種類だけ。本文は貼らない。
+      placeholder: |
+        Vitest（モックあり）
+        Vitest（実 DB）
+        e2e
+    validations:
+      required: true
+  - type: checkboxes
+    id: done
+    attributes:
+      label: 完了条件
+      description: 付けるのは人間だけ。AI は付けない。
+      options:
+        - label: 必要な 3 種のテストが書かれている
+        - label: テストのレビュー
+        - label: レビュー後に、テストの Skill を見直した

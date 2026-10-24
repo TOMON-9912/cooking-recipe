@@ -1,0 +1,71 @@
+name: 実装（子・1操作）
+description: 親 Issue の 1 操作の実装。1 操作 = 1 Issue = 1 PR。通常は /implement が作る。
+title: ""
+body:
+  - type: markdown
+    attributes:
+      value: |
+        タイトルは Conventional Commits の種別で始める。例: `feat: 招待の発行（発行側）` / `fix: 確認メールのリンク先が間違っている`
+  - type: input
+    id: parent
+    attributes:
+      label: 親 Issue
+      description: "親 Issue の番号（例: #37）"
+    validations:
+      required: true
+  - type: input
+    id: prerequisite
+    attributes:
+      label: 前提（要件定義・設計・テスト設計の Issue）
+      description: "例: 要件定義 #40、設計 #41、テスト設計 #42"
+    validations:
+      required: true
+  - type: textarea
+    id: goal
+    attributes:
+      label: 目的
+      description: この操作で何を実現するか（1〜3文）
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: 含めること
+    validations:
+      required: true
+  - type: textarea
+    id: out-of-scope
+    attributes:
+      label: 含めないこと
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 完了条件
+      description: 利用者から見て終わった状態。要件定義の受け入れ条件のうち、この操作の分。テストケースや実装手順は書かない。
+    validations:
+      required: true
+  - type: textarea
+    id: design-links
+    attributes:
+      label: 設計のリンク
+      description: 正本へのパスのみ。本文は貼らない。
+  - type: textarea
+    id: impl-plan
+    attributes:
+      label: 実装計画
+      description: スライス、触る層、主なパス、検証コマンド。実現方法の詳細は書かない。
+  - type: checkboxes
+    id: ready
+    attributes:
+      label: 実装開始条件
+      description: 条件の正。中身は docs。「レビュー後の承認」は、仕様書・設計書のレビューのあと、Cursor 上で人間が宣言したときだけ成立する。AI は付けない。
+      options:
+        - label: 要件定義の確定
+        - label: 仕様の確定
+        - label: 必要な設計
+        - label: テスト設計
+        - label: 実装計画
+        - label: 仕様・設計のレビュー
+        - label: レビュー後の承認
