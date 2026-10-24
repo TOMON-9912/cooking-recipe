@@ -14,7 +14,8 @@ const mapFamilyMemberRow = (row: FamilyMemberRow): FamilyMember => ({
 });
 
 /**
- * 家族グループにメンバーを追加する
+ * 家族作成時にオーナー本人を所属させる。
+ * 招待からの参加は approve_family_invite が行い、この INSERT は使わない。
  * @param familyId 家族グループ ID
  * @param userId 追加するユーザー ID
  */

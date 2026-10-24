@@ -1,6 +1,8 @@
 import { defineConfig } from "vitest/config";
 import path from "path";
 
+const db = process.env.VITEST_DB === "1";
+
 const coverageInclude = [
   "src/usecase/**/*.ts",
   "src/utils/**/*.ts",
@@ -12,7 +14,10 @@ const coverageInclude = [
 export default defineConfig({
   test: {
     environment: "node",
-    include: ["src/**/*.test.ts", "src/**/*.test.tsx"],
+    include: db
+      ? ["src/**/*.db.test.ts"]
+      : ["src/**/*.test.ts", "src/**/*.test.tsx"],
+    exclude: db ? [] : ["src/**/*.db.test.ts"],
     coverage: {
       provider: "v8",
       reporter: ["text", "html"],

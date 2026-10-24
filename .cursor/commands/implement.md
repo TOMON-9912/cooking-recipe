@@ -1,5 +1,5 @@
 ---
-description: 実装モード - Ready 済み Issue を end-to-end でファイルに実装する
+description: 実装・テストモード - Ready 済み Issue のコードと、必要な Vitest・e2e を同じフェーズで書く
 ---
 
 # 実装モード

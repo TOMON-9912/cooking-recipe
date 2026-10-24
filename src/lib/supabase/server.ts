@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
@@ -34,19 +35,19 @@ export async function createClient(){
 }
 
 /**
- * 認証済みであることを保証するクライアント生成関数
- * セッションがない場合は一律で UNAUTHORIZED エラーを投げる
+ * 認証済みであることを保証するクライアント生成関数。
+ * 同じリクエスト内では 1 回だけ getUser する。連続して呼ぶと、
+ * Server Component で保存できない更新済みトークンを古いトークンが上書きし、セッションが切れる。
+ * セッションがない場合は UNAUTHORIZED を投げる。
  */
-export async function createAuthedClient() {
+export const createAuthedClient = cache(async () => {
     const supabase = await createClient();
-    
-    // getUser() はセッションの妥当性をサーバー側で再確認するため、getSession() より安全です
+
     const { data: { user }, error } = await supabase.auth.getUser();
 
     if (error || !user) {
         throw new Error("UNAUTHORIZED");
     }
 
-    // クライアントと、すでに取得済みのユーザー情報をセットで返却
     return { supabase, user };
-}
+});

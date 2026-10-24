@@ -13,15 +13,15 @@ description: Implements one Ready GitHub Issue end-to-end under Clean Architectu
 
 次が揃うまで **1 行も実装しない**。足りないものは `/plan` または `/design` へ戻す。
 
-1. 実装 Issue（番号または URL）がある。親 Issue や、要件定義・設計・テスト設計の Issue は対象にしない。無いときは、下の「実装 Issue がまだ無いとき」へ
-2. 実装 Issue の実装開始条件が付いている: 要件定義の確定 / 仕様の確定 / 必要な設計 / テスト設計 / 実装計画 / 仕様・設計のレビュー
+1. 実装 Issue（番号または URL）がある。親 Issue、要件定義 Issue、設計 Issue は対象にしない。無いときは、下の「実装 Issue がまだ無いとき」へ
+2. 実装 Issue の実装開始条件が付いている: 要件定義の確定 / 必要な設計（Architecture、database、ADR）/ 実装計画 / 設計のレビュー
 3. **このチャットで** ユーザーが、仕様書・設計書レビュー後の承認を明示している（「レビューを承認した。/implement」など）
 4. Implementation Plan と、要件定義および変更種別に対する正本がある
 5. 未確定の判断が無い
 
 AI が「まあ実装できる」と判断して進まない。Issue の「仕様・設計のレビュー」と「レビュー後の承認」を AI が付けない。
 
-要件定義や `docs/02_design/application` が無いからスコープを短く宣言して着手する、ことはしない。
+要件定義や、必要な database 設計が無いからスコープを短く宣言して着手する、ことはしない。
 
 未 Ready の停止例:
 
@@ -32,7 +32,7 @@ DB 変更が必要なのに docs/02_design/database に該当設計がありま�
 
 ## 実装 Issue がまだ無いとき
 
-要件定義・設計・テスト設計の Issue がすべて閉じている（PR がマージ済み）ことを確かめてから、実装 Issue を作る。開いていれば止まって聞く。
+要件定義と設計の Issue が閉じている（PR がマージ済み）ことを確かめてから、実装 Issue を作る。テストだけの Issue は待たない。開いていれば止まって聞く。
 
 1. `git fetch origin` のあと、`develop` にいて、作業ツリーに無関係な変更が無いことを確かめる。違えば止まって聞く
 2. 操作の分け方は、要件定義の「進め方」と `docs/02_design/application` の操作の一覧に従う。決まっていない、または複数の案があるときは、案を示して AskQuestion で聞いて止まる
@@ -63,11 +63,15 @@ domain/models → domain/repositories → infrastructure → usecase → app →
 
 ## テスト
 
-| 状況 | 行動 |
+このフェーズで、コードと一緒に書く。テストだけの先行フェーズは無い。
+
+| 種類 | いつ書くか |
 | --- | --- |
-| テストがある | 通す実装のみ。緩和・削除はしない |
-| ない | Test Design に沿って usecase / infrastructure / action に追加する |
-| 完了時 | Implementation Plan の検証コマンドを実行して報告する |
+| Vitest（モック） | その usecase や action を書くのと一緒に。`src/**/*.test.ts` |
+| Vitest（実 DB） | RLS、RPC、書き込み後の読み戻し、同時実行がこの操作にあるとき。`src/**/*.db.test.ts`。`npm run test:db` |
+| e2e | 画面をまたぐクリティカルパスがこの操作にあるとき。`e2e/**/*.spec.ts` |
+
+その操作に無い種類は書かない。モックが通ったことを、RLS の検証にしない。あるテストは緩和も削除もしない。完了時は Implementation Plan の検証コマンドを実行して報告する。
 
 ## 完了報告
 

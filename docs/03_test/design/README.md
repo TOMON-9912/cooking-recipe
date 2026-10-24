@@ -2,7 +2,7 @@
 
 何をどう検証するかを、操作ごとに書く。設計（`docs/02_design/application`）と同じ関心事ディレクトリ・同じファイル名に揃える。新規は [_template.md](./_template.md) をコピーする。
 
-テスト戦略（方針・範囲）は [strategy.md](../strategy.md) と [test-scope.md](../test-scope.md)。ここには、操作ごとのケースだけを置く。
+テスト戦略（方針・範囲）は [strategy.md](../strategy.md) と [test-scope.md](../test-scope.md)。観点の正本は [単体テスト観点表](../viewpoints-unit.md) と [結合テスト（E2E）観点表](../viewpoints-e2e.md)。ここには、操作ごとのケースだけを置く。
 
 ## 書かないこと
 
