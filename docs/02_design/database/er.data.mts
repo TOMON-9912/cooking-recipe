@@ -44,6 +44,16 @@ const DBML_PATH = fileURLToPath(new URL("./cooking-recipe.dbml", import.meta.url
 type NormalizedModel = ReturnType<ReturnType<Parser["parse"]>["normalize"]>;
 
 /**
+ * 数値 id をキーにした対応表から、値の配列を返す。
+ * Object.values は数値キーの対応表を any[] とみなし、本番ビルドの型検査が落ちる。
+ * @param map - id をキーにした対応表
+ * @returns 値の配列
+ */
+function valuesOf<T>(map: Record<number, T>): T[] {
+  return Object.values(map) as T[];
+}
+
+/**
  * DBML の既定値を表示用文字列にする
  * @param dbdefault - DBML パーサーの既定値オブジェクト
  * @returns 表示用文字列。未設定なら null
@@ -68,7 +78,7 @@ function toErData(model: NormalizedModel): ErData {
   const pkFieldIds = new Set<number>();
   const uniqueFieldIds = new Set<number>();
 
-  for (const table of Object.values(model.tables)) {
+  for (const table of valuesOf(model.tables)) {
     tableKeyById.set(table.id, table.alias ?? table.name);
 
     for (const indexId of table.indexIds) {
@@ -89,7 +99,7 @@ function toErData(model: NormalizedModel): ErData {
     }
   }
 
-  const relations: ErRelation[] = Object.values(model.refs).map((ref) => {
+  const relations: ErRelation[] = valuesOf(model.refs).map((ref) => {
     const [childEndpoint, parentEndpoint] = ref.endpointIds.map((id) => model.endpoints[id]);
     const childField = model.fields[childEndpoint.fieldIds[0]];
     const parentField = model.fields[parentEndpoint.fieldIds[0]];
@@ -105,7 +115,7 @@ function toErData(model: NormalizedModel): ErData {
     };
   });
 
-  const tables: ErTable[] = Object.values(model.tables).map((table) => {
+  const tables: ErTable[] = valuesOf(model.tables).map((table) => {
     const schemaName = model.schemas[table.schemaId].name;
     const external = schemaName !== "public";
 
