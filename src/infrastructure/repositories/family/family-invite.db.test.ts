@@ -390,4 +390,110 @@ describe("family invites on the local database", () => {
             expect(members.rows[0].count).toBe(1);
         });
     });
+
+    it("オーナー以外は family_invites を読めない", async () => {
+        await scenario(async () => {
+            const ownerId = await insertUser(`owner-${randomUUID()}@example.com`);
+            const memberId = await insertUser(`member-${randomUUID()}@example.com`);
+            const inviteeEmail = `invitee-${randomUUID()}@example.com`;
+            const inviteeId = await insertUser(inviteeEmail);
+            const familyId = await insertFamily(ownerId);
+            await admin.query(
+                `insert into family_members (family_id, user_id) values ($1, $2)`,
+                [familyId, memberId],
+            );
+            await admin.query(
+                `insert into family_invites (
+                    family_id, invited_email, created_by, expires_at
+                ) values ($1, $2, $3, now() + interval '1 day')`,
+                [familyId, inviteeEmail, ownerId],
+            );
+
+            await setUser(memberId, false);
+            const asMember = await admin.query(
+                `select * from family_invites where family_id = $1`,
+                [familyId],
+            );
+            expect(asMember.rows).toHaveLength(0);
+
+            await resetRole();
+            await setUser(inviteeId, false);
+            const asInvitee = await admin.query(
+                `select * from family_invites where family_id = $1`,
+                [familyId],
+            );
+            expect(asInvitee.rows).toHaveLength(0);
+
+            await resetRole();
+            await setUser(ownerId, false);
+            const asOwner = await admin.query(
+                `select invited_email from family_invites where family_id = $1`,
+                [familyId],
+            );
+            expect(asOwner.rows).toEqual([{ invited_email: inviteeEmail }]);
+        });
+    });
+
+    it("本人の照会は招待 ID・家族名・期限だけを返す", async () => {
+        await scenario(async () => {
+            const columns = await admin.query(
+                `select args.argname
+                 from pg_proc procedure
+                 join pg_namespace namespace
+                   on namespace.oid = procedure.pronamespace
+                 cross join lateral unnest(
+                   procedure.proargnames,
+                   procedure.proargmodes
+                 ) with ordinality as args(argname, argmode, position)
+                 where namespace.nspname = 'public'
+                   and procedure.proname = 'list_my_family_invites'
+                   and args.argmode = 't'
+                 order by args.position`,
+            );
+            expect(columns.rows.map((row) => row.argname)).toEqual([
+                "id",
+                "family_name",
+                "expires_at",
+            ]);
+
+            const ownerId = await insertUser(`owner-${randomUUID()}@example.com`);
+            const inviteeEmail = `invitee-${randomUUID()}@example.com`;
+            const inviteeId = await insertUser(inviteeEmail);
+            const familyId = await insertFamily(ownerId);
+            const created = await admin.query(
+                `insert into family_invites (
+                    family_id, invited_email, created_by, expires_at
+                ) values
+                    ($1, $2, $3, now() + interval '1 day'),
+                    ($1, $4, $3, now() + interval '1 day')
+                 returning id, invited_email`,
+                [
+                    familyId,
+                    inviteeEmail,
+                    ownerId,
+                    `other-${randomUUID()}@example.com`,
+                ],
+            );
+            const inviteId = created.rows.find(
+                (row) => row.invited_email === inviteeEmail,
+            )?.id;
+
+            await setUser(inviteeId, false);
+            const listed = await admin.query(
+                `select * from list_my_family_invites()`,
+            );
+
+            expect(listed.rows).toHaveLength(1);
+            expect(Object.keys(listed.rows[0]).sort()).toEqual([
+                "expires_at",
+                "family_name",
+                "id",
+            ]);
+            expect(listed.rows[0]).toMatchObject({
+                id: inviteId,
+                family_name: "テスト家",
+            });
+            expect(listed.rows[0].expires_at).toBeTruthy();
+        });
+    });
 });
