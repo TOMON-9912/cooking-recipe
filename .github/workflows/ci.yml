@@ -17,11 +17,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Node.js 20をセットアップ
+      # Node.js 24 の最新を使う。2026-10-21 のセキュリティ更新を含む版になる
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "24"
           cache: "npm"
 
       # 依存関係をインストール

@@ -140,7 +140,7 @@ Dashboard → **Project Settings** → **API**
 | Build Command | `npm run build` |
 | Output Directory | （Next.js デフォルト） |
 | Install Command | `npm install` |
-| Node.js Version | 20.x（`package.json` の `engines` 参照） |
+| Node.js Version | 24.x（`package.json` の `engines` 参照） |
 
 ### 3-4. 初回デプロイ
 

@@ -19,7 +19,7 @@ GitHub Actions で **Lint** と **テスト** を PR や push 時に自動実行
 | 項目 | 備考 |
 |------|------|
 | リポジトリが GitHub でホストされている | GitHub Actions は GitHub の機能のため |
-| Node.js 20.x を CI で使用する | 本プロジェクトの推奨環境に合わせる |
+| Node.js 24.x を CI で使用する | 本プロジェクトの推奨環境に合わせる |
 
 ---
 
@@ -75,7 +75,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "24"
           cache: "npm"
 
       - name: Install dependencies
@@ -95,7 +95,7 @@ jobs:
 | ステップ | 説明 |
 |----------|------|
 | **Checkout** | リポジトリのコードを取得する |
-| **Setup Node.js** | Node.js 20 をセットアップし、`npm` のキャッシュを有効にしてインストールを高速化する |
+| **Setup Node.js** | Node.js 24 をセットアップし、`npm` のキャッシュを有効にしてインストールを高速化する |
 | **Install dependencies** | `npm ci` で `package-lock.json` に合わせて依存関係をインストールする（再現性のため `npm install` ではなく `npm ci` を使用） |
 | **Run lint** | ESLint を実行する。エラーがあるとジョブが失敗する |
 | **Run tests** | Vitest でテストを 1 回実行する。失敗するとジョブが失敗する |
