@@ -42,4 +42,5 @@ GitHub Issue（目的・なぜ・範囲・完了条件）
 | --- | --- | --- |
 | 家族グループへのメンバー追加 | [family-member-join.md](./family-member-join.md) | 確定（Issue #37） |
 | Node.js のセキュリティ更新への追従 | [node-security-update.md](./node-security-update.md) | 確定（Issue #46） |
+| 2026年11月の Node.js セキュリティ更新への追従 | [node-november-security-update.md](./node-november-security-update.md) | 確定（Issue #58） |
 | 待ち時間のローディングスピナー | [loading-spinner.md](./loading-spinner.md) | 確定（Issue #53） |
