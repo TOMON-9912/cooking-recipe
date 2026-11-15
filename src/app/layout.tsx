@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Geist, Geist_Mono, Noto_Serif_JP } from "next/font/google";
 import "./globals.css";
 import { createClient } from "@/lib/supabase/server";
 import { Header } from "@/presentation/components/Header";
+import { LoadingOverlay } from "@/presentation/components/LoadingOverlay";
 import { APP_NAME, APP_TAGLINE } from "@/constants/app";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -44,6 +46,9 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${notoSerifJP.variable} antialiased bg-gray-50 min-h-screen flex flex-col`}
       >
         <Header user={user} />
+        <Suspense fallback={null}>
+            <LoadingOverlay />
+        </Suspense>
         <main className="flex-1 pt-16">{children}</main>
         <Toaster />
       </body>
