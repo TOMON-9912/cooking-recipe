@@ -1,11 +1,11 @@
 ---
 name: plan-ready
-description: Reads a GitHub Issue, determines change types, and lists required docs (requirements, design, test design) with reasons. Use when planning a slice, checking Ready gaps, or running /plan.
+description: Reads a GitHub Issue, determines change types, and lists required docs (requirements, design, test design) with reasons. Use when planning a slice, checking which docs are missing, or running /plan.
 ---
 
 # スライス計画
 
-コードは実装しない。docs 本文も書かない（要件は `/requirements`、設計は `/design`）。Ready も付けない。
+コードは実装しない。docs 本文も書かない（要件は `/requirements`、設計は `/design`）。実装開始のチェックリストは付けない。
 
 親 Issue の番号が無ければ聞く。作成時点の変更種別は空でよい。ここで確定する。
 
@@ -101,8 +101,8 @@ description: Reads a GitHub Issue, determines change types, and lists required d
 ## 次
 要件定義が不足 → /requirements
 要件は確定済みで設計が不足 → /design
-設計が済み → 人間が要件と設計をレビューし、実装 Issue の実装開始条件を付け、チャットでレビュー後の承認を宣言する。テストは /implement がコードと一緒に書く
+設計 Issue が閉じている、または設計を作らないと決まっていて要件定義 Issue が閉じている → /implement。テストは /implement がコードと一緒に書く。実装開始のチェックリストは付けない
 ```
 
-Issue のチェックボックスは人間が付ける。AI は `gh` で Ready を更新しない。
+Issue の完了チェックは人間が付ける。AI は `gh` でチェックを更新しない。Issue も閉じない。
 設計のリンク / 実装計画 / 変更種別を既存の Issue に反映するのは、人間が依頼したときだけ。

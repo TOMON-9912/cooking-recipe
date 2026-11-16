@@ -8,7 +8,7 @@
 4. まだ採否していない学びか → **Candidate**
 5. 今回限りで、次に知識として残す必要がないか → 候補の Target を **Judgment**
 6. 人間が次に練習することか → **Learning**（`docs/90_workspace/learning/`）。Candidate にも Issue にもしない
-7. 何を作るか（Goal / Scope / AC / Ready 条件）か → **GitHub Issue**。設計本文は置かない
+7. 何を作るか（Goal / Scope / AC）か → **GitHub Issue**。設計本文は置かない
 
 ## Rule にしない
 
@@ -24,7 +24,7 @@
 
 「コミットするな」「絵文字を使うな」など、プロダクトではなく開発制約であるもの。
 
-ペアプロ中の学習用メモは `docs/90_workspace/work/`。Ready には数えない。確定した正本は人間が `docs/01_requirements`〜`04_decisions` へ置く。
+ペアプロ中の学習用メモは `docs/90_workspace/work/`。閉じた Issue の代わりにしない。確定した正本は人間が `docs/01_requirements`〜`04_decisions` へ置く。
 
 ## Specification / Design / Test Design
 
@@ -36,9 +36,9 @@
 
 仕様に Repository 名や手順を書かない。Test Design を AC のコピーにしない。
 
-## Ready
+## 実装を始める条件
 
-条件の正は Issue のチェックリスト。レビュー後の承認は、仕様書・設計書レビューのあとチャットで明示する。Project 列は正本にしない。
+設計 Issue が閉じていること。設計を作らないと決まっていて設計 Issue が無いときは、要件定義 Issue が閉じていること。実装開始のチェックリストと、チャットでの追加承認は置かない（[ADR 015](../../04_decisions/015-drop-implementation-start-checklist.md)）。Project 列は正本にしない。
 
 ## 正本の対応
 

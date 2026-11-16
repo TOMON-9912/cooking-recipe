@@ -15,7 +15,7 @@ description: Writes only Architecture, database, and ADR for a planned slice who
 
 すでに存在する domain / application / ui は消さない。このプロセスで足さない。
 
-`docs/90_workspace/work/` への下書きは Ready に数えない。正本は `docs/01_requirements`〜`docs/04_decisions`。
+`docs/90_workspace/work/` への下書きは、閉じた Issue の代わりにしない。正本は `docs/01_requirements`〜`docs/04_decisions`。
 
 このスキルは、設計 Issue を作り、そのブランチで設計を書く（`docs/05_development/issue-workflow.md`）。次のプロセス（テスト）の Issue は作らない。
 
@@ -47,4 +47,4 @@ description: Writes only Architecture, database, and ADR for a planned slice who
 
 ## 完了
 
-書いたパス、作った Issue とブランチ、まだ人間が決めることを列挙する。次は `/review-design`。PR は依頼があるときだけ（本文に `Closes #{設計 Issue}`）。この Skill では実装しない。設計 Issue が閉じて承認されたあとの次のフェーズは `/implement`（コードと、必要な Vitest・e2e）。Ready は付けない。
+書いたパス、作った Issue とブランチ、まだ人間が決めることを列挙する。次は `/review-design`。PR は依頼があるときだけ（本文に `Closes #{設計 Issue}`）。この Skill では実装しない。設計 Issue が閉じたあとの次のフェーズは `/implement`（コードと、必要な Vitest・e2e）。実装開始のチェックリストは付けない。

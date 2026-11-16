@@ -1,5 +1,7 @@
 # ADR 013: プロセスごとに Issue・ブランチ・PR を分け、Issue は各プロセスの開始時に作る
 
+実装 Issue に実装開始条件を残す決定は、[ADR 015](./015-drop-implementation-start-checklist.md) でやめた。プロセスごとに Issue・ブランチ・PR を分ける決定は、この文書のままである。
+
 ## 背景
 
 [ADR 010](./010-issue-centered-dev-flow.md) は、1 つの Issue に、目的・範囲・完了条件と、実装開始条件のチェックリストを置いた。[ADR 012](./012-requirements-before-design.md) で要件定義が加わり、実装開始条件の項目が 7 つに増えた。
@@ -48,7 +50,7 @@ develop → 親 Issue → 要件定義 → 設計 → テスト設計 → 実装
 
 - Issue・ブランチ・PR の数が増える。軽微な変更（要件定義も設計も不要）は、必要なプロセスだけを回す
 - 次のプロセスは、前の PR のマージを待つ。待っている間は、別の開発対象を進められる
-- 実装開始条件の項目は、実装 Issue にも残る（要件定義の確定など）。前のプロセスの Issue と二重になるが、実装を始める人が 1 か所で確かめられる形を優先する
+- 実装開始条件の項目は、当時は実装 Issue にも残すとした。この二重化は [ADR 015](./015-drop-implementation-start-checklist.md) でやめた
 - sub-issue の作成に GitHub の機能と `gh` の `--parent` を使う。使えない環境では、本文に親の番号を書く
 - ひな形は GitHub の Issue フォームと、AI が書く本文の 2 か所にある。項目は [issue-workflow.md](../05_development/issue-workflow.md) に合わせる
 
