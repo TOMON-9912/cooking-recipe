@@ -105,6 +105,20 @@ const eslintConfig = defineConfig([
       "no-restricted-imports": restrictedImportRule(FORBIDDEN.presentation, "warn"),
     },
   },
+  // useActionState の直前の結果など、シグネチャ上必要な未使用引数は _ で始める
+  {
+    rules: {
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          args: "after-used",
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
+      ],
+    },
+  },
 ]);
 
 export default eslintConfig;
