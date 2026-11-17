@@ -7,16 +7,10 @@ export type IngredientUI = {
     order: number;
 };
 
-export type InstructionImage = {
-    preview: string;
-    file: File;
-};
-
 export type InstructionUI = {
     id: string;
     stepNumber: number;
     description: string;
-    images: InstructionImage[];
 };
 
 export type CategoryUI = {
