@@ -55,17 +55,4 @@ body:
     id: impl-plan
     attributes:
       label: 実装計画
-      description: スライス、触る層、主なパス、検証コマンド。実現方法の詳細は書かない。
-  - type: checkboxes
-    id: ready
-    attributes:
-      label: 実装開始条件
-      description: 条件の正。中身は docs。「レビュー後の承認」は、仕様書・設計書のレビューのあと、Cursor 上で人間が宣言したときだけ成立する。AI は付けない。
-      options:
-        - label: 要件定義の確定
-        - label: 仕様の確定
-        - label: 必要な設計
-        - label: テスト設計
-        - label: 実装計画
-        - label: 仕様・設計のレビュー
-        - label: レビュー後の承認
+      description: スライス、触る層、主なパス、検証コマンド。実現方法の詳細は書かない。実装開始のチェックリストは置かない。設計 Issue、または設計を作らないときの要件定義 Issue が閉じていることを始める条件にする。

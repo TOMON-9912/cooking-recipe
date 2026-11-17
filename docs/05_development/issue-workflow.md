@@ -1,16 +1,16 @@
 # Issue 起点の開発
 
-判断理由は [ADR 010](../04_decisions/010-issue-centered-dev-flow.md)、[ADR 013](../04_decisions/013-issue-per-process.md)。手順の本体は `.cursor/skills/`（`/plan` `/requirements` `/design` `/implement` など）。テストは `/implement` に含める。
+判断理由は [ADR 010](../04_decisions/010-issue-centered-dev-flow.md)、[ADR 013](../04_decisions/013-issue-per-process.md)、[ADR 015](../04_decisions/015-drop-implementation-start-checklist.md)。手順の本体は `.cursor/skills/`（`/plan` `/requirements` `/design` `/implement` など）。テストは `/implement` に含める。
 
 ## 責務
 
 | 置き場 | 正とするもの |
 | --- | --- |
 | GitHub Issue（親） | 開発対象。目的 / なぜ作るか / 含めること / 含めないこと / 完了条件 |
-| GitHub Issue（プロセス別の子） | そのプロセスの進み具合と完了条件（チェックリスト）。実装 Issue には実装開始条件を置く。各子 Issue に、ブランチと PR が 1 つずつ対応する |
-| Cursor チャット | 仕様書・設計書レビュー後の承認（ユーザーが明示したときだけ） |
+| GitHub Issue（プロセス別の子） | そのプロセスの進み具合と完了条件。各子 Issue に、ブランチと PR が 1 つずつ対応する。実装を始める条件は、設計 Issue が閉じていること。設計を作らないときは、要件定義 Issue が閉じていること |
+| Cursor チャット | 作業の依頼。実装開始の追加承認は置かない |
 | `docs/01_requirements`〜`04_decisions` | Requirements / Specification / Design / Test Design / ADR の本文 |
-| GitHub Project | 一覧。使う場合も Ready の正本にはしない |
+| GitHub Project | 一覧。使う場合も、Issue が閉じていることの代わりにしない |
 
 Issue に DB・画面・usecase の本文や、テストケース一覧を書かない。リンクとチェックだけ置く。
 
@@ -23,8 +23,9 @@ develop にいる
   → 親 Issue                                    /plan が下書きを作り、あなたの OK のあとに作る
   → /requirements   要件定義 Issue → ブランチ → 作業 → PR → マージ → Issue を閉じる
   → /design         設計 Issue     → ブランチ → 作業 → PR → マージ → Issue を閉じる
-  → /implement      実装 Issue（操作ごと。コードと 3 種のテスト。Ready 未チェックで作る）
-                    → あなたが Ready → ブランチ → 実装とテスト → PR → マージ → Issue を閉じる
+  → /implement      前の Issue が閉じていることを確かめる
+                    → 実装 Issue（操作ごと。コードと 3 種のテスト）
+                    → ブランチ → 実装とテスト → PR → マージ → Issue を閉じる
 ```
 
 Issue は、**そのプロセスを始めるとき**に、そのプロセスの Skill が作る。前のプロセスの PR のマージを待ってから作る。
@@ -117,30 +118,17 @@ GitHub 上で人が作るときのひな形は `.github/ISSUE_TEMPLATE/`。AI �
 
 ## 実装計画
 スライス / 触る層 / 主なパス / 検証コマンド
-
-## 実装開始条件
-- [ ] 要件定義の確定
-- [ ] 仕様の確定
-- [ ] 必要な設計
-- [ ] 実装計画
-- [ ] 仕様・設計のレビュー
-- [ ] レビュー後の承認
 ```
 
-## Ready 条件（実装 Issue）
+## 実装を始める条件
 
-```text
-- [ ] 要件定義の確定
-- [ ] 仕様の確定
-- [ ] 必要な設計
-- [ ] 実装計画
-- [ ] 仕様・設計のレビュー
-- [ ] レビュー後の承認
-```
+実装開始条件のチェックリストは置かない（[ADR 015](../04_decisions/015-drop-implementation-start-checklist.md)）。
 
-各項目の中身は docs 側。要件定義は設計より先に書き、確定してから設計に進む（[ADR 012](../04_decisions/012-requirements-before-design.md)）。要件定義と設計の Issue が閉じている（PR がマージ済み）ことは、この条件の裏づけになる。テストは実装 Issue の完了条件に含める。
+- 設計 Issue があるときは、その Issue が閉じている
+- 設計を作らないと決まっていて、設計 Issue が無いときは、要件定義 Issue が閉じている
+- どちらも閉じていなければ実装しない
 
-「仕様・設計のレビュー」は人間が正本を見た記録。「レビュー後の承認」は、そのレビューのあと Cursor 上で人間が宣言したときだけ成立する。AI はチェックを付けない。
+要件定義は設計より先に書く（[ADR 012](../04_decisions/012-requirements-before-design.md)）。テストは実装 Issue の完了条件に含める。AI は Issue を閉じない。完了のチェックも付けない。
 
 変更種別は、親の作成時は空でよい。`/plan` が理由つきで確定する。
 

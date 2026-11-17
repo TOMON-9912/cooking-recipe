@@ -49,4 +49,4 @@ description: Writes the requirements definition (what to build and why) for one 
 
 ## 完了
 
-書いたパス、作った Issue とブランチ、人間が決めること（未決）を列挙する。次は人間による要件定義のレビューと PR（依頼があるときだけ。PR 本文に `Closes #{要件定義 Issue}`）。PR がマージされて Issue が閉じたら `/design`。設計・実装へ進まない。Ready は付けない。
+書いたパス、作った Issue とブランチ、人間が決めること（未決）を列挙する。次は人間による要件定義のレビューと PR（依頼があるときだけ。PR 本文に `Closes #{要件定義 Issue}`）。PR がマージされて Issue が閉じたら `/design`。設計・実装へ進まない。実装開始のチェックリストは付けない。

@@ -1,9 +1,9 @@
 ---
 name: implement-feature
-description: Implements one Ready GitHub Issue end-to-end under Clean Architecture. Use when the user has declared Ready and runs /implement.
+description: Implements one GitHub Issue end-to-end under Clean Architecture. Use when the design issue, or the requirements issue when design was skipped, is closed and the user runs /implement.
 ---
 
-# 機能実装（Ready 済み Issue）
+# 機能実装
 
 **1 操作 = 1 スライス = 1 PR**。設計は書かない。完成コードはファイルに書く。
 
@@ -11,19 +11,16 @@ description: Implements one Ready GitHub Issue end-to-end under Clean Architectu
 
 ## 実装してよいか
 
-次が揃うまで **1 行も実装しない**。足りないものは `/plan` または `/design` へ戻す。
+次が揃うまで **1 行も実装しない**。足りないものは `/plan` または `/design` へ戻す。実装開始のチェックリストと、チャットでの追加承認は要らない（ADR 015）。
 
-1. 実装 Issue（番号または URL）がある。親 Issue、要件定義 Issue、設計 Issue は対象にしない。無いときは、下の「実装 Issue がまだ無いとき」へ
-2. 実装 Issue の実装開始条件が付いている: 要件定義の確定 / 必要な設計（Architecture、database、ADR）/ 実装計画 / 設計のレビュー
-3. **このチャットで** ユーザーが、仕様書・設計書レビュー後の承認を明示している（「レビューを承認した。/implement」など）
-4. Implementation Plan と、要件定義および変更種別に対する正本がある
-5. 未確定の判断が無い
+1. 設計 Issue が閉じていれば実装してよい。設計を作らないと決まっていて設計 Issue が無いときは、要件定義 Issue が閉じている
+2. 実装 Issue（番号または URL）がある。親 Issue、要件定義 Issue、設計 Issue は対象にしない。無いときは、下の「実装 Issue がまだ無いとき」へ作り、止まらず続ける
+3. 要件定義、および必要な設計の正本がある
+4. 未確定の判断が無い
 
-AI が「まあ実装できる」と判断して進まない。Issue の「仕様・設計のレビュー」と「レビュー後の承認」を AI が付けない。
+AI は Issue を閉じない。閉じたことにしない。要件定義や、必要な database 設計が無いからスコープを短く宣言して着手する、ことはしない。
 
-要件定義や、必要な database 設計が無いからスコープを短く宣言して着手する、ことはしない。
-
-未 Ready の停止例:
+止まる例:
 
 ```text
 DB 変更が必要なのに docs/02_design/database に該当設計がありません。
@@ -32,16 +29,16 @@ DB 変更が必要なのに docs/02_design/database に該当設計がありま�
 
 ## 実装 Issue がまだ無いとき
 
-要件定義と設計の Issue が閉じている（PR がマージ済み）ことを確かめてから、実装 Issue を作る。テストだけの Issue は待たない。開いていれば止まって聞く。
+設計 Issue が閉じていること、または設計を作らないと決まっていて要件定義 Issue が閉じていることを確かめてから、実装 Issue を作る。テストだけの Issue は待たない。開いていれば止まって聞く。
 
 1. `git fetch origin` のあと、`develop` にいて、作業ツリーに無関係な変更が無いことを確かめる。違えば止まって聞く
 2. 操作の分け方は、要件定義の「進め方」と `docs/02_design/application` の操作の一覧に従う。決まっていない、または複数の案があるときは、案を示して AskQuestion で聞いて止まる
-3. 親の子 Issue を確かめ（`gh api 'repos/{owner}/{repo}/issues/{親}/sub_issues' --jq '.[] | "\(.number) \(.state) \(.title)"'`）、同じ操作の実装 Issue が無ければ、操作ごとに 1 つずつ作る（`gh issue create --parent {親} --title "feat: …" --body-file {ファイル}`）。本文は `docs/05_development/issue-workflow.md` の「実装 Issue」の骨格。完了条件は要件定義の受け入れ条件のうちその操作の分、実装計画（スライス / 触る層 / 主なパス / 検証コマンド）はここで書く。実装開始条件はすべて未チェックのまま
-4. 作った Issue の番号と URL を示して**止まる**。ここでは実装もブランチ作成もしない。人間がレビューして Ready を付け、承認を明示するのを待つ
+3. 親の子 Issue を確かめ（`gh api 'repos/{owner}/{repo}/issues/{親}/sub_issues' --jq '.[] | "\(.number) \(.state) \(.title)"'`）、同じ操作の実装 Issue が無ければ、操作ごとに 1 つずつ作る（`gh issue create --parent {親} --title "feat: …" --body-file {ファイル}`）。本文は `docs/05_development/issue-workflow.md` の「実装 Issue」の骨格。完了条件は要件定義の受け入れ条件のうちその操作の分、実装計画（スライス / 触る層 / 主なパス / 検証コマンド）はここで書く。実装開始条件のチェックリストは書かない
+4. 作った Issue の番号と URL を示し、実装へ進む。チェックリストの記入を待たない
 
 ## ブランチ
 
-実装開始条件が揃い、承認が明示されたら、その実装 Issue のブランチを切る: `git switch -c {種別}/{Issue}-{slug} origin/develop`（`feature/` `fix/` など。push しない）。同時に 1 つの実装 Issue だけ進める。
+前の Issue が閉じていることを確かめたら、その実装 Issue のブランチを切る: `git switch -c {種別}/{Issue}-{slug} origin/develop`（`feature/` `fix/` など。push しない）。同時に 1 つの実装 Issue だけ進める。
 
 ## 着手後
 
