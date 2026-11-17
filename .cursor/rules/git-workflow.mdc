@@ -17,7 +17,7 @@ alwaysApply: true
 ## 許可されること
 
 - ユーザーが **コミットを依頼したとき** → 既存のコミット手順（メッセージ形式・フック・amend 条件）に従う
-- ユーザーが **PR 作成・マージを依頼したとき** → 既存の PR 手順に従う
+- ユーザーが **PR 作成・マージを依頼したとき** → `.cursor/skills/create-pull-request/SKILL.md` に従う
 - 調査・実装中の **`git status` / `git diff` / `git log` / `git fetch`**（読み取りのみ）
 
 ## 作業の進め方
