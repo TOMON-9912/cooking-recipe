@@ -2,7 +2,7 @@
 
 ## 概要
 
-レシピの調理手順（ステップ番号・説明・任意のステップ画像パス）。
+レシピの調理手順（ステップ番号と説明）。`image_url` は将来の手順画像パス用に残し、現在は使わない。
 
 ## カラム定義
 
@@ -12,7 +12,7 @@
 | recipe_id | uuid | NO | - | レシピ ID |
 | step_number | integer | NO | - | ステップ番号（1 始まり） |
 | description | text | NO | - | 手順本文 |
-| image_url | text | YES | NULL | ステップ画像（Storage パス） |
+| image_url | text | YES | NULL | 手順画像の Storage パス。現在は保存しない |
 | created_at | timestamptz | NO | now() | 作成日時 |
 
 ## 主キー
@@ -52,4 +52,4 @@
 
 ## 設計上の補足
 
-手順画像も Storage に保存し、本テーブルにはパスのみ保持する。
+`image_url` は削除しない（[レシピ手順の画像追加機能の削除](../../../01_requirements/recipe-instruction-image.md) の R-02）。手順の画像ファイルは Storage に保存せず、作成・更新でもこの列へパスを書かない。レシピ本体のサムネイルは `recipes.thumbnail_url` であり、この列とは別である。
