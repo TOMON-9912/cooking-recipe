@@ -81,9 +81,8 @@ export function RecipeForm({ recipe, thumbnailUrl }: Props) {
                 id: inst.id,
                 stepNumber: inst.stepNumber,
                 description: inst.description,
-                images: [],
             }))
-            : [{ id: crypto.randomUUID(), stepNumber: 1, description: "", images: [] }],
+            : [{ id: crypto.randomUUID(), stepNumber: 1, description: "" }],
     );
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -135,28 +134,8 @@ export function RecipeForm({ recipe, thumbnailUrl }: Props) {
     const addInstruction = () => {
         setInstructions((prev) => [
             ...prev,
-            { id: crypto.randomUUID(), stepNumber: prev.length + 1, description: "", images: [] },
+            { id: crypto.randomUUID(), stepNumber: prev.length + 1, description: "" },
         ]);
-    };
-
-    const addInstructionImage = (instructionId: string, file: File) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            setInstructions((prev) =>
-                prev.map((v) =>
-                    v.id === instructionId ? { ...v, images: [...v.images, { preview: reader.result as string, file }] } : v
-                )
-            );
-        };
-        reader.readAsDataURL(file);
-    };
-
-    const removeInstructionImage = (instructionId: string, imageIndex: number) => {
-        setInstructions((prev) =>
-            prev.map((v) =>
-                v.id === instructionId ? { ...v, images: v.images.filter((_, i) => i !== imageIndex) } : v
-            )
-        );
     };
 
     const removeInstruction = (id: string) => {
@@ -276,8 +255,6 @@ export function RecipeForm({ recipe, thumbnailUrl }: Props) {
                     instructions={instructions}
                     onInstructionsChange={setInstructions}
                     onAddInstruction={addInstruction}
-                    onAddInstructionImage={addInstructionImage}
-                    onRemoveInstructionImage={removeInstructionImage}
                     onRemoveInstruction={removeInstruction}
                 />
 

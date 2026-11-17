@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import NextImage from "next/image";
-import { GripVertical, Image as ImageIcon, Plus, X } from "lucide-react";
+import { GripVertical, Plus, X } from "lucide-react";
 import type { InstructionUI } from "./recipe-create-types";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,8 +11,6 @@ type Props = {
     instructions: InstructionUI[];
     onInstructionsChange: React.Dispatch<React.SetStateAction<InstructionUI[]>>;
     onAddInstruction: () => void;
-    onAddInstructionImage: (instructionId: string, file: File) => void;
-    onRemoveInstructionImage: (instructionId: string, imageIndex: number) => void;
     onRemoveInstruction: (id: string) => void;
 };
 
@@ -21,8 +18,6 @@ export function RecipeInstructionsSection({
     instructions,
     onInstructionsChange,
     onAddInstruction,
-    onAddInstructionImage,
-    onRemoveInstructionImage,
     onRemoveInstruction,
 }: Props) {
     const [instructionDraggedIndex, setInstructionDraggedIndex] = useState<number | null>(null);
@@ -105,49 +100,6 @@ export function RecipeInstructionsSection({
                                     rows={5}
                                     className="min-h-[120px] resize-y"
                                 />
-                                <div className="space-y-3">
-                                    {inst.images.length > 0 && (
-                                        <div className="space-y-3">
-                                            {inst.images.map((img, imgIndex) => (
-                                                <div
-                                                    key={imgIndex}
-                                                    className="relative w-full aspect-video max-h-64 rounded-lg border border-border overflow-hidden bg-muted"
-                                                >
-                                                    <NextImage
-                                                        src={img.preview}
-                                                        alt={`手順${inst.stepNumber}の画像${imgIndex + 1}`}
-                                                        fill
-                                                        unoptimized
-                                                        className="object-contain"
-                                                    />
-                                                    <Button
-                                                        type="button"
-                                                        size="icon"
-                                                        onClick={() => onRemoveInstructionImage(inst.id, imgIndex)}
-                                                        className="absolute top-2 right-2 rounded-full bg-black/50 text-white hover:bg-black/70 size-8"
-                                                        aria-label="画像を削除"
-                                                    >
-                                                        <X className="size-4" />
-                                                    </Button>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-                                    <label className="w-full min-h-[5rem] rounded-lg border-2 border-dashed border-input bg-background flex flex-col items-center justify-center gap-2 text-muted-foreground hover:text-foreground hover:border-muted-foreground/50 hover:bg-accent/50 cursor-pointer transition-colors py-6">
-                                        <ImageIcon className="size-8" />
-                                        <span className="text-sm font-medium">画像を追加</span>
-                                        <input
-                                            type="file"
-                                            accept="image/*"
-                                            className="hidden"
-                                            onChange={(e) => {
-                                                const file = e.target.files?.[0];
-                                                if (file) onAddInstructionImage(inst.id, file);
-                                                e.target.value = "";
-                                            }}
-                                        />
-                                    </label>
-                                </div>
                             </div>
                         </div>
                     </div>
