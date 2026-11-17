@@ -35,17 +35,22 @@ git push -u origin HEAD:{ブランチ名}
 
 ## 本文
 
-日本語。なぜその変更かを 1〜3 文で書く。Test plan は書かない。
+日本語。Test plan は書かない。タイトルの日本語部分と概要は、見出しと同じ名詞句で書く。口語や作業メモ（「〜と書く」「〜を直す」）にしない。見出しの原則は `.cursor/skills/write-japanese-doc/SKILL.md`。
+
+種別は Conventional Commits（`docs:` `feat:` `fix:` `release:` など）。その後ろだけを名詞句にする。
+
+- 悪い例: `docs: 手順の image_url は残し、今は保存しないと書く`
+- 良い例: `docs: レシピ手順の画像パス列の保持`
 
 ```markdown
 ## 概要
 
--
+- レシピ手順の画像パス列の保持
 ```
 
-そのプロセスの子 Issue をこの PR で終えるときだけ、末尾に `Closes #{番号}` を書く。親 Issue は書かない。Issue のチェックは付けない。Issue は閉じない。
+概要の各項目も名詞句にする。
 
-タイトルは日本語で、種別は Conventional Commits（`docs:` `feat:` `fix:` `release:` など）。
+そのプロセスの子 Issue をこの PR で終えるときだけ、末尾に `Closes #{番号}` を書く。親 Issue は書かない。Issue のチェックは付けない。Issue は閉じない。
 
 ## 作成
 
