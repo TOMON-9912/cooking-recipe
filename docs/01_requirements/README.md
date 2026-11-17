@@ -66,3 +66,4 @@ GitHub Issue（目的・なぜ・範囲・完了条件）
 | Node.js のセキュリティ更新への追従 | [node-security-update.md](./node-security-update.md) | [#46](https://github.com/TOMON-9912/cooking-recipe/issues/46) |
 | 2026年11月の Node.js セキュリティ更新への追従 | [node-november-security-update.md](./node-november-security-update.md) | [#58](https://github.com/TOMON-9912/cooking-recipe/issues/58) |
 | 待ち時間のローディングスピナー | [loading-spinner.md](./loading-spinner.md) | [#53](https://github.com/TOMON-9912/cooking-recipe/issues/53) |
+| レシピ手順の画像追加機能の削除 | [recipe-instruction-image.md](./recipe-instruction-image.md) | [#65](https://github.com/TOMON-9912/cooking-recipe/issues/65) |
