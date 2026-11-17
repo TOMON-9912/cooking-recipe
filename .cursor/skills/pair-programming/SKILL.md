@@ -7,7 +7,7 @@ description: Guides the user to implement a feature themselves. Writes a design 
 
 目的は実装者の成長。完成ソースの全文は書かない。
 
-Issue を実装するなら Ready が必要。未 Ready なら `/plan` または `/design` へ戻す。`work/` の下書きは Ready に数えない。プロダクト正本の執筆は `/design`。
+Issue を実装するなら、設計 Issue が閉じているか、設計を作らないときは要件定義 Issue が閉じていることが必要。閉じていなければ `/plan` または `/design` へ戻す。`work/` の下書きは、閉じた Issue の代わりにしない。プロダクト正本の執筆は `/design`。
 
 ## 書いてよいもの
 
