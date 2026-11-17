@@ -7,7 +7,7 @@ description: Writes the requirements definition (what to build and why) for one 
 
 設計の前に、何を作るか・なぜ作るかをまとめる。実装しない。設計しない。書くのは `docs/01_requirements/{機能}.md` だけ。
 
-「要件定義の確定」は人間のレビューのあとに成立する。AI は Issue のチェックを付けない。
+レビューは人間がする。文書に草案や確定のステータスは書かない。AI は Issue のチェックを付けない。
 
 このスキルは、要件定義 Issue を作り、そのブランチで要件定義を書く（`docs/05_development/issue-workflow.md`）。次のプロセス（設計）の Issue は作らない。
 
@@ -32,7 +32,13 @@ description: Writes the requirements definition (what to build and why) for one 
 
 ## 書く章
 
-背景と課題 / なぜ作るか / 利用者と要求 / 要件（`FR-` 機能、`NFR-` 非機能。応える要求を添える）/ スコープ / 前提・決定済み / 受け入れ条件 / 未決・リスク / 設計への申し送り。
+最初から全節を埋めない。要求を整理し、曖昧なところをはっきりさせていく。空の節は残さない。
+
+ファイル先頭の YAML だけをメタデータにし、Obsidian のプロパティにする。本文は通常のマークダウンで書く。ステータスは書かない。
+
+必ず書く: 背景・目的 / 利用者の要求 / 要件（`FR-`。応える要求を添える）/ スコープ・制約 / 受け入れ条件。
+
+必要になったときだけ書く: 非機能要件（`NFR-`）/ 前提・決定済み / 未決・リスク / 設計への申し送り / 関連 Issue・ADR。
 
 ## 混ぜない
 
