@@ -26,7 +26,7 @@ description: Reviews specification and design docs against confirmed requirement
 
 ## 手順
 
-1. 要件の FR / NFR、受け入れ条件、設計への申し送り、未決を読む
+1. 要件の FR / NFR、受け入れ条件、未決を読む
 2. 変更した層の設計書（domain / database / application / ui / ADR）を、要件 ID と突き合わせる
 3. [checklist.md](checklist.md) の標準観点と、**セキュリティ観点を厚く**見る
 4. 良い点と、重要度つきの改善点を書く。好みだけの指摘はしない
@@ -109,7 +109,6 @@ description: Reviews specification and design docs against confirmed requirement
 | --- | --- | --- |
 | FR-01 | | 足りる / 不足 / 矛盾 |
 
-申し送りで未処理のものも行にする。
 
 ## 改善候補
 
