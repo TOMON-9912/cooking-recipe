@@ -48,8 +48,9 @@ GitHub Issue（目的・なぜ・範囲・完了条件）
 - 非機能要件
 - 前提・決定済み
 - 未決・リスク
-- 設計への申し送り
 - 関連 Issue / ADR
+
+設計への申し送りは書かない。要件定義は、何を作るか・なぜ作るかを整理する場所である。実現方法は設計が要件を読んで決める。
 
 - ファイル先頭の YAML だけがメタデータで、Obsidian のプロパティになる。本文は通常のマークダウンで書く
 - 文書にステータス（草案、レビュー済み、確定）は書かない
@@ -67,3 +68,4 @@ GitHub Issue（目的・なぜ・範囲・完了条件）
 | 2026年11月の Node.js セキュリティ更新への追従 | [node-november-security-update.md](./node-november-security-update.md) | [#58](https://github.com/TOMON-9912/cooking-recipe/issues/58) |
 | 待ち時間のローディングスピナー | [loading-spinner.md](./loading-spinner.md) | [#53](https://github.com/TOMON-9912/cooking-recipe/issues/53) |
 | レシピ手順の画像追加機能の削除 | [recipe-instruction-image.md](./recipe-instruction-image.md) | [#65](https://github.com/TOMON-9912/cooking-recipe/issues/65) |
+| 家族作成を本人の1件に限る | [family-create-single.md](./family-create-single.md) | [#74](https://github.com/TOMON-9912/cooking-recipe/issues/74) |
