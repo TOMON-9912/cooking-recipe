@@ -13,6 +13,7 @@
 
 ## database
 
+- テーブル定義を触ったときは `.cursor/skills/write-table-definition/SKILL.md` に従っている
 - 不変条件の保証に「UI で入力できない」だけを書いていない
 - 直 INSERT / UPDATE でも破られない閉じ方（制約、RLS の列制限、検証付き definer）がある
 - RLS UPDATE は、誰かに加え、変えてよい列が書いてある

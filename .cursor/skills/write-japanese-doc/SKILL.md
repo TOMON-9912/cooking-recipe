@@ -25,6 +25,8 @@ description: Guidelines for writing clear, natural, and professional Japanese te
 - ❌ 悪い例: `# レシピ手順の画像追加機能の削除（要件定義）`
 - ⭕ 良い例: `# レシピ手順の画像追加機能の削除`
 
+Issue のタイトルは `.cursor/skills/create-issue/SKILL.md`。この Skill は文書の見出しと本文に使う。
+
 ---
 
 ## 2. 「背景・目的」の文章構成（4段展開）

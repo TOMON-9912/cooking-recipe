@@ -34,7 +34,7 @@ description: Writes only Architecture, database, and ADR for a planned slice who
 
 1. `git fetch origin` のあと、`develop` にいて、作業ツリーに無関係な変更が無いことを確かめる。違えば止まって聞く
 2. 要件定義 Issue が閉じていることを確かめる（`gh issue view {番号} --json state`）。開いていれば止まって聞く
-3. 親の子 Issue を確かめ、設計 Issue が無ければ作る。タイトルは `docs(design): {機能}の設計`。成果物は Architecture / database / ADR のパスだけ
+3. 設計 Issue が無ければ、`.cursor/skills/create-issue/SKILL.md` に従って作る。成果物は Architecture / database / ADR のパスだけ
 4. `git switch -c docs/{Issue}-design-{slug} origin/develop` で作業ブランチを切る。push しない
 
 ## 要件との関係
@@ -44,6 +44,10 @@ description: Writes only Architecture, database, and ADR for a planned slice who
 - 不変条件は database で閉じる。制約、RLS（変えてよい列まで）、検証付きの `security definer` 関数のいずれか。usecase だけの説明で終えない
 - `security definer` を出すなら、関数名、`GRANT EXECUTE` の相手、`search_path` を ADR 006 に合わせて書く
 - 同時実行で破れる条件は、破りうる操作のすべてで同じ閉じ方を指す。決められないなら止まって聞く
+
+## テーブル定義
+
+`docs/02_design/database/tables` は `.cursor/skills/write-table-definition/SKILL.md` に従う。
 
 ## 完了
 
