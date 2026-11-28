@@ -39,6 +39,24 @@ export const findFamilyByUserId = async (userId: string): Promise<Family | null>
 };
 
 /**
+ * PostgREST の失敗を家族作成の失敗コードへ揃える。
+ * @param error クライアントが返した失敗
+ */
+function throwMappedCreateFamilyError(error: {
+    message: string;
+    details?: string | null;
+}): never {
+    const text = `${error.message} ${error.details ?? ""}`;
+    if (text.includes("ALREADY_IN_FAMILY")) {
+        throw new Error("ALREADY_IN_FAMILY");
+    }
+    if (text.includes("UNAUTHENTICATED")) {
+        throw new Error("UNAUTHENTICATED");
+    }
+    throw new Error(error.message);
+}
+
+/**
  * 家族グループを作成する
  * @param input 作成入力
  * @returns 作成された家族グループ
@@ -46,16 +64,24 @@ export const findFamilyByUserId = async (userId: string): Promise<Family | null>
 export const createFamily = async (input: CreateFamilyInput): Promise<Family> => {
     const { supabase } = await createAuthedClient();
 
-    const { data, error } = await supabase
+    const { data: familyId, error } = await supabase.rpc("create_family", {
+        p_name: input.name,
+    });
+
+    if (error) {
+        throwMappedCreateFamilyError(error);
+    }
+    if (typeof familyId !== "string") {
+        throw new Error("INSERT_FAILED");
+    }
+
+    const { data, error: selectError } = await supabase
         .from("families")
-        .insert({
-            name: input.name,
-            owner_id: input.ownerId,
-        })
-        .select()
+        .select("id, name, owner_id, created_at")
+        .eq("id", familyId)
         .single();
 
-    if (error) throw error;
+    if (selectError) throw selectError;
     if (!data) throw new Error("INSERT_FAILED");
 
     return mapFamilyRow(data);

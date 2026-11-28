@@ -4,8 +4,7 @@ import { redirect } from "next/navigation";
 import type { CreateFamilyResult } from "@/types/family";
 import { ERROR_MESSAGES } from "@/constants/error-messages";
 import { createAuthedClient } from "@/lib/supabase/server";
-import { createFamily, findFamilyByUserId } from "@/infrastructure/repositories/family/family-repository-impl";
-import { addFamilyMember } from "@/infrastructure/repositories/family/family-member-repository-impl";
+import { createFamily } from "@/infrastructure/repositories/family/family-repository-impl";
 import { createFamilyUsecase } from "@/usecase/family/create-family-usecase";
 import { isRedirectError } from "@/utils/redirect";
 import { FAMILY_CREATED_REDIRECT_PATH } from "@/constants/toast-messages";
@@ -23,6 +22,7 @@ function mapCreateFamilyError(error: unknown): string {
             case "ALREADY_IN_FAMILY":
                 return ERROR_MESSAGES.ALREADY_IN_FAMILY;
             case "UNAUTHORIZED":
+            case "UNAUTHENTICATED":
                 return ERROR_MESSAGES.SESSION_NOT_FOUND;
             default:
                 return error.message;
@@ -41,7 +41,9 @@ function mapCreateFamilyError(error: unknown): string {
 
 /**
  * 家族グループ作成 Server Action
- * 作成後、作成者本人を family_members に追加する
+ * @param _prevState 直前の結果
+ * @param formData フォーム入力
+ * @returns 失敗時の結果。成功時はリダイレクトする
  */
 export async function createFamilyAction(
     _prevState: CreateFamilyResult | null,
@@ -50,15 +52,11 @@ export async function createFamilyAction(
     const name = formData.get("name") as string | null;
 
     try {
-        const { user } = await createAuthedClient();
+        await createAuthedClient();
 
         await createFamilyUsecase(
-            { name: name ?? "", ownerId: user.id },
-            {
-                findFamilyByUserId,
-                createFamily,
-                addFamilyMember,
-            },
+            { name: name ?? "" },
+            { createFamily },
         );
 
         redirect(FAMILY_CREATED_REDIRECT_PATH);

@@ -6,13 +6,11 @@ import type { CreateFamilyInput } from "@/domain/repositories/family/family-repo
  * action 層で infrastructure の実装を渡す。
  */
 export type CreateFamilyDeps = {
-    findFamilyByUserId: (userId: string) => Promise<Family | null>;
     createFamily: (input: CreateFamilyInput) => Promise<Family>;
-    addFamilyMember: (familyId: string, userId: string) => Promise<void>;
 };
 
 /**
- * 家族グループを作成し、作成者を最初のメンバーとして登録する
+ * 家族名を整え、家族を1件作成する。
  * @param input 作成入力
  * @param deps 依存するリポジトリ操作
  * @returns 作成された家族グループ
@@ -26,17 +24,5 @@ export const createFamilyUsecase = async (
         throw new Error("FAMILY_NAME_REQUIRED");
     }
 
-    const existingFamily = await deps.findFamilyByUserId(input.ownerId);
-    if (existingFamily !== null) {
-        throw new Error("ALREADY_IN_FAMILY");
-    }
-
-    const family = await deps.createFamily({
-        name: trimmedName,
-        ownerId: input.ownerId,
-    });
-
-    await deps.addFamilyMember(family.id, input.ownerId);
-
-    return family;
+    return deps.createFamily({ name: trimmedName });
 };

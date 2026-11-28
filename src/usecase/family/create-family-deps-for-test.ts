@@ -18,9 +18,7 @@ export function createFamilyDepsForTest(
     };
 
     return {
-        findFamilyByUserId: vi.fn().mockResolvedValue(null),
         createFamily: vi.fn().mockResolvedValue(mockFamily),
-        addFamilyMember: vi.fn().mockResolvedValue(undefined),
         ...overrides,
     };
 }
