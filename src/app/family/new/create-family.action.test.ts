@@ -25,11 +25,6 @@ vi.mock("@/usecase/family/create-family-usecase", () => ({
 
 vi.mock("@/infrastructure/repositories/family/family-repository-impl", () => ({
     createFamily: vi.fn(),
-    findFamilyByUserId: vi.fn(),
-}));
-
-vi.mock("@/infrastructure/repositories/family/family-member-repository-impl", () => ({
-    addFamilyMember: vi.fn(),
 }));
 
 describe("createFamilyAction 関数", () => {
@@ -56,11 +51,9 @@ describe("createFamilyAction 関数", () => {
         );
         expect(redirect).toHaveBeenCalledWith(FAMILY_CREATED_REDIRECT_PATH);
         expect(createFamilyUsecase).toHaveBeenCalledWith(
-            { name: "田中家", ownerId: "user-1" },
+            { name: "田中家" },
             expect.objectContaining({
-                findFamilyByUserId: expect.any(Function),
                 createFamily: expect.any(Function),
-                addFamilyMember: expect.any(Function),
             }),
         );
     });
@@ -75,6 +68,19 @@ describe("createFamilyAction 関数", () => {
         expect(result).toEqual({
             success: false,
             error: ERROR_MESSAGES.FAMILY_NAME_REQUIRED,
+        });
+    });
+
+    it("UNAUTHENTICATED はセッション切れのメッセージを返す", async () => {
+        vi.mocked(createFamilyUsecase).mockRejectedValue(
+            new Error("UNAUTHENTICATED"),
+        );
+
+        const result = await createFamilyAction(null, formData);
+
+        expect(result).toEqual({
+            success: false,
+            error: ERROR_MESSAGES.SESSION_NOT_FOUND,
         });
     });
 

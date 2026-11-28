@@ -369,7 +369,7 @@ describe("family invites on the local database", () => {
         }
     });
 
-    it("オーナー本人は家族作成と同じく自分を所属させられる", async () => {
+    it("オーナー本人でも family_members へ直接 INSERT できない", async () => {
         await scenario(async () => {
             const ownerId = await insertUser(`owner-${randomUUID()}@example.com`);
             const familyId = randomUUID();
@@ -378,16 +378,11 @@ describe("family invites on the local database", () => {
                 [familyId, ownerId],
             );
             await setUser(ownerId, false);
-            await admin.query(
+            await expectSqlError(
                 `insert into family_members (family_id, user_id) values ($1, $2)`,
                 [familyId, ownerId],
+                "row-level security",
             );
-            await resetRole();
-            const members = await admin.query(
-                `select count(*)::int as count from family_members where family_id = $1`,
-                [familyId],
-            );
-            expect(members.rows[0].count).toBe(1);
         });
     });
 

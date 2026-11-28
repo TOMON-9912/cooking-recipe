@@ -12,7 +12,6 @@ vi.mock("@/lib/supabase/server", () => ({
 describe("family-repository-impl", () => {
     const input: CreateFamilyInput = {
         name: "田中家",
-        ownerId: "user-1",
     };
 
     beforeEach(() => {
@@ -30,44 +29,49 @@ describe("family-repository-impl", () => {
                 },
                 error: null,
             });
+            const rpc = vi.fn().mockResolvedValue({ data: "family-1", error: null });
             vi.mocked(createAuthedClient).mockResolvedValue({
-                supabase: { from: vi.fn().mockReturnValue(builder) } as never,
+                supabase: {
+                    rpc,
+                    from: vi.fn().mockReturnValue(builder),
+                } as never,
                 user: { id: "user-1" } as never,
             });
 
             const family = await createFamily(input);
 
+            expect(rpc).toHaveBeenCalledWith("create_family", { p_name: "田中家" });
             expect(family.id).toBe("family-1");
             expect(family.name).toBe("田中家");
             expect(family.ownerId).toBe("user-1");
             expect(family.createdAt).toEqual(new Date("2024-01-01T00:00:00Z"));
-            expect(builder.insert).toHaveBeenCalledWith({
-                name: "田中家",
-                owner_id: "user-1",
-            });
         });
 
-        it("insert の結果が null なら INSERT_FAILED を throw する", async () => {
-            const builder = createQueryBuilder({ data: null, error: null });
+        it("関数の結果が無いなら INSERT_FAILED を throw する", async () => {
             vi.mocked(createAuthedClient).mockResolvedValue({
-                supabase: { from: vi.fn().mockReturnValue(builder) } as never,
+                supabase: {
+                    rpc: vi.fn().mockResolvedValue({ data: null, error: null }),
+                    from: vi.fn(),
+                } as never,
                 user: { id: "user-1" } as never,
             });
 
             await expect(createFamily(input)).rejects.toThrow("INSERT_FAILED");
         });
 
-        it("DB エラー時は throw する", async () => {
-            const builder = createQueryBuilder({
-                data: null,
-                error: new Error("insert failed"),
-            });
+        it("所属済みは ALREADY_IN_FAMILY を throw する", async () => {
             vi.mocked(createAuthedClient).mockResolvedValue({
-                supabase: { from: vi.fn().mockReturnValue(builder) } as never,
+                supabase: {
+                    rpc: vi.fn().mockResolvedValue({
+                        data: null,
+                        error: { message: "ALREADY_IN_FAMILY" },
+                    }),
+                    from: vi.fn(),
+                } as never,
                 user: { id: "user-1" } as never,
             });
 
-            await expect(createFamily(input)).rejects.toThrow("insert failed");
+            await expect(createFamily(input)).rejects.toThrow("ALREADY_IN_FAMILY");
         });
     });
 
