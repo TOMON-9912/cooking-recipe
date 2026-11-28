@@ -6,17 +6,17 @@ body:
   - type: markdown
     attributes:
       value: |
-        タイトルは Conventional Commits の種別で始める（このリポジトリの commit / PR と同じ）。`feat:` 固定ではない。
+        タイトルは Conventional Commits の種別で始める。種別の後ろは名詞句にする。動詞で終えない。`feat:` 固定ではない。
 
-        - `feat:` 新機能・画面追加（「追加」もこれ。`add:` は使わない）
+        - `feat:` 新機能・画面追加（`add:` は使わない）
         - `fix:` 不具合修正
         - `docs:` ドキュメントのみ
         - `refactor:` 挙動を変えない整理
         - `chore:` 開発基盤・雑務
 
-        画面に閉じる変更は種別を増やさず、スコープで書く。例: `feat(ui): 検索フィルタを追加` / `fix(ui): ボタンが重なる`
+        画面に閉じる変更は種別を増やさず、スコープで書く。例: `feat(ui): 検索フィルタ` / `fix(ui): 重なるボタン`
 
-        例: `feat: 家族グループへのメンバー追加` / `fix: 確認メールのリンク先が間違っている`
+        例: `feat: 家族グループへのメンバー追加` / `fix: 確認メールのリンク先`
 
         要件定義・設計の本文は `docs/01_requirements`〜`docs/04_decisions` に置く。変更種別は作成時は空でよい（`/plan` で確定する）。
         要件定義・設計・テスト設計・実装の Issue は、この Issue の子として、各プロセスの開始時に Skill（`/requirements` `/design` `/test-design` `/implement`）が作る（`docs/05_development/issue-workflow.md`）。

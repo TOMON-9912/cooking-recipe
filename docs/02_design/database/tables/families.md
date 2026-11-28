@@ -37,7 +37,7 @@
 
 ### INSERT
 
-- **authenticated users can insert families** — ログイン済み（オーナー設定はアプリ側）
+- ポリシーなし
 
 ### UPDATE
 
@@ -46,6 +46,14 @@
 ### DELETE
 
 - ポリシーなし（オーナー削除時 CASCADE 等は Auth / バッチ側）
+
+## DB 関数
+
+`security definer`、`set search_path = public, pg_temp`。`EXECUTE` は `authenticated` のみ（[ADR 016](../../../04_decisions/016-family-create-single.md)）。
+
+| 関数 | 引数 | 戻り | 内容 |
+| --- | --- | --- | --- |
+| `create_family` | `p_name text` | 家族 ID | `owner_id` は `auth.uid()`。本人の `family_members` を同じトランザクションで入れる。所属があれば入れない |
 
 ## 設計上の補足
 

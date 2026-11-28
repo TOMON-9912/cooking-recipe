@@ -23,12 +23,12 @@
 
 ## インデックス
 
-- `user_id` — ユーザー所属家族の取得
+- `user_id` — 一意
 
 ## 制約
 
 - 同一ユーザーが同一家族に重複参加不可（複合 PK）
-- **`user_id` の一意制約は付けない。** 1 ユーザー 1 家族は `approve_family_invite` 内の直列化で保証する（ADR 005 の複数家族を残す。ADR 011）
+- `user_id` 一意
 
 ## RLS
 
@@ -38,8 +38,7 @@
 
 ### INSERT
 
-- **owner can add self as first member** — `user_id = auth.uid()` かつ、その `family_id` の `families.owner_id = auth.uid()`。家族作成時のオーナー本人追加だけ
-- 招待による承認はクライアントの INSERT では通さない。`approve_family_invite` だけが行う
+- ポリシーなし
 
 ### UPDATE
 
@@ -51,5 +50,4 @@
 
 ## 設計上の補足
 
-家族作成フローでは families INSERT 後にオーナーを family_members に追加する。変更後の INSERT ポリシーを満たす。
-承認時の二重所属と人数上限は、`approve_family_invite` が家族行とユーザー単位で直列化して拒否する（[join-family.md](../../application/family/join-family.md)）。
+承認時の人数上限は、`approve_family_invite` が家族行をロックして拒否する（[join-family.md](../../application/family/join-family.md)）。

@@ -42,7 +42,7 @@ Issue は、**そのプロセスを始めるとき**に、そのプロセスの 
 
 1. **場所を確かめる:** `git fetch origin` のあと、`develop` にいて、作業ツリーに無関係な変更が無いことを確かめる。違えば、止まって聞く
 2. **前のプロセスが終わっているか:** 前のプロセスの子 Issue が閉じていることを確かめる（`gh issue view {番号} --json state`）。開いていれば、止まって聞く（PR が未マージのことが多い）
-3. **Issue を作る:** 親の子 Issue を確かめ（`gh api 'repos/{owner}/{repo}/issues/{親}/sub_issues'`）、同じプロセスの Issue が無ければ、`gh issue create --parent {親}` で作る
+3. **Issue を作る:** `.cursor/skills/create-issue/SKILL.md` に従う
 4. **ブランチを切る:** `git switch -c {ブランチ名} origin/develop`。ローカルだけで、push しない
 5. 作業する。終わったら、触ったファイルと PR 案（本文に `Closes #{そのプロセスの Issue}`）を示す。commit・push・PR は、依頼があるときだけ
 
@@ -56,7 +56,7 @@ Issue は、**そのプロセスを始めるとき**に、そのプロセスの 
 
 ### タイトル
 
-Conventional Commits の種別で始める。要件定義は `docs(requirements): …`、設計は `docs(design): …`、実装は `feat: …` / `fix: …` など親の種別に合わせる。テストは実装のコミットに含める。
+`.cursor/skills/create-issue/SKILL.md` に従う。テストは実装のコミットに含める。
 
 ## Issue 本文の骨格
 
@@ -131,8 +131,6 @@ GitHub 上で人が作るときのひな形は `.github/ISSUE_TEMPLATE/`。AI �
 要件定義は設計より先に書く（[ADR 012](../04_decisions/012-requirements-before-design.md)）。テストは実装 Issue の完了条件に含める。AI は Issue を閉じない。完了のチェックも付けない。
 
 変更種別は、親の作成時は空でよい。`/plan` が理由つきで確定する。
-
-タイトルは Conventional Commits の種別で始める。`feat:` 固定ではない。追加は `feat:`（`add:` は使わない）。画面に閉じる変更は `feat(ui):` / `fix(ui):` のようにスコープを付ける。
 
 ## 文言の境界
 

@@ -33,7 +33,7 @@ DB 変更が必要なのに docs/02_design/database に該当設計がありま�
 
 1. `git fetch origin` のあと、`develop` にいて、作業ツリーに無関係な変更が無いことを確かめる。違えば止まって聞く
 2. 操作の分け方は、要件定義の「進め方」と `docs/02_design/application` の操作の一覧に従う。決まっていない、または複数の案があるときは、案を示して AskQuestion で聞いて止まる
-3. 親の子 Issue を確かめ（`gh api 'repos/{owner}/{repo}/issues/{親}/sub_issues' --jq '.[] | "\(.number) \(.state) \(.title)"'`）、同じ操作の実装 Issue が無ければ、操作ごとに 1 つずつ作る（`gh issue create --parent {親} --title "feat: …" --body-file {ファイル}`）。本文は `docs/05_development/issue-workflow.md` の「実装 Issue」の骨格。完了条件は要件定義の受け入れ条件のうちその操作の分、実装計画（スライス / 触る層 / 主なパス / 検証コマンド）はここで書く。実装開始条件のチェックリストは書かない
+3. 同じ操作の実装 Issue が無ければ、操作ごとに 1 つずつ `.cursor/skills/create-issue/SKILL.md` に従って作る。完了条件は要件定義の受け入れ条件のうちその操作の分。実装計画（スライス / 触る層 / 主なパス / 検証コマンド）はここで書く。実装開始条件のチェックリストは書かない
 4. 作った Issue の番号と URL を示し、実装へ進む。チェックリストの記入を待たない
 
 ## ブランチ

@@ -26,7 +26,7 @@
 | 未ログイン | ログイン後に元の画面へ自動で戻る処理は作らない。本人が家族管理画面を開く。通知一覧は未実装のため使わない |
 | 発行・取り消しの実行 | クライアントから `family_invites` へ直接 INSERT / UPDATE しない。検証付きの DB 関数が行う |
 | 参加の実行 | クライアントから `family_members` へ直接 INSERT しない。検証と所属追加を 1 つの DB 関数でまとめて行う |
-| 既存 INSERT | 直接 INSERT は、オーナーが自分を最初のメンバーにする場合だけに絞る |
+| 既存 INSERT | 家族の作成と最初の所属は `create_family`（[ADR 016](./016-family-create-single.md)）。参加は `approve_family_invite` |
 
 ## なぜこの案か
 

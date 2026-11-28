@@ -17,7 +17,7 @@ description: Writes the requirements definition (what to build and why) for one 
 
 1. `git fetch origin` のあと、`develop` にいて、作業ツリーに無関係な変更が無いことを確かめる。違えば止まって聞く
 2. 親 Issue が開いていること（前のプロセスは無い）を確かめる
-3. 親の子 Issue を確かめ（`gh api 'repos/{owner}/{repo}/issues/{親}/sub_issues' --jq '.[] | "\(.number) \(.state) \(.title)"'`）、要件定義 Issue が無ければ作る。タイトルは `docs(requirements): {機能}の要件定義`、本文は骨格のとおり（`gh issue create --parent {親} --title "…" --body-file {ファイル}`）
+3. 要件定義 Issue が無ければ、`.cursor/skills/create-issue/SKILL.md` に従って作る。成果物は `docs/01_requirements/{機能}.md`
 4. `git switch -c docs/{Issue}-requirements-{slug} origin/develop` で作業ブランチを切る。push しない
 
 ## 手順

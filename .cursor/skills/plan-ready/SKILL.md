@@ -9,7 +9,7 @@ description: Reads a GitHub Issue, determines change types, and lists required d
 
 親 Issue の番号が無ければ聞く。作成時点の変更種別は空でよい。ここで確定する。
 
-このスキルが作る Issue は、**親 Issue だけ**（無いときに限る）。要件定義・設計・実装の子 Issue は、各プロセスの Skill が、そのプロセスを始めるときに作る（`docs/05_development/issue-workflow.md`）。テストは実装に含める。
+このスキルが作る Issue は、**親 Issue だけ**（無いときに限る）。作り方は `.cursor/skills/create-issue/SKILL.md`。要件定義・設計・実装の子 Issue は、各プロセスの Skill が、そのプロセスを始めるときに作る。テストは実装に含める。
 
 ## 手順
 
@@ -25,7 +25,7 @@ description: Reads a GitHub Issue, determines change types, and lists required d
 
 開発対象を表す親 Issue が無いときだけ、このスキルが作る。`develop` にいるうちに作る（ブランチは切らない）。
 
-1. ユーザーの説明から、親 Issue の下書き（種別 / 目的 / なぜ作るか / 含めること / 含めないこと / 完了条件）を作って見せる。判断が要る箇所は聞く
+1. ユーザーの説明から、親 Issue の下書き（種別 / 目的 / なぜ作るか / 含めること / 含めないこと / 完了条件）を作って見せる。タイトルと作り方は `.cursor/skills/create-issue/SKILL.md`。判断が要る箇所は聞く
 2. ユーザーが OK したあとに、`gh issue create` で作る。本文に設計や実装の手順を書かない
 3. 親が既にあれば作らない
 

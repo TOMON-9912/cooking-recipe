@@ -40,7 +40,7 @@ Table family_members {
 
   indexes {
     (family_id, user_id) [pk]
-    user_id
+    user_id [unique]
   }
 
   Note: 'ユーザーの家族所属'
